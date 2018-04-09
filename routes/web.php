@@ -12,8 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
+
+Route::get('/admin', 'Auth\LoginController@showLoginAdminForm')->name('admin_login');
+Route::post('/admin/login', 'Auth\LoginController@loginAsAdmin')->name('login_as_admin');
+
+
 
 Auth::routes();
 
