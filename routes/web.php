@@ -27,3 +27,21 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::prefix('user')->group(function () {
+    Route::get('/list', 'UserController@index')->name('all-user');
+
+    Route::get('/add', 'UserController@addForm')->name('add-user-form');
+    Route::post('/add', 'UserController@add')->name('add-user');
+
+    Route::get('/edit/{id?}', 'UserController@editForm')->name('edit-user-form');
+    Route::post('/edit/{id}', 'UserController@edit')->name('edit-user');
+
+    Route::get('/forgot-password', 'UserController@forgotPasswordForm')->name('forgot-password-form');
+    Route::post('/forgot-password', 'UserController@forgotPassword')->name('forgot-password');
+
+    Route::get('/change-password', 'UserController@changePasswordForm')->name('change-password-form');
+    Route::post('/change-password', 'UserController@changePassword')->name('change-password');
+
+    Route::get('/remove/{id?}', 'UserController@remove')->name('remove-user');
+});
+
