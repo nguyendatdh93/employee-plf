@@ -15,11 +15,11 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/admin', 'Auth\LoginController@showLoginAdminForm')->name('admin_login');
-Route::post('/admin/login', 'Auth\LoginController@loginAsAdmin')->name('login_as_admin');
-Route::get('/admin/logout', 'Auth\LoginController@logOut')->name('admin_logout');
+Route::get('/admin', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
+Route::post('/admin/login', 'Admin\LoginController@loginAsAdmin')->name('login_as_admin');
+Route::get('/admin/logout', 'Admin\LoginController@logOut')->name('admin_logout');
 
-Route::get('/admin/user-managerment', 'AdminController@showUserManagerment')->name('user-managerment');
+Route::get('/admin/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user-managerment');
 
 
 Auth::routes();

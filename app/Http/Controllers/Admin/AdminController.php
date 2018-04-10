@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
