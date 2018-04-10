@@ -15,13 +15,14 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/admin', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
-Route::post('/admin/login', 'Admin\LoginController@loginAsAdmin')->name('login_as_admin');
-Route::get('/admin/logout', 'Admin\LoginController@logOut')->name('admin_logout');
-Route::get('/admin/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
+Route::prefix('admin')->group(function () {
+    Route::get('', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
+    Route::post('/login', 'Admin\LoginController@loginAsAdmin')->name('login_as_admin');
+    Route::get('/logout', 'Admin\LoginController@logOut')->name('admin_logout');
+    Route::get('/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
 
-Route::get('/admin/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user-managerment');
-
+    Route::get('/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user-managerment');
+});
 
 Auth::routes();
 
