@@ -26,4 +26,11 @@ class AdminController extends Controller
 
         return view('admins.user_managerment', ['list_users' => $list_users]);
     }
+
+    public function removeUser(Request $request, $user_id)
+    {
+        $this->userRepository->removeUser($user_id);
+
+        return redirect()->route('user-managerment');
+    }
 }
