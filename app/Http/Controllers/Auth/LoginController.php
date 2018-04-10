@@ -68,7 +68,7 @@ class LoginController extends Controller
 
             if (Auth::guard('admin')->attempt($userdata)) {
                 echo 'SUCCESS!';
-                Auth::guard('admin')->login($userdata);
+                echo Auth::guard('admin')->user()->email;
             } else {
                 return Redirect::to('admin');
             }
