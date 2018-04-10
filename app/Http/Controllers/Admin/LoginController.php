@@ -43,7 +43,7 @@ class LoginController extends Controller
 
     public function showLoginAdminForm()
     {
-        return view('auth.login_admin');
+        return view('admins.login_admin');
     }
 
     public function loginAsAdmin()

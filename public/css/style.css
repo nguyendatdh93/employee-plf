@@ -9,3 +9,7 @@ div#datatable_paginate {
 .pagination {
     margin: 0px !important;
 }
+
+table tr td {
+    vertical-align: inherit !important;
+}

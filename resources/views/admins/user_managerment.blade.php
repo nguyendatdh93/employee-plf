@@ -3,6 +3,7 @@
 @section('Datatable')
     <script>
         $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
             $('#datatable').DataTable()
         })
     </script>
@@ -40,12 +41,12 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <a class="btn btn-app">
-                                        <i class="fa fa-edit"></i>{{  __('user_managerment.btn_edit') }}
-                                    </a>
-                                    <a class="btn btn-app">
-                                        <i class="fa fa-trash-o"></i>{{  __('user_managerment.btn_remove') }}
-                                    </a>
+                                    <div class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
+                                        <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 btn-remove" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_remove') }}">
+                                        <i class="fa fa-trash-o" style="font-size: 20px"></i>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
