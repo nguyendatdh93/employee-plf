@@ -1,0 +1,11 @@
+#datatable_filter {
+    float: right;
+}
+
+div#datatable_paginate {
+    float: right;
+}
+
+.pagination {
+    margin: 0px !important;
+}

@@ -15,3 +15,5 @@
       apply the skin class to the body tag so the changes take effect.
 -->
 <link href="{{ asset("/plugins/admin-lte/dist/css/skins/skin-blue.min.css")}}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset("/css/style.css")}}" rel="stylesheet" type="text/css" />

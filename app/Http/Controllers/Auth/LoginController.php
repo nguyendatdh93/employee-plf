@@ -67,12 +67,17 @@ class LoginController extends Controller
             );
 
             if (Auth::guard('admin')->attempt($userdata)) {
-                echo 'SUCCESS!';
-                echo Auth::guard('admin')->user()->email;
+                return redirect()->route('user-managerment');
             } else {
                 return Redirect::to('admin');
             }
 
         }
+    }
+
+    public function logOut()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin_login');
     }
 }

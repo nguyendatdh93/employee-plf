@@ -24,6 +24,8 @@ class Admin extends Model implements Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password'
     ];
+
+    public $remember_token=false;
 }
