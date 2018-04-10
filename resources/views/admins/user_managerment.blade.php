@@ -41,12 +41,12 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <div class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
+                                    <a href="{{ route('remove-user',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
                                         <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 btn-remove" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_remove') }}">
+                                    </a>
+                                    <a href="{{ route('remove-user',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-remove" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_remove') }}">
                                         <i class="fa fa-trash-o" style="font-size: 20px"></i>
-                                    </div>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

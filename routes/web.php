@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('/admin', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
 Route::post('/admin/login', 'Admin\LoginController@loginAsAdmin')->name('login_as_admin');
 Route::get('/admin/logout', 'Admin\LoginController@logOut')->name('admin_logout');
+Route::get('/admin/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
 
 Route::get('/admin/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user-managerment');
 
