@@ -68,7 +68,7 @@ class LoginController extends Controller
             );
 
             if (Auth::guard('admin')->attempt($userdata)) {
-                return redirect()->route('user-managerment');
+                return redirect()->route('user_managerment');
             } else {
                 return Redirect::to('admin');
             }

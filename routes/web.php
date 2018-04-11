@@ -28,6 +28,9 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/edit-user/{id?}', 'Admin\AdminController@editUserForm')->name('edit_user_form');
     Route::post('/edit-user', 'Admin\AdminController@editUser')->name('edit_user');
+
+    Route::get('/create-new-client-app', 'Admin\AdminController@showClientAppSetting')->name('create_client_app_form');
+    Route::post('/create-new-client-app', 'Admin\AdminController@createClientApp')->name('create_client_app');
 });
 
 Auth::routes();
