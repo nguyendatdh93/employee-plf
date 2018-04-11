@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
@@ -59,5 +60,12 @@ class UserController extends Controller
         $user->save();
 
         return back()->with("success","Password changed successfully !");
+    }
+
+    public function logOut()
+    {
+        Auth::logout();
+
+        return redirect()->route('user_login');
     }
 }

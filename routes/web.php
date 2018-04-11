@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (){
     return redirect('/login');
-});
+})->name('user_login');
 
 Route::prefix('admin')->group(function () {
     Route::get('', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
@@ -42,6 +42,7 @@ Route::prefix('user')->group(function () {
 
     Route::get('/change-password', 'User\UserController@showChangePassword')->name('change-password-form');
     Route::post('/change-password', 'User\UserController@changePassword')->name('change-password');
+    Route::get('/logout', 'User\UserController@logOut')->name('user_logout');
 
     Route::get('/remove/{id?}', 'UserController@remove')->name('remove-user');
 });
