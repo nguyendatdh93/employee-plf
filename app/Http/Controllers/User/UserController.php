@@ -58,7 +58,7 @@ class UserController extends Controller
         }
 
         //Change Password
-        $user = Auth::user();
+        $user           = Auth::user();
         $user->password = bcrypt($inputs['new_password']);
         $user->save();
 

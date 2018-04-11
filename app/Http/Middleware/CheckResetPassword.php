@@ -26,6 +26,6 @@ class CheckResetPassword
             return redirect()->route('reset_password');
         }
 
-        return $next($request);
+        return redirect()->route('change_password');
     }
 }
