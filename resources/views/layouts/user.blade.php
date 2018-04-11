@@ -14,7 +14,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Main Header -->
         @include('layouts.partials.main_header_user')
         <!-- Left side column. contains the logo and sidebar -->
-        @include('layouts.partials.main_sidebar')
+        @include('layouts.partials.main_sidebar_user')
 
         <!-- Content Wrapper. Contains page content -->
         @include('layouts.partials.content_wrapper')
