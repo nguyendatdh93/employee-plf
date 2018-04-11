@@ -22,6 +22,7 @@ class UserController extends Controller
     public function __construct(UserRepositoryInterface $userRepository )
     {
         $this->middleware(CheckIpRange::class);
+        $this->middleware('auth');
         $this->userRepository = $userRepository;
     }
 

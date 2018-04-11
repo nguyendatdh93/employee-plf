@@ -8,4 +8,5 @@ return [
     'control' => 'Control',
     'btn_edit' => 'Edit',
     'btn_remove' => 'Remove',
+    'add_user' => 'Add new user'
 ];
