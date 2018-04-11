@@ -99,7 +99,15 @@ abstract class ATBBaseRepository implements ATBBaseRepositoryInterface
      */
     public function findBy($filter, $columns = array('*')) {
         foreach ($filter as $condition => $value) {
-            $this->model = $this->model->where($condition, '=', $value);
+            $break_pos = strpos($condition, ':');
+            if (!$break_pos) {
+                $relation = '=';
+            } else {
+                $relation  = substr($condition, $break_pos + 1);
+                $condition = substr($condition, 0, $break_pos);
+            }
+
+            $this->model = $this->model->where($condition, $relation, $value);
         }
 
         return $this->model->first($columns);
