@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('Logo') <b>Admin - Employee</b>@endsection
 @section('Datatable')
     <script>
         $(function () {
