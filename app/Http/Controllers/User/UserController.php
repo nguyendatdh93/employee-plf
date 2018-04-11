@@ -7,7 +7,7 @@ use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
 use App\Http\Middleware\CheckResetPassword;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Input;

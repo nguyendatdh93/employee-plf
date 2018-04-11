@@ -25,7 +25,7 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
      */
     function model()
     {
-        return 'App\User';
+        return 'App\Models\User';
     }
 
     public function getClientAppsByUserId($user_id)

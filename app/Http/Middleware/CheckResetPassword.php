@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Repositories\Eloquents\UserRepository;
-use App\User;
+use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
