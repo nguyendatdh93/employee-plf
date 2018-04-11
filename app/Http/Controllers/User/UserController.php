@@ -27,6 +27,7 @@ class UserController extends Controller
         UserClientRelationRepositoryInterface $userClientRelationRepository
     ){
         $this->middleware(CheckIpRange::class);
+        $this->middleware('auth');
 
         $this->userRepository = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;

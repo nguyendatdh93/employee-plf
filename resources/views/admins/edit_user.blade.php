@@ -1,5 +1,9 @@
 @extends('layouts.admin')
+<<<<<<< HEAD
+@section('Logo') <b>Admin - Employee</b>@endsection
+=======
 
+>>>>>>> master
 @section('Content')
     <!-- Main content -->
     <section class="content">
