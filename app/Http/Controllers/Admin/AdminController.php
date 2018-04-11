@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
+use App\Http\Middleware\CheckIpRange;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class AdminController extends Controller
         UserRepositoryInterface $userRepository,
         UserClientRelationRepositoryInterface $userClientRelationRepository
     ){
+        $this->middleware(CheckIpRange::class);
         $this->middleware(AuthAdmin::class);
 
         $this->userRepository = $userRepository;
