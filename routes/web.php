@@ -22,6 +22,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
 
     Route::get('/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user-managerment');
+
+    Route::get('/add-user', 'Admin\AdminController@addUserForm')->name('add-user-form');
+    Route::post('/add-user', 'Admin\AdminController@addUser')->name('add-user');
+
+    Route::get('/edit-user/{id?}', 'Admin\AdminController@editUserForm')->name('edit-user-form');
+    Route::post('/edit-user', 'Admin\AdminController@editUser')->name('edit-user');
 });
 
 Auth::routes();
@@ -31,11 +37,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('user')->group(function () {
     Route::get('/list', 'UserController@index')->name('all-user');
 
-    Route::get('/add', 'UserController@addForm')->name('add-user-form');
-    Route::post('/add', 'UserController@add')->name('add-user');
+//    Route::get('/add', 'UserController@addForm')->name('add-user-form');
+//    Route::post('/add', 'UserController@add')->name('add-user');
 
-    Route::get('/edit/{id?}', 'UserController@editForm')->name('edit-user-form');
-    Route::post('/edit/{id}', 'UserController@edit')->name('edit-user');
+//    Route::get('/edit/{id?}', 'UserController@editForm')->name('edit-user-form');
+//    Route::post('/edit/{id}', 'UserController@edit')->name('edit-user');
 
     Route::get('/forgot-password', 'UserController@forgotPasswordForm')->name('forgot-password-form');
     Route::post('/forgot-password', 'UserController@forgotPassword')->name('forgot-password');
