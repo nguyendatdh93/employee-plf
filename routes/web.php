@@ -37,12 +37,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('user')->group(function () {
     Route::get('/list', 'UserController@index')->name('all-user');
 
-//    Route::get('/add', 'UserController@addForm')->name('add-user-form');
-//    Route::post('/add', 'UserController@add')->name('add-user');
-
-//    Route::get('/edit/{id?}', 'UserController@editForm')->name('edit-user-form');
-//    Route::post('/edit/{id}', 'UserController@edit')->name('edit-user');
-
     Route::get('/forgot-password', 'UserController@forgotPasswordForm')->name('forgot-password-form');
     Route::post('/forgot-password', 'UserController@forgotPassword')->name('forgot-password');
 
@@ -52,7 +46,7 @@ Route::prefix('user')->group(function () {
     Route::get('/reset-password', 'User\UserController@showFormResetPassword')->name('reset_password_form');
     Route::post('/reset-password', 'User\UserController@resetPassword')->name('reset_password');
 
-    Route::get('/remove/{id?}', 'UserController@remove')->name('remove-user');
+    Route::get('/profile', 'User\UserController@profile')->name('profile');
 });
 
 Route::get('/404', function(){

@@ -7,22 +7,29 @@ use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
 use App\Http\Middleware\CheckResetPassword;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Input;
 use Hash;
 use Auth;
+use Laravel\Passport\Client;
 use Validator;
 
 class UserController extends Controller
 {
     protected $userRepository;
+    protected $userClientRelationRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository )
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        UserClientRelationRepositoryInterface $userClientRelationRepository
+    ){
         $this->middleware(CheckIpRange::class);
+
         $this->userRepository = $userRepository;
+        $this->userClientRelationRepository = $userClientRelationRepository;
     }
 
     public function showChangePassword()
@@ -101,5 +108,16 @@ class UserController extends Controller
         Auth::logout();
 
         return redirect()->route('user_login');
+    }
+
+    public function profile() {
+        $user = Auth::user();
+        $client_ids = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
+        $client_apps = Client::whereIn('id', $client_ids)->get();
+
+        return view('users.profile', [
+            'user' => $user,
+            'client_apps' => $client_apps
+        ]);
     }
 }
