@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquents\UserClientRelationRepository;
 use App\Repositories\Eloquents\UserRepository;
 use App\Repositories\InterfaceRepository;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             UserRepositoryInterface::class,
             UserRepository::class
+        );
+
+        $this->app->singleton(
+            UserClientRelationRepositoryInterface::class,
+            UserClientRelationRepository::class
         );
     }
 }

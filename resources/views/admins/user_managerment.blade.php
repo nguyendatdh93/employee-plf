@@ -12,6 +12,18 @@
 @section('Content')
     <!-- Main content -->
     <section class="content">
+        @if (session('success'))
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-body bg-success">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="col-md-12 ">
             <div class="box">
                 <div class="box-header">
