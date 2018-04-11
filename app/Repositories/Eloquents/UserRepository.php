@@ -34,7 +34,8 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
             ->leftjoin('user_client_relations', 'users.id', '=', 'user_client_relations.user_id')
             ->leftjoin('oauth_clients', 'oauth_clients.id', '=', 'user_client_relations.client_id')
             ->where('users.id', '=', $user_id)
-            ->where('del_flg', '=', 0)
+            ->where('users.del_flg', '=', 0)
+            ->where('user_client_relations.del_flg', '=', 0)
             ->get();
     }
 

@@ -24,10 +24,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user_managerment');
 
     Route::get('/add-user', 'Admin\AdminController@addUserForm')->name('add_user_form');
-    Route::post('/add-user', 'Admin\AdminController@addUser')->name('add-user');
+    Route::post('/add-user', 'Admin\AdminController@addUser')->name('add_user');
 
     Route::get('/edit-user/{id?}', 'Admin\AdminController@editUserForm')->name('edit_user_form');
-    Route::post('/edit-user', 'Admin\AdminController@editUser')->name('edit-user');
+    Route::post('/edit-user', 'Admin\AdminController@editUser')->name('edit_user');
 });
 
 Auth::routes();

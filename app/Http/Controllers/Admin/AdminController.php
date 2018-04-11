@@ -122,17 +122,75 @@ class AdminController extends Controller
             die('404');
         }
 
-        $client_apps = [
-            'app 1', 'app 2', 'app 3'
-        ];
+        $client_apps = Client::all();
+        $client_ids = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
 
         return view('admins.edit_user', [
             'client_apps' => $client_apps,
+            'client_ids'  => $client_ids,
             'user'        => $user
         ]);
     }
 
-    public function editUser() {
-        return redirect()->route('user-managerment');
+    public function editUser(Request $request) {
+        $input = $request->all();
+
+        if (empty($input['user_id'])) {
+            die('404');
+        }
+
+        $user = $this->userRepository->find($input['user_id']);
+        if (empty($user)) {
+            die('404');
+        }
+
+        try {
+            $client_ids  = [];
+            $all_client_apps = Client::all();
+            foreach ($all_client_apps as $client_app) {
+                $client_ids[] = $client_app->id;
+            }
+
+            $input['client_apps'] = $input['client_apps'] ?? [];
+            if (!empty($input['client_apps'])) {
+                foreach ($input['client_apps'] as $client_app) {
+                    if (!in_array($client_app, $client_ids)) {
+                        return back()->withErrors(['messages' => "Are you hacking? Don't have the client app you post!"])->withInput();
+                    }
+                }
+            }
+
+            foreach ($client_ids as $client_id) {
+                $this->userClientRelationRepository->makeModel();
+                $filter = [
+                    'user_id'   => $user->id,
+                    'client_id' => $client_id
+                ];
+                $user_client_relation = $this->userClientRelationRepository->findBy($filter);
+
+                if (empty($user_client_relation)) {
+                    if (in_array($client_id, $input['client_apps'])) {
+                        $this->userClientRelationRepository->create([
+                            'user_id'   => $user->id,
+                            'client_id' => $client_id
+                        ]);
+                    } else {
+                        continue;
+                    }
+                } else {
+                    if (in_array($client_id, $input['client_apps'])) {
+                        continue;
+                    } else {
+                        $this->userClientRelationRepository->update([
+                            'del_flg'   => 1
+                        ], $user_client_relation->id);
+                    }
+                }
+            }
+
+            return redirect()->route('user-managerment')->withSuccess(strtr(':user_name is updated successful!', [':user_name' => $user->name]));
+        } catch (\Exception $e) {
+            return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
+        }
     }
 }

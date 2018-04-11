@@ -1,8 +1,24 @@
 @extends('layouts.admin')
+<<<<<<< HEAD
 @section('Logo') <b>Admin - Employee</b>@endsection
+=======
+
+>>>>>>> master
 @section('Content')
     <!-- Main content -->
     <section class="content">
+        @if ($errors->has('messages'))
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-warning">
+                        <div class="panel-body bg-warning">
+                            {!! $errors->first('messages') !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="box">
@@ -11,7 +27,7 @@
                     </div>
                     <!-- /.box-header -->
 
-                    <form class="form-horizontal" method="POST" action="{{ route('edit-user') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('edit_user') }}">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $user->id }}">
 
@@ -36,11 +52,11 @@
                                 <label for="client_apps" class="col-sm-3 control-label">{{ trans('add_user.form_label_client_apps') }}</label>
 
                                 <div class="col-sm-9">
-                                    @foreach($client_apps as $app_id => $client_app)
+                                    @foreach($client_apps as $client_app)
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="client_apps[]" value="{{ $app_id }}">
-                                                {{ $client_app }}
+                                                <input type="checkbox" name="client_apps[]" value="{{ $client_app->id }}" {{ in_array($client_app->id, $client_ids) ? 'checked' : '' }}>
+                                                {{ $client_app->name }}
                                             </label>
                                         </div>
                                     @endforeach

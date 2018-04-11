@@ -23,7 +23,7 @@
                     </div>
                     <!-- /.box-header -->
 
-                    <form class="form-horizontal" method="POST" action="{{ route('add-user') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('add_user') }}">
                         @csrf
 
                         <div class="box-body">
