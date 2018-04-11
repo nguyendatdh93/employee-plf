@@ -9,7 +9,7 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;

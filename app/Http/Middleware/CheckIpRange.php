@@ -18,7 +18,7 @@ class CheckIpRange
     public function handle($request, Closure $next)
     {
         if (!$this->checkIPRange($request->ip())) {
-            abort(404);
+            return redirect()->route('404');
         }
 
         return $next($request);
