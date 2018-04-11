@@ -57,7 +57,7 @@ class LoginController extends Controller
         $validator = Validator::make(Input::all(), $rules);
 
         if ($validator->fails()) {
-            return Redirect::to('login')
+            return redirect()->route('admin_login')
                 ->withErrors($validator)
                 ->withInput(Input::except('password'));
         } else {

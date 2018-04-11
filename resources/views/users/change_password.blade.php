@@ -1,6 +1,6 @@
 @extends('layouts.user')
 @section('Script')
-    <script src="{{ asset ("/js/user/user_script.js") }}" type="text/javascript"></script>
+    <script src="{{ asset ("/js/user/change_password.js") }}" type="text/javascript"></script>
 @endsection
 @section('Content')
     <!-- Main content -->

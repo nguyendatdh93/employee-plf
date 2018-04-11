@@ -13,10 +13,10 @@ use Illuminate\Container\Container as App;
 
 class UserRepository extends ATBBaseRepository implements UserRepositoryInterface
 {
-    public function __construct()
-    {
-
-    }
+//    public function __construct(App $app)
+//    {
+//        parent::__construct($app);
+//    }
 
     /**
      * Specify Model class name
@@ -25,7 +25,7 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
      */
     function model()
     {
-        return 'App\User';
+        return 'App\Models\User';
     }
 
     public function getClientAppsByUserId($user_id)

@@ -13,6 +13,6 @@ class UserClientRelationRepository extends ATBBaseRepository implements UserClie
      */
     function model()
     {
-        return 'App\UserClientRelation';
+        return 'App\Models\UserClientRelation';
     }
 }
