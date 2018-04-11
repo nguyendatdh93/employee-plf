@@ -28,6 +28,7 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">User managerment</h3>
+                    <a href="{{ route('add_user_form') }}" class="btn bg-olive btn-flat margin pull-right"> <i class="fa fa-fw fa-user-plus"></i> {{ __('user_managerment.add_user') }}</a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -53,7 +54,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <a href="{{ route('remove-user',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
+                                    <a href="{{ route('edit_user_form',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
                                         <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
                                     </a>
                                     <a href="{{ route('remove-user',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-remove" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_remove') }}">

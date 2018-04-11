@@ -6,7 +6,7 @@
         <ul class="sidebar-menu">
             <li class="header"></li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><span>User managerment</span></a></li>
+            <li class="active"><a href="{{ route('user_managerment') }}"><span>User managerment</span></a></li>
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

@@ -114,7 +114,7 @@ class AdminController extends Controller
 
     public function editUserForm($id = null) {
         if (empty($id)) {
-            return redirect()->route('add-user-form');
+            return redirect()->route('add_user_form');
         }
 
         $user = $this->userRepository->find($id);

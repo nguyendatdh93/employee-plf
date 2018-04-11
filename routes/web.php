@@ -21,12 +21,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/logout', 'Admin\LoginController@logOut')->name('admin_logout');
     Route::get('/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
 
-    Route::get('/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user-managerment');
+    Route::get('/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user_managerment');
 
-    Route::get('/add-user', 'Admin\AdminController@addUserForm')->name('add-user-form');
+    Route::get('/add-user', 'Admin\AdminController@addUserForm')->name('add_user_form');
     Route::post('/add-user', 'Admin\AdminController@addUser')->name('add-user');
 
-    Route::get('/edit-user/{id?}', 'Admin\AdminController@editUserForm')->name('edit-user-form');
+    Route::get('/edit-user/{id?}', 'Admin\AdminController@editUserForm')->name('edit_user_form');
     Route::post('/edit-user', 'Admin\AdminController@editUser')->name('edit-user');
 });
 
