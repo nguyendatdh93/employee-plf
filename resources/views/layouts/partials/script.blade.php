@@ -6,3 +6,5 @@
 <script src="{{ asset ("/plugins/admin-lte/dist/js/adminlte.js") }}" type="text/javascript"></script>
 <script src="{{ asset ("/plugins/admin-lte/dist/js/adminlte.js") }}" type="text/javascript"></script>
 <script src="{{ asset ("/plugins/DataTables/datatables.js") }}" type="text/javascript"></script>
+
+@section('Script') @show

@@ -5,26 +5,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-    @include('admins.partials.header')
+    @include('layouts.partials.header')
 </head>
 <body class="skin-blue">
 <div class="wrapper">
 
     <!-- Main Header -->
-@include('admins.partials.main_header')
+@include('layouts.partials.main_header_user')
 <!-- Left side column. contains the logo and sidebar -->
-@include('admins.partials.main_sidebar')
+@include('layouts.partials.main_sidebar')
 
 <!-- Content Wrapper. Contains page content -->
-@include('admins.partials.content_wrapper')
+@include('layouts.partials.content_wrapper')
 
 <!-- Main Footer -->
-    @include('admins.partials.main_footer')
+    @include('layouts.partials.main_footer')
 
 </div><!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-@include('admins.partials.script')
+@include('layouts.partials.script')
 @section('Datatable') @show
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the

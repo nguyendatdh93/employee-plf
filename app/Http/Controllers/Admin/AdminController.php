@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
+use App\Http\Middleware\CheckIpRange;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,7 @@ class AdminController extends Controller
 
     public function __construct(UserRepositoryInterface $userRepository )
     {
+        $this->middleware(CheckIpRange::class);
         $this->middleware(AuthAdmin::class);
         $this->userRepository = $userRepository;
     }
