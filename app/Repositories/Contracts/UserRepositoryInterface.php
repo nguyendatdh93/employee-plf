@@ -11,4 +11,5 @@ interface UserRepositoryInterface extends ATBBaseRepositoryInterface
 {
     public function getClientAppsByUserId($user_id);
     public function removeUser($user_id);
+    public function checkResetPasswordFlg($user_id);
 }

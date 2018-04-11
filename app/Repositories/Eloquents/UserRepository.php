@@ -9,9 +9,15 @@ namespace App\Repositories\Eloquents;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
 use DB;
+use Illuminate\Container\Container as App;
 
 class UserRepository extends ATBBaseRepository implements UserRepositoryInterface
 {
+    public function __construct()
+    {
+
+    }
+
     /**
      * Specify Model class name
      *
@@ -35,5 +41,10 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
     public function removeUser($user_id)
     {
         return DB::table('users')->where('id', '=', $user_id)->update(['del_flg' => 1]);
+    }
+
+    public function checkResetPasswordFlg($user_id)
+    {
+        return DB::table('users')->where('id', '=', $user_id)->select('reset_password_flg')->get();
     }
 }
