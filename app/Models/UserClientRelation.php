@@ -10,6 +10,7 @@ class UserClientRelation extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'user_id',
-        'client_id'
+        'client_id',
+        'del_flg'
     ];
 }
