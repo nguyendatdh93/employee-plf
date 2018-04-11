@@ -55,3 +55,7 @@ Route::prefix('user')->group(function () {
     Route::get('/remove/{id?}', 'UserController@remove')->name('remove-user');
 });
 
+Route::get('/404', function(){
+    return view('errors.404');
+})->name('404');
+
