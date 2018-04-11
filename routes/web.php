@@ -40,9 +40,11 @@ Route::prefix('user')->group(function () {
     Route::get('/forgot-password', 'UserController@forgotPasswordForm')->name('forgot-password-form');
     Route::post('/forgot-password', 'UserController@forgotPassword')->name('forgot-password');
 
-    Route::get('/change-password', 'User\UserController@showChangePassword')->name('change-password-form');
-    Route::post('/change-password', 'User\UserController@changePassword')->name('change-password');
+    Route::get('/change-password', 'User\UserController@showChangePassword')->name('change_password_form');
+    Route::post('/change-password', 'User\UserController@changePassword')->name('change_password');
     Route::get('/logout', 'User\UserController@logOut')->name('user_logout');
+    Route::get('/reset-password', 'User\UserController@showFormResetPassword')->name('reset_password_form');
+    Route::post('/reset-password', 'User\UserController@resetPassword')->name('reset_password');
 
     Route::get('/remove/{id?}', 'UserController@remove')->name('remove-user');
 });

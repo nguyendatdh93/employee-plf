@@ -8,21 +8,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @include('layouts.partials.header')
 </head>
 <body class="skin-blue">
-<div class="wrapper">
+@section('Body')
+    <div class="wrapper">
 
-    <!-- Main Header -->
-@include('layouts.partials.main_header_user')
-<!-- Left side column. contains the logo and sidebar -->
-@include('layouts.partials.main_sidebar')
+            <!-- Main Header -->
+        @include('layouts.partials.main_header_user')
+        <!-- Left side column. contains the logo and sidebar -->
+        @include('layouts.partials.main_sidebar_user')
 
-<!-- Content Wrapper. Contains page content -->
-@include('layouts.partials.content_wrapper')
+        <!-- Content Wrapper. Contains page content -->
+        @include('layouts.partials.content_wrapper')
 
-<!-- Main Footer -->
-    @include('layouts.partials.main_footer')
+        <!-- Main Footer -->
+            @include('layouts.partials.main_footer')
 
-</div><!-- ./wrapper -->
-
+    </div><!-- ./wrapper -->
+@show
 <!-- REQUIRED JS SCRIPTS -->
 @include('layouts.partials.script')
 @section('Datatable') @show

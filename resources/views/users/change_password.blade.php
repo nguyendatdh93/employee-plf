@@ -19,7 +19,7 @@
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form action="{{ route('change-password') }}" method="post">
+                    <form action="{{ route('change_password') }}" method="post">
                         {{ csrf_field() }}
                         <div class="box-body">
                             <div class="form-group current-password @if (Session::get('error_current_password')) has-error @endif">

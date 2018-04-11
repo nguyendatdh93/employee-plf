@@ -26,4 +26,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    const RESETTED_PASSWORD_FLG = 1;
 }
