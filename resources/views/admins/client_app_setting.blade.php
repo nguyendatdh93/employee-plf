@@ -8,48 +8,16 @@
     <!-- Main content -->
     <section class="content">
         <div class="col-md-12 ">
-            @if (session('message_remove_client_app_success'))
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-success">
-                            <div class="panel-body bg-success">
-                                {{ session('message_remove_client_app_success') }}
-                            </div>
-                        </div>
-                    </div>
+            @if (session('success'))
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ session('success') }}
                 </div>
             @endif
-            @if (session('message_remove_client_app_error'))
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-danger">
-                            <div class="panel-body bg-danger">
-                                {{ session('message_remove_client_app_error') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            @if (session('message_edit_client_app'))
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-success">
-                            <div class="panel-body bg-success">
-                                {{ session('message_edit_client_app') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            @if (session('message_create_client_success'))
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-success">
-                            <div class="panel-body bg-success">
-                                {{ session('message_create_client_success') }}
-                            </div>
-                        </div>
-                    </div>
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ session('error') }}
                 </div>
             @endif
             <div class="box">
