@@ -139,6 +139,10 @@ class AuthorizationController
     private function checkIpThirdParty($request)
     {
         $oauth_client = $this->oauthClientRepository->find($request->get('client_id'));
+        if ($oauth_client->ip_secure == '') {
+            return true;
+        }
+
         if ($this->checkIpRange(explode(',', $oauth_client->ip_secure), $request->get('ip'))) {
             return true;
         }

@@ -20,13 +20,13 @@ $(function () {
             disableError('new-password')
         }
 
-        if (ip_secure == '') {
-            enableError('ip-secure', 'Please fill out this field');
-
-            return false;
-        } else {
-            disableError('ip-secure')
-        }
+        // if (ip_secure == '') {
+        //     enableError('ip-secure', 'Please fill out this field');
+        //
+        //     return false;
+        // } else {
+        //     disableError('ip-secure')
+        // }
 
         if (!validateClientUrlRedirect('url-redirect',  $('.url-redirect input').val())) {
             return false;
@@ -76,7 +76,7 @@ $(function () {
 
     function validateIPaddress(classEl, ip)
     {
-        if(!checkIsIp(ip)) {
+        if(ip !='' && !checkIsIp(ip)) {
             enableError(classEl, 'Must be IP');
 
             return false;

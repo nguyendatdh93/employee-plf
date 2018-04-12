@@ -229,12 +229,11 @@ class AdminController extends Controller
             return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect_not_url'));
         }
 
-        if ($inputs['ip_secure'] == '') {
-            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure'));
-        }
-
-        if (filter_var($inputs['ip_secure'], FILTER_VALIDATE_IP) === FALSE) {
-            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'));
+        if ($inputs['ip_secure'] != '') {
+            $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
+            if (!$is_ip) {
+                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'));
+            }
         }
 
         $this->oauthClientRepository->create([
@@ -272,6 +271,26 @@ class AdminController extends Controller
 
     public function editClientApp(Request $request)
     {
+        $inputs = $request->all();
+        if ($inputs['client_name'] == '') {
+            return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_client_name'));
+        }
+
+        if ($inputs['url_redirect'] == '') {
+            return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_url_redirect'));
+        }
+
+        if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
+            return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_url_redirect_not_url'));
+        }
+
+        if ($inputs['ip_secure'] != '') {
+            $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
+            if (!$is_ip) {
+                return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_ip_secure_is_ip'));
+            }
+        }
+
         $this->oauthClientRepository->update([
             'name' => $request->get('client_name'),
             'redirect' => $request->get('url_redirect'),
