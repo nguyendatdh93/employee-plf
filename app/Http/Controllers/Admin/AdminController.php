@@ -229,12 +229,10 @@ class AdminController extends Controller
             return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect_not_url'));
         }
 
-        if ($inputs['ip_secure'] == '') {
-            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure'));
-        }
-
-        if (filter_var($inputs['ip_secure'], FILTER_VALIDATE_IP) === FALSE) {
-            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'));
+        if ($inputs['ip_secure'] != '') {
+            if (filter_var($inputs['ip_secure'], FILTER_VALIDATE_IP,FILTER_FLAG_IPV4) === FALSE) {
+                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'));
+            }
         }
 
         $this->oauthClientRepository->create([
@@ -272,6 +270,25 @@ class AdminController extends Controller
 
     public function editClientApp(Request $request)
     {
+        $inputs = $request->all();
+        if ($inputs['client_name'] == '') {
+            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_client_name'));
+        }
+
+        if ($inputs['url_redirect'] == '') {
+            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect'));
+        }
+
+        if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
+            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect_not_url'));
+        }
+
+        if ($inputs['ip_secure'] != '') {
+            if (filter_var($inputs['ip_secure'], FILTER_VALIDATE_IP,FILTER_FLAG_IPV4) === FALSE) {
+                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'));
+            }
+        }
+
         $this->oauthClientRepository->update([
             'name' => $request->get('client_name'),
             'redirect' => $request->get('url_redirect'),

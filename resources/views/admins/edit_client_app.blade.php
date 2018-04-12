@@ -8,6 +8,16 @@
     <!-- Main content -->
     <section class="content">
         <div class="col-md-6">
+            @if (session('error'))
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            {{ session('error') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
             <!-- general form elements -->
             <div class="box box-primary">
                 <div class="box-header with-border">
