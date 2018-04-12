@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
 use App\Repositories\Eloquents\UserRepository;
 use App\Repositories\InterfaceRepository;
@@ -37,6 +39,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             UserClientRelationRepositoryInterface::class,
             UserClientRelationRepository::class
+        );
+
+        $this->app->singleton(
+            OauthClientRepositoryInterface::class,
+            OauthClientRepository::class
         );
     }
 }

@@ -56,9 +56,12 @@ class OverrideResetPassword extends Notification
         }
 
         return (new MailMessage)
-            ->line('Test You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url(config('app.url').route('password.reset', $this->token, false)))
-            ->line('If you did not request a password reset, no further action is required.');
+//            ->view('mail.forgot_password')
+            ->subject(trans('mail_forgot_password.subject'))
+            ->greeting(trans('mail_forgot_password.greeting'))
+            ->line(trans('mail_forgot_password.line1'))
+            ->action(trans('mail_forgot_password.btn_reset_text'), url(config('app.url').route('password.reset', $this->token, false)))
+            ->line(trans('mail_forgot_password.line2'));
     }
 
     /**

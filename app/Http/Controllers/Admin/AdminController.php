@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
+use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use Illuminate\Http\Request;
@@ -18,16 +19,19 @@ class AdminController extends Controller
 {
     protected $userRepository;
     protected $userClientRelationRepository;
+    protected $oauthClientRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
-        UserClientRelationRepositoryInterface $userClientRelationRepository
+        UserClientRelationRepositoryInterface $userClientRelationRepository,
+        OauthClientRepositoryInterface $oauthClientRepository
     ){
         $this->middleware(CheckIpRange::class);
         $this->middleware(AuthAdmin::class);
 
-        $this->userRepository = $userRepository;
+        $this->userRepository               = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
+        $this->oauthClientRepository        = $oauthClientRepository;
     }
 
     public function showUserManagerment()
@@ -44,7 +48,7 @@ class AdminController extends Controller
     {
         $this->userRepository->removeUser($user_id);
 
-        return redirect()->route('user-managerment');
+        return redirect()->route('user_managerment');
     }
 
     public function addUserForm() {
@@ -106,7 +110,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user-managerment')->withSuccess(strtr(':user_name is added successful!', [':user_name' => $user->name]));
+            return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is added successful!', [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
@@ -188,9 +192,52 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user-managerment')->withSuccess(strtr(':user_name is updated successful!', [':user_name' => $user->name]));
+            return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is updated successful!', [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
+    }
+
+    public function showClientAppSetting()
+    {
+        return view('admins.client_app_setting');
+    }
+
+    public function createClientApp(Request $request)
+    {
+        $inputs = $request->all();
+
+        if ($inputs['client_name'] == '') {
+            return redirect()->route('create_client_app_form')->with('error_client_name', __('client_app_setting.error_client_name'));
+        }
+
+        if ($inputs['url_redirect'] == '') {
+            return redirect()->route('create_client_app_form')->with('error_url_redirect', __('client_app_setting.error_url_redirect'));
+        }
+
+        if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
+            return redirect()->route('create_client_app_form')->with('error_url_redirect', __('client_app_setting.error_url_redirect_not_url'));
+        }
+
+        if ($inputs['ip_secure'] == '') {
+            return redirect()->route('create_client_app_form')->with('error_ip_secure', __('client_app_setting.error_ip_secure'));
+        }
+
+        if (filter_var($inputs['ip_secure'], FILTER_VALIDATE_IP) === FALSE) {
+            return redirect()->route('create_client_app_form')->with('error_ip_secure', __('client_app_setting.error_ip_secure_is_ip'));
+        }
+
+        $this->oauthClientRepository->create([
+            'user_id' => 0,
+            'name' => $inputs['client_name'],
+            'secret' => str_random(40),
+            'ip_secure' => $inputs['ip_secure'],
+            'redirect' => $inputs['url_redirect'],
+            'personal_access_client' => 0,
+            'password_client' => 0,
+            'revoked' => 0,
+        ]);
+
+        return redirect()->route('create_client_app_form')->with('message', __('client_app_setting.message_create_app_success'));
     }
 }
