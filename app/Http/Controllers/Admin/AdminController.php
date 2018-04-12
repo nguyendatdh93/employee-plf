@@ -200,7 +200,7 @@ class AdminController extends Controller
 
     public function showClientAppSetting()
     {
-        return view('admins.create_client_app');
+        return view('admins.client_app_setting');
     }
 
     public function createClientApp(Request $request)

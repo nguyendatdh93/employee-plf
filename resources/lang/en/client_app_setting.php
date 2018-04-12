@@ -11,5 +11,6 @@ return [
     'error_ip_secure' => 'IP secure is requirement',
     'error_url_redirect' => 'URL Redirect is requirement',
     'error_url_redirect_not_url' => 'Must be URL',
-    'error_ip_secure_is_ip' => 'Must be IP'
+    'error_ip_secure_is_ip' => 'Must be IP',
+    'btn_create_new_client_app' => 'Create new app'
 ];
