@@ -2,7 +2,6 @@
 
 return [
     'box_title_add_user' => 'Add User',
-    'box_title_edit_user' => 'Edit User',
 
     'form_label_name' => 'Name',
     'form_label_email' => 'Email',
@@ -13,5 +12,4 @@ return [
     'placeholder_email' => 'Fill user email',
 
     'btn_create_user' => 'Create',
-    'btn_update_user' => 'Update'
 ];
