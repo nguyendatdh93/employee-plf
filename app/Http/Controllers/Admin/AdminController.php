@@ -50,7 +50,7 @@ class AdminController extends Controller
     {
         $this->userRepository->removeUser($user_id);
 
-        return redirect()->route('user_managerment');
+        return redirect()->route('user_managerment')->withSuccess(strtr('User :user_id is removed successful!', [':user_id' => $user_id]));;
     }
 
     public function addUserForm() {
