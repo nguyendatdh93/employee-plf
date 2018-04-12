@@ -44,7 +44,7 @@ class AdminController extends Controller
     {
         $this->userRepository->removeUser($user_id);
 
-        return redirect()->route('user-managerment');
+        return redirect()->route('user_managerment');
     }
 
     public function addUserForm() {
@@ -106,7 +106,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user-managerment')->withSuccess(strtr(':user_name is added successful!', [':user_name' => $user->name]));
+            return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is added successful!', [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
@@ -188,7 +188,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user-managerment')->withSuccess(strtr(':user_name is updated successful!', [':user_name' => $user->name]));
+            return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is updated successful!', [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
