@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\CheckFromThirdParty;
 use App\Http\Middleware\ValidateThirdParty;
 use App\Repositories\Eloquents\OauthClientRepository;
+use App\Repositories\Eloquents\UserClientRelationRepository;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Bridge\User;
 use Laravel\Passport\TokenRepository;
@@ -40,7 +42,7 @@ class AuthorizationController
      */
     protected $response;
 
-    protected $oauthClientRepository;
+    protected $userClientRelationRepository;
 
     /**
      * Create a new controller instance.
@@ -48,11 +50,12 @@ class AuthorizationController
      * @param  AuthorizationServer $server
      * @param  ResponseFactory $response
      */
-    public function __construct(AuthorizationServer $server, ResponseFactory $response, OauthClientRepository $oauthClientRepository)
+    public function __construct(AuthorizationServer $server, ResponseFactory $response, OauthClientRepository $oauthClientRepository, UserClientRelationRepository $userClientRelationRepository)
     {
         $this->server = $server;
         $this->response = $response;
         $this->oauthClientRepository = $oauthClientRepository;
+        $this->userClientRelationRepository = $userClientRelationRepository;
     }
 
     /**
@@ -68,32 +71,36 @@ class AuthorizationController
                               ClientRepository $clients,
                               TokenRepository $tokens)
     {
-        if ($this->checkIpThirdParty($request)) {
-            return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
-                $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
-
-                $scopes = $this->parseScopes($authRequest);
-
-                $token = $tokens->findValidToken(
-                    $user = $request->user(),
-                    $client = $clients->find($authRequest->getClient()->getIdentifier())
-                );
-
-                if ($token && $token->scopes === collect($scopes)->pluck('id')->all()) {
-                    return $this->approveRequest($authRequest, $user);
-                }
-
-                $request->session()->put('authRequest', $authRequest);
-
-                $authRequest = $this->getAuthRequestFromSession($request);
-
-                return $this->server->completeAuthorizationRequest(
-                    $authRequest, new Psr7Response
-                );
-            });
-        } else {
+        if (!$this->checkIpThirdParty($request)) {
             return redirect($request->get('redirect_uri').'?code=401');
         }
+
+        if (!$this->checkPermissionUseApp($request)) {
+            return redirect($request->get('redirect_uri').'?code=403');
+        }
+
+        return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
+            $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
+
+            $scopes = $this->parseScopes($authRequest);
+
+            $token = $tokens->findValidToken(
+                $user = $request->user(),
+                $client = $clients->find($authRequest->getClient()->getIdentifier())
+            );
+
+            if ($token && $token->scopes === collect($scopes)->pluck('id')->all()) {
+                return $this->approveRequest($authRequest, $user);
+            }
+
+            $request->session()->put('authRequest', $authRequest);
+
+            $authRequest = $this->getAuthRequestFromSession($request);
+
+            return $this->server->completeAuthorizationRequest(
+                $authRequest, new Psr7Response
+            );
+        });
     }
 
     /**
@@ -139,7 +146,7 @@ class AuthorizationController
         return false;
     }
 
-    public function checkIpRange($ip_secure, $ip)
+    private function checkIpRange($ip_secure, $ip)
     {
         foreach ($ip_secure as $range) {
             if (strpos($range, '/') == false) {
@@ -154,6 +161,16 @@ class AuthorizationController
             if (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal)) {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    private function checkPermissionUseApp($request)
+    {
+        $user_client_relation = $this->userClientRelationRepository->findBy(['client_id' => $request->get('client_id'), 'user_id' => Auth::id()]);
+        if ($user_client_relation) {
+            return true;
         }
 
         return false;
