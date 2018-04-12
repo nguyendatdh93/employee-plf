@@ -37,7 +37,7 @@
                                 <th>{{  __('user_managerment.name') }}</th>
                                 <th>{{  __('user_managerment.email') }}</th>
                                 <th>{{  __('user_managerment.client_app') }}</th>
-                                <th>{{  __('user_managerment.control') }}</th>
+                                <th style="width: 10%">{{  __('user_managerment.control') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -48,7 +48,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @foreach($user->client_apps as $client_app)
-                                            <p>{{ $client_app->name }}</p>
+                                            <p><i class="fa fa-fw fa-square" style="color:#0000ff"></i> {{ $client_app->name }}</p>
                                         @endforeach
                                     </td>
                                     <td>
