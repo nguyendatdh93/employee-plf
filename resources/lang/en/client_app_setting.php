@@ -15,4 +15,8 @@ return [
     'control' => 'Controls',
     'message_remove_success' => 'Client App removed success',
     'message_remove_not_success' => 'Client App removed not success',
+    'delete_confirm_text' => 'Do you really want to remove client app?',
+    'delete_confirm_title' => 'Delete confirm.',
+    'btn_confirm' => 'Delete',
+    'btn_cancel' => 'Cancel'
 ];

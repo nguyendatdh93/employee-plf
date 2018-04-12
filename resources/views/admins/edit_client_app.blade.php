@@ -48,7 +48,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-change-password">{{ __('client_app_setting.btn_create_new_client_app') }}</button>
+                        <button type="submit" class="btn btn-primary btn-change-password">{{ __('edit_client_app.btn_edit_client_app') }}</button>
                     </div>
                 </form>
             </div>
