@@ -43,9 +43,4 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
     {
         return DB::table('users')->where('id', '=', $user_id)->update(['del_flg' => 1]);
     }
-
-    public function checkResetPasswordFlg($user_id)
-    {
-        return DB::table('users')->where('id', '=', $user_id)->select('reset_password_flg')->get();
-    }
 }
