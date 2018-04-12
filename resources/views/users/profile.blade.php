@@ -5,6 +5,12 @@
     <section class="content">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
+                @if (session('success'))
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">{{ trans('user_profile.box_title_user_profile') }}</h3>

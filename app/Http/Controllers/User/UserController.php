@@ -45,25 +45,25 @@ class UserController extends Controller
 
         if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
             // The passwords matches
-            return back()->with("error_current_password", __('change_password.error_current_password'));
+            return back()->with("error", __('change_password.error_current_password'));
         }
 
         if(strcmp($inputs['current_password'], $inputs['new_password']) == 0){
             //Current password and new password are same
-            return back()->with("error_new_password", __('change_password.error_new_password'));
+            return back()->with("error", __('change_password.error_new_password'));
         }
 
         if(!strcmp($inputs['new_password'], $inputs['confirm_new_password']) == 0){
             //Current password and new password are same
-            return back()->with("error_confirm_new_password", __('change_password.error_confirm_new_password'));
+            return back()->with("error", __('change_password.error_confirm_new_password'));
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
+            'new_password' => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error_change_password',  __('change_password.error_change_password'));
+            return back()->with('error',  __('change_password.error_change_password'));
         }
 
         //Change Password
@@ -82,6 +82,10 @@ class UserController extends Controller
     public function resetPassword(Request $request)
     {
         $inputs = Input::get();
+        if ((Hash::check($inputs['new_password'], Auth::user()->password))) {
+            // The passwords matches
+            return back()->with("error", __('change_password.error_current_password'));
+        }
 
         if(!strcmp($inputs['new_password'], $inputs['confirm_new_password']) == 0){
             //Current password and new password are same
@@ -89,7 +93,7 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
+            'new_password' => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {
@@ -102,7 +106,7 @@ class UserController extends Controller
         $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
         $user->save();
 
-        return redirect()->route('change_password')->with("success", __('change_password.success'));
+        return redirect()->route('profile')->with("success", __('change_password.success'));
     }
 
     public function logOut()
