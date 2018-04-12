@@ -92,13 +92,8 @@ class AuthorizationController
                 );
             });
         } else {
-            return response()->json([
-                'status' => 'Error',
-                'state' => 'Authorization error',
-                'error' => 'Your IP address is not allowed'
-            ]);
+            return redirect($request->get('redirect_uri').'?code=401');
         }
-
     }
 
     /**
