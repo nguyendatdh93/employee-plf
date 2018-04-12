@@ -92,7 +92,11 @@ class AuthorizationController
                 );
             });
         } else {
-        
+            return response()->json([
+                'status' => 'Error',
+                'state' => 'Authorization error',
+                'error' => 'Your IP address is not allowed'
+            ]);
         }
 
     }
