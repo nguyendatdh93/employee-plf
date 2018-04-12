@@ -27,6 +27,6 @@ class CheckResetPassword
             return redirect()->route('reset_password');
         }
 
-        return redirect()->route('change_password');
+        return redirect()->route('profile');
     }
 }

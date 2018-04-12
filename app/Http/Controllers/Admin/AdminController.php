@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
+use Session;
 
 class AdminController extends Controller
 {
@@ -36,6 +37,7 @@ class AdminController extends Controller
 
     public function showUserManagerment()
     {
+        Session::put('menu', 'user_managerment');
         $list_users = $this->userRepository->all();
         foreach ($list_users as $key => $user) {
             $list_users[$key]->client_apps = $this->userRepository->getClientAppsByUserId($user->id);
@@ -200,7 +202,15 @@ class AdminController extends Controller
 
     public function showClientAppSetting()
     {
-        return view('admins.client_app_setting');
+        Session::put('menu', 'app_setting');
+        $oauth_clients = $this->oauthClientRepository->all();
+
+        return view('admins.client_app_setting', ['oauth_clients' => $oauth_clients]);
+    }
+
+    public function createClientAppForm()
+    {
+        return view('admins.create_client_app');
     }
 
     public function createClientApp(Request $request)
@@ -208,23 +218,23 @@ class AdminController extends Controller
         $inputs = $request->all();
 
         if ($inputs['client_name'] == '') {
-            return redirect()->route('create_client_app_form')->with('error_client_name', __('client_app_setting.error_client_name'));
+            return redirect()->route('create_client_app_form')->with('error_client_name', __('create_client_app.error_client_name'));
         }
 
         if ($inputs['url_redirect'] == '') {
-            return redirect()->route('create_client_app_form')->with('error_url_redirect', __('client_app_setting.error_url_redirect'));
+            return redirect()->route('create_client_app_form')->with('error_url_redirect', __('create_client_app.error_url_redirect'));
         }
 
         if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-            return redirect()->route('create_client_app_form')->with('error_url_redirect', __('client_app_setting.error_url_redirect_not_url'));
+            return redirect()->route('create_client_app_form')->with('error_url_redirect', __('create_client_app.error_url_redirect_not_url'));
         }
 
         if ($inputs['ip_secure'] == '') {
-            return redirect()->route('create_client_app_form')->with('error_ip_secure', __('client_app_setting.error_ip_secure'));
+            return redirect()->route('create_client_app_form')->with('error_ip_secure', __('create_client_app.error_ip_secure'));
         }
 
         if (filter_var($inputs['ip_secure'], FILTER_VALIDATE_IP) === FALSE) {
-            return redirect()->route('create_client_app_form')->with('error_ip_secure', __('client_app_setting.error_ip_secure_is_ip'));
+            return redirect()->route('create_client_app_form')->with('error_ip_secure', __('create_client_app.error_ip_secure_is_ip'));
         }
 
         $this->oauthClientRepository->create([
@@ -238,6 +248,36 @@ class AdminController extends Controller
             'revoked' => 0,
         ]);
 
-        return redirect()->route('create_client_app_form')->with('message', __('client_app_setting.message_create_app_success'));
+        return redirect()->route('client_app_setting')->with('message_create_client_success', __('create_client_app.message_create_app_success'));
+    }
+
+    public function removeClientApp(Request $request, $client_app_id)
+    {
+        if ($client_app_id)
+        {
+            $this->oauthClientRepository->delete($client_app_id);
+
+            return back()->with('message_remove_client_app_success', __('client_app_setting.message_remove_success'));
+        }
+
+        return back()->with('message_remove_client_app_error', __('client_app_setting.message_remove_not_success'));
+    }
+
+    public function editClientAppForm(Request $request, $client_app_id)
+    {
+        $oauth_client = $this->oauthClientRepository->find(['id'=> $client_app_id]);
+
+        return view('admins.edit_client_app', ['oauth_client' => $oauth_client]);
+    }
+
+    public function editClientApp(Request $request)
+    {
+        $this->oauthClientRepository->update([
+            'name' => $request->get('client_name'),
+            'redirect' => $request->get('url_redirect'),
+            'ip_secure' => $request->get('ip_secure'),
+        ], $request->get('client_id'));
+
+        return redirect()->route('client_app_setting')->with('message_edit_client_app', __('edit_client_app.message_edit_client_app'));
     }
 }

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckFromThirdParty;
+use App\Http\Middleware\ValidateThirdParty;
+use App\Repositories\Eloquents\OauthClientRepository;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Bridge\User;
@@ -36,16 +40,19 @@ class AuthorizationController
      */
     protected $response;
 
+    protected $oauthClientRepository;
+
     /**
      * Create a new controller instance.
      *
      * @param  AuthorizationServer $server
      * @param  ResponseFactory $response
      */
-    public function __construct(AuthorizationServer $server, ResponseFactory $response)
+    public function __construct(AuthorizationServer $server, ResponseFactory $response, OauthClientRepository $oauthClientRepository)
     {
         $this->server = $server;
         $this->response = $response;
+        $this->oauthClientRepository = $oauthClientRepository;
     }
 
     /**
@@ -61,28 +68,33 @@ class AuthorizationController
                               ClientRepository $clients,
                               TokenRepository $tokens)
     {
-        return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
-            $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
+        if ($this->checkIpThirdParty($request)) {
+            return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
+                $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
 
-            $scopes = $this->parseScopes($authRequest);
+                $scopes = $this->parseScopes($authRequest);
 
-            $token = $tokens->findValidToken(
-                $user = $request->user(),
-                $client = $clients->find($authRequest->getClient()->getIdentifier())
-            );
+                $token = $tokens->findValidToken(
+                    $user = $request->user(),
+                    $client = $clients->find($authRequest->getClient()->getIdentifier())
+                );
 
-            if ($token && $token->scopes === collect($scopes)->pluck('id')->all()) {
-                return $this->approveRequest($authRequest, $user);
-            }
+                if ($token && $token->scopes === collect($scopes)->pluck('id')->all()) {
+                    return $this->approveRequest($authRequest, $user);
+                }
 
-            $request->session()->put('authRequest', $authRequest);
+                $request->session()->put('authRequest', $authRequest);
 
-            $authRequest = $this->getAuthRequestFromSession($request);
+                $authRequest = $this->getAuthRequestFromSession($request);
 
-            return $this->server->completeAuthorizationRequest(
-                $authRequest, new Psr7Response
-            );
-        });
+                return $this->server->completeAuthorizationRequest(
+                    $authRequest, new Psr7Response
+                );
+            });
+        } else {
+        
+        }
+
     }
 
     /**
@@ -118,4 +130,33 @@ class AuthorizationController
         );
     }
 
+    private function checkIpThirdParty($request)
+    {
+        $oauth_client = $this->oauthClientRepository->find($request->get('client_id'));
+        if ($this->checkIpRange(explode(',', $oauth_client->ip_secure), $request->get('ip'))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function checkIpRange($ip_secure, $ip)
+    {
+        foreach ($ip_secure as $range) {
+            if (strpos($range, '/') == false) {
+                $range .= '/32';
+            }
+            // $range is in IP/CIDR format eg 127.0.0.1/24
+            list($range, $netmask) = explode('/', $range, 2);
+            $ip_decimal = ip2long($ip);
+            $range_decimal = ip2long($range);
+            $wildcard_decimal = pow(2, (32 - $netmask)) - 1;
+            $netmask_decimal = ~ $wildcard_decimal;
+            if (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

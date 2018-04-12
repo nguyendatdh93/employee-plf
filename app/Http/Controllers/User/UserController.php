@@ -35,6 +35,7 @@ class UserController extends Controller
 
     public function showChangePassword()
     {
+        Session::put('menu', 'change_password');
         return view('users.change_password');
     }
 
@@ -112,6 +113,7 @@ class UserController extends Controller
     }
 
     public function profile() {
+        Session::put('menu', 'user_profile');
         $user = Auth::user();
         $client_ids = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
         $client_apps = Client::whereIn('id', $client_ids)->get();
