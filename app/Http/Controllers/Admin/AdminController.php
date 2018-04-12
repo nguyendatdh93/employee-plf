@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
+use Session;
 
 class AdminController extends Controller
 {
@@ -36,6 +37,7 @@ class AdminController extends Controller
 
     public function showUserManagerment()
     {
+        Session::put('menu', 'user_managerment');
         $list_users = $this->userRepository->all();
         foreach ($list_users as $key => $user) {
             $list_users[$key]->client_apps = $this->userRepository->getClientAppsByUserId($user->id);
@@ -200,6 +202,7 @@ class AdminController extends Controller
 
     public function showClientAppSetting()
     {
+        Session::put('menu', 'app_setting');
         $oauth_clients = $this->oauthClientRepository->all();
 
         return view('admins.client_app_setting', ['oauth_clients' => $oauth_clients]);
