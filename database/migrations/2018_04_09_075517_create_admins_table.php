@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class CreateAdminsTable extends Migration
 {
@@ -21,6 +24,14 @@ class CreateAdminsTable extends Migration
             $table->string('del_flg')->default(0);
             $table->timestamps();
         });
+
+        DB::table('admins')->insert([
+            [
+                'name'       => Config::get('base.manager_name'),
+                'email'      => Config::get('base.manager_email'),
+                'password'   => Hash::make(Config::get('base.manager_password'))
+            ]
+        ]);
     }
 
     /**
