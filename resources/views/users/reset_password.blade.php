@@ -4,9 +4,16 @@
 @endsection
 @section('Body')
     <div class="register-box">
-        @if (session('error_change_password'))
-            <div class="alert alert-error">
-                {{ session('error_change_password') }}
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ session('success') }}
             </div>
         @endif
         <div class="register-box-body">
