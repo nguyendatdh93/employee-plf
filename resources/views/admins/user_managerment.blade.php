@@ -48,7 +48,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @foreach($user->client_apps as $client_app)
-                                            <p><i class="fa fa-fw fa-square" style="color:#0000ff"></i> {{ $client_app->name }}</p>
+                                            <p>- {{ $client_app->name }}</p>
                                         @endforeach
                                     </td>
                                     <td>
@@ -62,7 +62,7 @@
                                            data-user-name="{{ $user->name }}"
                                            data-user-email="{{ $user->email }}"
                                            title="{{  __('user_managerment.btn_remove') }}">
-                                            <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
+                                            <i class="fa fa-trash-o" style="font-size: 20px; color: red;"></i>
                                         </a>
                                     </td>
                                 </tr>

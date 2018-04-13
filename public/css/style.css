@@ -13,3 +13,7 @@ div#datatable_paginate {
 table tr td {
     vertical-align: inherit !important;
 }
+
+.box-change-password input {
+    width: 60% !important;
+}

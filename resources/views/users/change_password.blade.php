@@ -5,8 +5,8 @@
 @section('Content')
     <!-- Main content -->
     <section class="content">
-        <div class="col-md-12 ">
-            <div class="col-md-6">
+        <div class="col-md-12">
+            <div class="col-md-8 col-md-offset-2">
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -28,7 +28,7 @@
                     <!-- form start -->
                     <form action="{{ route('change_password') }}" method="post">
                         {{ csrf_field() }}
-                        <div class="box-body">
+                        <div class="box-body box-change-password">
                             <div class="form-group current-password @if (Session::get('error_current_password')) has-error @endif">
                                 <label for="exampleInputEmail1">{{ __('change_password.current_password') }}</label>
                                 <input type="password" name="current_password" class="form-control" id="exampleInputPassword1" placeholder="{{ __('change_password.current_password') }}">
