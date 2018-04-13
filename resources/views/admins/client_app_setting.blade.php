@@ -21,9 +21,9 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">{{ __('client_app_setting.title_client_app_setting') }}</h3>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title" style="margin-top: 19px">{{ __('client_app_setting.title_client_app_setting') }}</h3>
                     <a href="{{ route('create_client_app_form') }}" class="btn bg-olive btn-flat margin pull-right"> <i class="fa fa-desktop"></i> {{ __('client_app_setting.btn_create_new_client_app') }}</a>
                 </div>
                 <!-- /.box-header -->

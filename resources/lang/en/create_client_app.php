@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title_create_client_app' => 'Client App Setting',
+    'title_create_client_app' => 'Create new client app',
     'client_name' => 'Client Name',
     'client_call_back' => 'Client Url Callback',
     'ip_secure' => 'IP Secure',
