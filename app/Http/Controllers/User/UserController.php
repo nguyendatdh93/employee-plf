@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
+use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckIpRange;
 use App\Http\Middleware\CheckResetPassword;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -28,6 +29,7 @@ class UserController extends Controller
     ){
         $this->middleware(CheckIpRange::class);
         $this->middleware('auth');
+        $this->middleware(CheckAuth::class);
 
         $this->userRepository = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
