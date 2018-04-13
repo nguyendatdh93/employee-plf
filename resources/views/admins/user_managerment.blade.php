@@ -23,9 +23,9 @@
 
         <div class="row">
             <div class="col-md-12 ">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">User managerment</h3>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" style="margin-top: 19px;">User managerment</h3>
                         <a href="{{ route('add_user_form') }}" class="btn bg-olive btn-flat margin pull-right"> <i class="fa fa-fw fa-user-plus"></i> {{ __('user_managerment.add_user') }}</a>
                     </div>
                     <!-- /.box-header -->
@@ -62,7 +62,7 @@
                                            data-user-name="{{ $user->name }}"
                                            data-user-email="{{ $user->email }}"
                                            title="{{  __('user_managerment.btn_remove') }}">
-                                            <i class="fa fa-trash-o" style="font-size: 20px; color: red;"></i>
+                                            <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                         </a>
                                     </td>
                                 </tr>
