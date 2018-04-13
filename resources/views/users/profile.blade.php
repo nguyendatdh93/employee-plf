@@ -38,11 +38,9 @@
                             <label for="client_apps" class="col-sm-3 control-label">{{ trans('user_profile.form_label_client_apps') }}</label>
 
                             <div class="col-sm-9" style="padding: 6px">
-                                <ul class="col-sm-5 list-group">
                                     @foreach($client_apps as $client_app)
-                                        <li class="list-group-item">{{ $client_app->name }}</li>
+                                        <p>- {{ $client_app->name }}</p>
                                     @endforeach
-                                </ul>
                             </div>
                         </div>
                     </div>
