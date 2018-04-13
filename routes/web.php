@@ -39,6 +39,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/remove-client-app/{client_app_id?}', 'Admin\AdminController@removeClientApp')->name('remove_client_app');
     Route::get('/edit-client-app/{client_app_id?}', 'Admin\AdminController@editClientAppForm')->name('edit_client_app_form');
     Route::post('/edit-client-app', 'Admin\AdminController@editClientApp')->name('edit_client_app');
+
+    Route::get('/reset-expired-user/{id?}', 'Admin\AdminController@resetExpiredUser')->name('reset_expired_user');
 });
 
 Auth::routes();
