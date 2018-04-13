@@ -12,8 +12,9 @@ class User extends Authenticatable
     const NAME_MAX_LIMIT  = 100;
     const EMAIL_MAX_LIMIT = 200;
 
-    const RESET_PASSWORD_NO  = 0;
-    const RESET_PASSWORD_YES = 1;
+    const RESET_PASSWORD_NO     = 0;
+    const RESET_PASSWORD_YES    = 1;
+    const RESET_PASSWORD_EXTEND = 2;
 
     use Notifiable;
     use HasApiTokens, Notifiable;

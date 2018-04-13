@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Employee platform') }}</title>
+        <title>@section('Title') {{ config('app.name', 'Employee platform') }} @show</title>
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
 

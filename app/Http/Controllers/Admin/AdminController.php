@@ -8,6 +8,7 @@ use App\Http\Middleware\CheckIpRange;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
+use App\Services\MailService;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
 use App\Models\User;
@@ -37,10 +38,18 @@ class AdminController extends Controller
 
     public function showUserManagerment()
     {
+        $new_user_expired_hours    = Config::get('base.new_user_expired_hours');
+        $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
+
         Session::put('menu', 'user_managerment');
         $list_users = $this->userRepository->all();
         foreach ($list_users as $key => $user) {
             $list_users[$key]->client_apps = $this->userRepository->getClientAppsByUserId($user->id);
+
+            if ($user->reset_password_flg != User::RESETTED_PASSWORD_FLG && $user->updated_at <= $new_user_expired_datetime)
+            {
+                $list_users[$key]->is_expired = true;
+            }
         }
 
         return view('admins.user_managerment', ['list_users' => $list_users]);
@@ -54,7 +63,7 @@ class AdminController extends Controller
     }
 
     public function addUserForm() {
-        $client_apps = Client::all();
+        $client_apps = $this->oauthClientRepository->all();
 
         return view('admins.add_user', ['client_apps' => $client_apps]);
     }
@@ -83,7 +92,7 @@ class AdminController extends Controller
             }
 
             $client_app_ids = [];
-            $client_apps    = Client::all();
+            $client_apps    = $this->oauthClientRepository->all();
             foreach ($client_apps as $client_app) {
                 $client_app_ids[] = $client_app->id;
             }
@@ -96,11 +105,12 @@ class AdminController extends Controller
                 }
             }
 
-            $user = $this->userRepository->create([
+            $password = Config::get('base.default_password');
+            $user     = $this->userRepository->create([
                 'name'               => $input['name'],
                 'email'              => $input['email'],
                 'reset_password_flg' => User::RESET_PASSWORD_NO,
-                'password'           => Hash::make(Config::get('base.default_password'))
+                'password'           => Hash::make($password)
             ]);
 
             if (!empty($input['client_apps'])) {
@@ -111,6 +121,9 @@ class AdminController extends Controller
                     ]);
                 }
             }
+
+            $mail_service = new MailService();
+            $mail_service->notifyNewAccount($user, $password);
 
             return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is added successful!', [':user_name' => $user->name]));
         } catch (\Exception $e) {
@@ -128,7 +141,7 @@ class AdminController extends Controller
             die('404');
         }
 
-        $client_apps = Client::all();
+        $client_apps = $this->oauthClientRepository->all();
         $client_ids = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
 
         return view('admins.edit_user', [
@@ -152,7 +165,7 @@ class AdminController extends Controller
 
         try {
             $client_ids  = [];
-            $all_client_apps = Client::all();
+            $all_client_apps = $this->oauthClientRepository->all();
             foreach ($all_client_apps as $client_app) {
                 $client_ids[] = $client_app->id;
             }
@@ -298,5 +311,25 @@ class AdminController extends Controller
         ], $request->get('client_id'));
 
         return redirect()->route('client_app_setting')->with('success', __('edit_client_app.message_edit_client_app'));
+    }
+
+    public function resetExpiredUser($id = null) {
+        if (empty($id)) {
+            return view('errors.404');
+        }
+
+        $user = $this->userRepository->findBy(['id' => $id, 'reset_password_flg:<>' => User::RESET_PASSWORD_YES ]);
+        if (empty($user)) {
+            return view('errors.404');
+        }
+
+        $this->userRepository->update([
+            'reset_password_flg' => User::RESET_PASSWORD_EXTEND
+        ], $user->id);
+
+        $mail_service = new MailService();
+        $mail_service->notifyResetExpireTime($user);
+
+        return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is reset expire time!', [':user_name' => $user->name]));
     }
 }

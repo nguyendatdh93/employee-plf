@@ -25,7 +25,7 @@ class CheckResetPassword
 
         if ($user->reset_password_flg != User::RESETTED_PASSWORD_FLG)
         {
-            if ($user->created_at <= $new_user_expired_datetime) {
+            if ($user->updated_at <= $new_user_expired_datetime) {
                 Auth::logout();
                 return redirect()->route('expired_login');
             }
