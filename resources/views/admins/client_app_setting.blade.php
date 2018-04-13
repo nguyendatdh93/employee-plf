@@ -58,7 +58,7 @@
                                            data-client-id="{{ $oauth_client->id }}"
                                            data-client-secret="{{ $oauth_client->secret }}"
                                            class="col-md-3 col-sm-4 btn-remove-client-app" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_remove') }}">
-                                            <i class="fa fa-trash-o" style="font-size: 20px"></i>
+                                            <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                         </a>
                                     </td>
                                 </tr>
