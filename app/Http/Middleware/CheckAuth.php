@@ -20,7 +20,7 @@ class CheckAuth
         if (Auth::user()->active != User::ACTIVE || Auth::user()->del_flg == User::DELETE_FLG) {
             Auth::logout();
 
-            return redirect()->route('user_login');
+            return redirect('/login')->with('error', __('login_user.error_can_not_login'));
         }
 
         return $next($request);
