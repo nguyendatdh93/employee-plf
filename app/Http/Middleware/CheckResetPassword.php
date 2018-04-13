@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Repositories\Eloquents\UserRepository;
 use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Container\Container as App;
 
 class CheckResetPassword
@@ -20,10 +19,17 @@ class CheckResetPassword
      */
     public function handle($request, Closure $next)
     {
-        $userRepository = new UserRepository(new App());
-        $reset_password_flg = $userRepository->checkResetPasswordFlg(Auth::id());
-        if ($reset_password_flg[0]->reset_password_flg != User::RESETTED_PASSWORD_FLG)
+        $user = Auth::user();
+        $new_user_expired_hours = Config::get('base.new_user_expired_hours');
+        $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
+
+        if ($user->reset_password_flg != User::RESETTED_PASSWORD_FLG)
         {
+            if ($user->created_at <= $new_user_expired_datetime) {
+                Auth::logout();
+                return redirect()->route('expired_login');
+            }
+
             return redirect()->route('reset_password');
         }
 
