@@ -62,7 +62,7 @@
                                            data-user-name="{{ $user->name }}"
                                            data-user-email="{{ $user->email }}"
                                            title="{{  __('user_managerment.btn_remove') }}">
-                                            <i class="fa fa-trash-o" style="font-size: 20px; color: red;"></i>
+                                            <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                         </a>
                                     </td>
                                 </tr>

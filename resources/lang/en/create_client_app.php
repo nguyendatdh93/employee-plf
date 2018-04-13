@@ -5,7 +5,7 @@ return [
     'client_name' => 'Client Name',
     'client_call_back' => 'Client Url Callback',
     'ip_secure' => 'IP Secure',
-    'btn_create_new_client_app' => 'Save',
+    'btn_create_new_client_app' => 'Create',
     'message_create_app_success' => 'Create new client app success.',
     'error_client_name' => 'Client Name is requirement',
     'error_ip_secure' => 'IP secure is requirement',
