@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'box_title_user_profile' => 'Profile',
+    'box_title_user_profile' => 'Your Profile',
 
     'form_label_name' => 'Name',
     'form_label_email' => 'Email',

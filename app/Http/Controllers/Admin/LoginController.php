@@ -51,7 +51,7 @@ class LoginController extends Controller
     {
         $rules = array(
             'email' => 'required|email',
-            'password' => 'required|alphaNum|min:3'
+            'password' => 'required|min:8'
         );
 
         $validator = Validator::make(Input::all(), $rules);
@@ -70,7 +70,7 @@ class LoginController extends Controller
             if (Auth::guard('admin')->attempt($userdata)) {
                 return redirect()->route('user_managerment');
             } else {
-                return Redirect::to('admin');
+                return Redirect::to('admin')->with('error', 'Your username or password is not correct');
             }
 
         }
