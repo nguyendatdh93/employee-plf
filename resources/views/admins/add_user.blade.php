@@ -31,7 +31,7 @@
                                 <label for="name" class="col-sm-2 control-label">{{ trans('add_user.form_label_name') }}</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ trans('add_user.placeholder_name') }}" required autofocus>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="{{ trans('add_user.placeholder_name') }}" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -45,7 +45,7 @@
                                 <label for="email" class="col-sm-2 control-label">{{ trans('add_user.form_label_email') }}</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="{{ trans('add_user.placeholder_email') }}" required>
+                                    <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="{{ trans('add_user.placeholder_email') }}" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -70,7 +70,7 @@
                                     @foreach($client_apps as $client_app)
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="client_apps[]" value="{{ $client_app->id }}">
+                                                <input type="checkbox" name="client_apps[]" value="{{ $client_app->id }}" {{ !empty(old('client_apps')) && in_array($client_app->id, old('client_apps')) ? 'checked' : '' }}>
                                                 {{ $client_app->name }}
                                             </label>
                                         </div>

@@ -3,8 +3,8 @@
 @section('Datatable')
     <script>
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-            $('#datatable').DataTable()
+            $('[data-toggle="tooltip"]').tooltip();
+            $('#datatable').DataTable();
         })
     </script>
 @endsection
@@ -64,6 +64,15 @@
                                            title="{{  __('user_managerment.btn_remove') }}">
                                             <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                         </a>
+                                        @if($user->is_expired)
+                                            <a href="{{ route('reset_expired_user', ['id' => $user->id]) }}"
+                                               class="col-md-3 col-sm-4 btn-edit"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="{{  __('user_managerment.btn_reset_expired') }}">
+                                                <i class="fa fa-fw fa-refresh" style="font-size: 20px; color: yellowgreen;"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -80,25 +89,27 @@
 @section('more_javascripts')
     <script>
         $(document).ready( function () {
-            $('.jsRemove').on('click', function(e){
-                e.preventDefault();
-                var url = $(this).attr('href'),
-                    confirm_box = $('#confirm'),
-                    user_name = $(this).data('user-name'),
-                    user_email = $(this).data('user-email'),
-                    confirm_message = '<p>{{ trans('user_managerment.delete_confirm_text') }}</p>';
 
-                confirm_message += '{{ trans('user_managerment.name') }}: ' + user_name;
-                confirm_message += '<br>{{ trans('user_managerment.email') }}: ' + user_email;
-                confirm_box.find('.modal-title').html('{{ trans('user_managerment.delete_confirm_title') }}');
-                confirm_box.find('.modal-body').html(confirm_message);
-                confirm_box.find('#confirm-btn').html('{{ trans('user_managerment.btn_confirm') }}');
-                confirm_box.find('#cancel-btn').html('{{ trans('user_managerment.btn_cancel') }}');
-                confirm_box.modal({ backdrop: 'static', keyboard: false })
-                    .on('click', '#confirm-btn', function(){
-                        window.location.replace(url);
-                    });
-            });
+        });
+
+        $(document).on('click', '.jsRemove', function(e){
+            e.preventDefault();
+            var url = $(this).attr('href'),
+                confirm_box = $('#confirm'),
+                user_name = $(this).data('user-name'),
+                user_email = $(this).data('user-email'),
+                confirm_message = '<p>{{ trans('user_managerment.delete_confirm_text') }}</p>';
+
+            confirm_message += '{{ trans('user_managerment.name') }}: ' + user_name;
+            confirm_message += '<br>{{ trans('user_managerment.email') }}: ' + user_email;
+            confirm_box.find('.modal-title').html('{{ trans('user_managerment.delete_confirm_title') }}');
+            confirm_box.find('.modal-body').html(confirm_message);
+            confirm_box.find('#confirm-btn').html('{{ trans('user_managerment.btn_confirm') }}');
+            confirm_box.find('#cancel-btn').html('{{ trans('user_managerment.btn_cancel') }}');
+            confirm_box.modal({ backdrop: 'static', keyboard: false })
+                .on('click', '#confirm-btn', function(){
+                    window.location.replace(url);
+                });
         });
     </script>
 @endsection

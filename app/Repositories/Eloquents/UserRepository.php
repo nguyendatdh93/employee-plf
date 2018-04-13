@@ -13,11 +13,6 @@ use Illuminate\Container\Container as App;
 
 class UserRepository extends ATBBaseRepository implements UserRepositoryInterface
 {
-//    public function __construct(App $app)
-//    {
-//        parent::__construct($app);
-//    }
-
     /**
      * Specify Model class name
      *
@@ -35,6 +30,7 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
             ->leftjoin('oauth_clients', 'oauth_clients.id', '=', 'user_client_relations.client_id')
             ->where('users.id', '=', $user_id)
             ->where('users.del_flg', '=', 0)
+            ->where('oauth_clients.del_flg', '=', 0)
             ->where('user_client_relations.del_flg', '=', 0)
             ->get();
     }
