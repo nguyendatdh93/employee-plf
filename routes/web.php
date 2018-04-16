@@ -19,10 +19,6 @@ Route::get('/expired_login', function () {
     return view('users.expired_login');
 })->name('expired_login');
 
-Route::get('/removed_user', function () {
-    return view('users.removed_user');
-})->name('removed_user');
-
 Route::prefix('admin')->group(function () {
     Route::get('', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
     Route::post('/login', 'Admin\LoginController@loginAsAdmin')->name('login_as_admin');
