@@ -17,7 +17,7 @@
             </div>
         @endif
         <div class="register-box-body">
-            <p class="login-box-msg">You must change your password on the frist time.</p>
+            <h4 class="login-box-msg">You must change your password on the frist time.</h4>
 
             <form action="{{ route('reset_password') }}" method="post">
                 {{ csrf_field() }}
