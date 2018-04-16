@@ -61,7 +61,7 @@
                                            data-placement="top"
                                            data-user-name="{{ $user->name }}"
                                            data-user-email="{{ $user->email }}"
-                                           title="{{  __('user_managerment.btn_remove') }}">
+                                           title="{{  __('user_managerment.btn_remove') }}" style="margin-left: 10px">
                                             <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                         </a>
                                         @if($user->is_expired)

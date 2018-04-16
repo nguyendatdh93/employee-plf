@@ -39,11 +39,10 @@ class AdminController extends Controller
 
     public function showUserManagerment()
     {
+        Session::put('menu', 'user_managerment');
         $new_user_expired_hours    = Config::get('base.new_user_expired_hours');
         $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
-
-        Session::put('menu', 'user_managerment');
-        $list_users = $this->userRepository->all();
+        $list_users                = $this->userRepository->all();
         foreach ($list_users as $key => $user) {
             $list_users[$key]->client_apps = $this->userRepository->getClientAppsByUserId($user->id);
 
@@ -82,7 +81,6 @@ class AdminController extends Controller
                 'email' => strtr('required|string|email|max::email_max|unique:users', [':email_max' => User::EMAIL_MAX_LIMIT]),
             ];
 
-            /** @var Validator $validator */
             $validator = Validator::make($data, $rules);
             if ($validator->fails()) {
                 $errors = $validator->messages();
@@ -101,7 +99,7 @@ class AdminController extends Controller
             if (!empty($input['client_apps'])) {
                 foreach ($input['client_apps'] as $client_app) {
                     if (!in_array($client_app, $client_app_ids)) {
-                        return back()->withErrors(['messages' => "Are you hacking? Don't have the client app you post!"])->withInput();
+                        return back()->withErrors(['messages' => __('add_user.message_hacking')])->withInput();
                     }
                 }
             }
@@ -139,7 +137,7 @@ class AdminController extends Controller
 
         $user = $this->userRepository->find($id);
         if (empty($user)) {
-            die('404');
+            return redirect()->route('404');
         }
 
         $client_apps = $this->oauthClientRepository->all();
@@ -156,12 +154,12 @@ class AdminController extends Controller
         $input = $request->all();
 
         if (empty($input['user_id'])) {
-            die('404');
+            return redirect()->route('404');
         }
 
         $user = $this->userRepository->find($input['user_id']);
         if (empty($user)) {
-            die('404');
+            return redirect()->route('404');
         }
 
         try {
@@ -175,7 +173,7 @@ class AdminController extends Controller
             if (!empty($input['client_apps'])) {
                 foreach ($input['client_apps'] as $client_app) {
                     if (!in_array($client_app, $client_ids)) {
-                        return back()->withErrors(['messages' => "Are you hacking? Don't have the client app you post!"])->withInput();
+                        return back()->withErrors(['messages' => __('add_user.message_hacking')])->withInput();
                     }
                 }
             }
@@ -208,7 +206,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is updated successful!', [':user_name' => $user->name]));
+            return redirect()->route('user_managerment')->withSuccess(strtr(__('edit_user.message_success'), [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
@@ -241,7 +239,6 @@ class AdminController extends Controller
             'url_redirect' => strtr('required|string|max::url_redirect_max', [':url_redirect_max' => OauthClient::URL_REDIRECT_MAX_LIMIT]),
         ];
 
-        /** @var Validator $validator */
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             $errors = $validator->messages();
@@ -263,14 +260,14 @@ class AdminController extends Controller
         }
 
         $this->oauthClientRepository->create([
-            'user_id' => 0,
-            'name' => $inputs['client_name'],
-            'secret' => str_random(40),
-            'ip_secure' => $inputs['ip_secure'],
-            'redirect' => $inputs['url_redirect'],
+            'user_id'                => 0,
+            'name'                   => $inputs['client_name'],
+            'secret'                 => str_random(40),
+            'ip_secure'              => $inputs['ip_secure'],
+            'redirect'               => $inputs['url_redirect'],
             'personal_access_client' => 0,
-            'password_client' => 0,
-            'revoked' => 0,
+            'password_client'        => 0,
+            'revoked'                => 0,
         ]);
 
         return redirect()->route('client_app_setting')->with('success', __('create_client_app.message_create_app_success'));
@@ -308,7 +305,6 @@ class AdminController extends Controller
             'url_redirect' => strtr('required|string|max::url_redirect_max', [':url_redirect_max' => OauthClient::URL_REDIRECT_MAX_LIMIT]),
         ];
 
-        /** @var Validator $validator */
         $validator = Validator::make($data, $rules);
         if ($validator->fails()) {
             $errors = $validator->messages();
@@ -330,8 +326,8 @@ class AdminController extends Controller
         }
 
         $this->oauthClientRepository->update([
-            'name' => $request->get('client_name'),
-            'redirect' => $request->get('url_redirect'),
+            'name'      => $request->get('client_name'),
+            'redirect'  => $request->get('url_redirect'),
             'ip_secure' => $request->get('ip_secure'),
         ], $request->get('client_id'));
 
@@ -340,12 +336,12 @@ class AdminController extends Controller
 
     public function resetExpiredUser($id = null) {
         if (empty($id)) {
-            return view('errors.404');
+            return redirect()->route('404');
         }
 
         $user = $this->userRepository->findBy(['id' => $id, 'reset_password_flg:<>' => User::RESET_PASSWORD_YES ]);
         if (empty($user)) {
-            return view('errors.404');
+            return redirect()->route('404');
         }
 
         $this->userRepository->update([
@@ -355,6 +351,6 @@ class AdminController extends Controller
         $mail_service = new MailService();
         $mail_service->notifyResetExpireTime($user);
 
-        return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is reset expire time!', [':user_name' => $user->name]));
+        return redirect()->route('user_managerment')->withSuccess(strtr(__('reset_expire_password.expire_time'), [':user_name' => $user->name]));
     }
 }

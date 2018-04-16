@@ -55,7 +55,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" hidden>
                                 <label for="password" class="col-sm-2 control-label">{{ trans('add_user.form_label_password') }}</label>
 
                                 <div class="col-sm-10">
