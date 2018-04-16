@@ -49,22 +49,16 @@ class UserController extends Controller
             return back()->with("error", __('change_password.error_current_password'));
         }
 
-        if(strcmp($inputs['current_password'], $inputs['new_password']) == 0){
-            //Current password and new password are same
-            return back()->with("error", __('change_password.error_new_password'));
-        }
-
-        if(!strcmp($inputs['new_password'], $inputs['confirm_new_password']) == 0){
-            //Current password and new password are same
-            return back()->with("error", __('change_password.error_confirm_new_password'));
-        }
-
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:8|max:100',
+            'current_password'     => 'required|string|min:8|max:50',
+            'new_password'         => 'required|string|min:8|max:50|different:current_password',
+            'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error',  __('change_password.error_change_password') . '<br/> -'. $validator->messages()->first());
+            return back()
+                ->with('errors', $validator->messages())
+                ->withInput();
         }
 
         //Change Password
@@ -83,22 +77,20 @@ class UserController extends Controller
     public function resetPassword(Request $request)
     {
         $inputs = Input::get();
-        if ((Hash::check($inputs['new_password'], Auth::user()->password))) {
+        if (Hash::check($inputs['new_password'], Auth::user()->password)) {
             // The passwords matches
-            return back()->with("error", __('change_password.error_current_password'));
-        }
-
-        if(!strcmp($inputs['new_password'], $inputs['confirm_new_password']) == 0){
-            //Current password and new password are same
-            return back()->with("error_confirm_new_password", __('change_password.error_confirm_new_password'));
+            return back()->with("error", __('reset_password.error_current_password'));
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:8|max:50',
+            'new_password'         => 'required|string|min:8|max:50',
+            'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error_change_password', __('change_password.error_change_password'). '<br/> -'. $validator->messages()->first());
+            return back()
+                ->with('errors', $validator->messages())
+                ->withInput();
         }
 
         //Change Password
@@ -107,7 +99,7 @@ class UserController extends Controller
         $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
         $user->save();
 
-        return redirect()->route('profile')->with("success", __('change_password.success'));
+        return redirect()->route('profile')->with("success", __('reset_password.success'));
     }
 
     public function logOut()

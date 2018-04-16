@@ -29,20 +29,20 @@
                     <form action="{{ route('change_password') }}" method="post">
                         {{ csrf_field() }}
                         <div class="box-body box-change-password">
-                            <div class="form-group current-password @if (Session::get('error_current_password')) has-error @endif">
+                            <div class="form-group current-password @if ($errors->has('current_password')) has-error @endif">
                                 <label for="exampleInputEmail1">{{ __('change_password.current_password') }}</label>
                                 <input type="password" name="current_password" class="form-control" id="exampleInputPassword1" placeholder="{{ __('change_password.current_password') }}">
-                                <span class="help-block"> @if (Session::get('error_current_password')) {{ Session::get('error_current_password') }} @endif</span>
+                                <span class="help-block"> @if ($errors->has('current_password')) {{ $errors->first('current_password') }} @endif</span>
                             </div>
-                            <div class="form-group new-password @if (Session::get('error_new_password')) has-error @endif">
+                            <div class="form-group new-password @if ($errors->has('new_password')) has-error @endif">
                                 <label for="exampleInputPassword1">{{ __('change_password.new_password') }}</label>
                                 <input type="password" name="new_password" class="form-control" id="exampleInputPassword1" placeholder="{{ __('change_password.new_password') }}">
-                                <span class="help-block">@if (Session::get('error_new_password')) {{ Session::get('error_new_password') }} @endif</span>
+                                <span class="help-block">@if ($errors->has('new_password')) {{ $errors->first('new_password') }} @endif</span>
                             </div>
-                            <div class="form-group confirm-new-password @if (Session::get('error_confirm_new_password')) has-error @endif" >
+                            <div class="form-group confirm-new-password @if ($errors->has('confirm_new_password')) has-error @endif" >
                                 <label for="exampleInputPassword1">{{ __('change_password.confirm_new_password') }}</label>
                                 <input type="password" name="confirm_new_password" class="form-control" id="exampleInputPassword1" placeholder="{{ __('change_password.confirm_new_password') }}">
-                                <span class="help-block"> @if (Session::get('error_confirm_new_password')) {{ Session::get('error_confirm_new_password') }} @endif</span>
+                                <span class="help-block"> @if ($errors->has('confirm_new_password')) {{ $errors->first('confirm_new_password') }} @endif</span>
                             </div>
                         </div>
                         <!-- /.box-body -->
