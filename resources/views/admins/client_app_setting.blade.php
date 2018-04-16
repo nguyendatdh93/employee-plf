@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('Logo') <b>Admin - Employee</b>@endsection
+@section('Logo') <b>{{ __('logo.admin_site') }}</b>@endsection
 @section('Datatable')
     <script>
         $(function () {
@@ -82,10 +82,6 @@
 
 @section('more_javascripts')
     <script>
-        $(document).ready( function () {
-
-        });
-
         $(document).on('click', '.btn-remove-client-app', function(e){
             e.preventDefault();
             var url = $(this).attr('href'),

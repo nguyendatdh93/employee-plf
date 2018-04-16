@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('Logo') <b>Admin - Employee</b>@endsection
+@section('Logo') <b>{{ __('logo.admin_site') }}</b>@endsection
 @section('Content')
     <!-- Main content -->
     <section class="content">
