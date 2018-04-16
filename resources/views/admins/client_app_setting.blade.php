@@ -13,7 +13,7 @@
     @include('layouts.partials.modal')
     <!-- Main content -->
     <section class="content">
-        <div class="col-md-12 ">
+        <div class="col-md-12 " style="overflow: auto">
             @if (session('success'))
                 <div class="alert alert-info alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -34,6 +34,15 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="datatable" class="table table-bordered table-striped">
+                        <colgroup>
+                            <col width="50">
+                            <col width="100">
+                            <col width="250">
+                            <col width="100">
+                            <col width="200" style="width: 300px !important;">
+                            <col width="100">
+                            <col width="100">
+                        </colgroup>
                         <thead>
                         <tr>
                             <th>{{  __('client_app_setting.client_id') }}</th>

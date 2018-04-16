@@ -22,7 +22,7 @@
         @endif
 
         <div class="row">
-            <div class="col-md-12 ">
+            <div class="col-md-12 " style="overflow: auto">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title" style="margin-top: 19px;">{{ __('user_managerment.title') }}</h3>
@@ -33,7 +33,7 @@
                         <table id="datatable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>{{  __('user_managerment.id') }}</th>
+                                {{--<th>{{  __('user_managerment.id') }}</th>--}}
                                 <th>{{  __('user_managerment.name') }}</th>
                                 <th>{{  __('user_managerment.email') }}</th>
                                 <th>{{  __('user_managerment.client_app') }}</th>
@@ -43,7 +43,7 @@
                             <tbody>
                             @foreach($list_users as $user)
                                 <tr>
-                                    <td>{{ $user->id }}</td>
+                                    {{--<td>{{ $user->id }}</td>--}}
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
