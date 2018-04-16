@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
-use Closure;
 use Auth;
+use Closure;
 
-class CheckAuth
+class DeletedUsers
 {
     /**
      * Handle an incoming request.
@@ -17,10 +16,16 @@ class CheckAuth
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->active != User::ACTIVE || Auth::user()->del_flg == User::DELETE_FLG) {
+        $user = Auth::user();
+        if (empty($user)) {
+            return $next($request);
+        }
+
+
+        if ($user->del_flg) {
             Auth::logout();
 
-            return redirect('/login')->with('error', __('login_user.error_can_not_login'));
+            return redirect('/login')->withErrors(['email' => 'Your account is removed!'])->withInput(['email' => $user->email]);
         }
 
         return $next($request);
