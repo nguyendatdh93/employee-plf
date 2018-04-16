@@ -21,10 +21,6 @@ class AuthAdmin
             return redirect()->route('admin_login');
         }
 
-        if (Route::currentRouteName() == 'admin_login') {
-            return redirect()->route('user_managerment');
-        }
-
         return $next($request);
     }
 }

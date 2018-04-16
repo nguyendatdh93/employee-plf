@@ -41,11 +41,15 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware(CheckIpRange::class);
-        $this->middleware(AuthAdmin::class);
+//        $this->middleware(AuthAdmin::class);
     }
 
     public function showLoginAdminForm()
     {
+        if (Auth::guard('admin')->id()) {
+            return redirect()->route('user_managerment');
+        }
+
         return view('admins.login_admin');
     }
 
