@@ -80,10 +80,6 @@ class AuthorizationController
             return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
         }
 
-        if (!$this->checkAuth()) {
-            return redirect($request->get('redirect_uri').'?code=403&state=error_account');
-        }
-
         return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
             $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
 
@@ -183,16 +179,5 @@ class AuthorizationController
         }
 
         return false;
-    }
-
-    private function checkAuth()
-    {
-        if (Auth::user()->active != \App\Models\User::ACTIVE || Auth::user()->del_flg == \App\Models\User::DELETE_FLG) {
-            Auth::logout();
-
-            return false;
-        }
-
-        return true;
     }
 }

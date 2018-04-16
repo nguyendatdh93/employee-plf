@@ -6,7 +6,7 @@ return [
     'new_password' => 'New password',
     'confirm_new_password' => 'Confirm new password',
     'btn_change_password' => 'Change password',
-    "error_current_password" => "Your new password matches with the password you provided. Please try again.",
+    "error_current_password" => "Your new password does not matches with the password you provided. Please try again.",
     "error_new_password" => "New Password cannot be same as your current password.",
     "error_confirm_new_password" => "Confirm new password cannot be same as new password.",
     'error_change_password' => 'Password changed not success.',

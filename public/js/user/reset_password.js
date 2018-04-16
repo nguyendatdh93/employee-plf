@@ -8,9 +8,9 @@ $(function () {
 
             return false;
         }else if (new_password.length > 50) {
-            enableError('new-password', 'The length <= 50 characters');
-
-            return false;
+            // enableError('new-password', 'The length <= 50 characters');
+            //
+            // return false;
         } else {
             disableError('new-password')
         }
