@@ -29,7 +29,6 @@ class UserController extends Controller
     ){
         $this->middleware(CheckIpRange::class);
         $this->middleware('auth');
-        $this->middleware(CheckAuth::class);
 
         $this->userRepository = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
