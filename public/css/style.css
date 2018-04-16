@@ -17,3 +17,10 @@ table tr td {
 .box-change-password input {
     width: 60% !important;
 }
+
+#datatable {
+     clear: both;
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: break-all;
+}

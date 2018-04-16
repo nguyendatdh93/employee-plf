@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('Title') {{ __('login_admin.title') }} @endsection
-{{--@section('Logo') Admin - Employee Platform @endsection--}}
 @section('navbar-header')
 @endsection
 

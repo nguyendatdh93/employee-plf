@@ -28,18 +28,10 @@ $(function () {
             disableError('new-password')
         }
 
-        // if (ip_secure == '') {
-        //     enableError('ip-secure', 'Please fill out this field');
-        //
-        //     return false;
-        // } else {
-        //     disableError('ip-secure')
-        // }
-
         if (!validateClientUrlRedirect('url-redirect',  $('.url-redirect input').val())) {
             return false;
         }
-        // console.log('asas');
+
         if (!validateIPaddress('ip-secure',  $('.ip-secure input').val())) {
             return false;
         }

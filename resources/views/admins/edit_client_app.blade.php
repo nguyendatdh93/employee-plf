@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('Logo') <b>Admin - Employee</b>@endsection
+@section('Logo') <b>{{ __('logo.admin_site') }}</b>@endsection
 @section('Datatable')
     <script src="{{ asset ("/js/admin/create_client_app.js") }}" type="text/javascript"></script>
 @endsection

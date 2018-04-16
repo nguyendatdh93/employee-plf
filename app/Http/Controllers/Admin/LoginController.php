@@ -27,13 +27,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/admin';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -41,7 +34,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware(CheckIpRange::class);
-//        $this->middleware(AuthAdmin::class);
     }
 
     public function showLoginAdminForm()
@@ -56,7 +48,7 @@ class LoginController extends Controller
     public function loginAsAdmin()
     {
         $rules = array(
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|min:8'
         );
 
@@ -76,15 +68,17 @@ class LoginController extends Controller
             if (Auth::guard('admin')->attempt($userdata)) {
                 return redirect()->route('user_managerment');
             } else {
-                return Redirect::to('admin')->with('error', 'Your username or password is not correct');
+                return Redirect::to('admin')->with('error', __('login_admin.login_error'));
             }
-
         }
     }
 
     public function logOut()
     {
-        Auth::guard('admin')->logout();
+        if (Auth::guard('admin')->id()) {
+            Auth::guard('admin')->logout();
+        }
+
         return redirect()->route('admin_login');
     }
 }

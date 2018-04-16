@@ -13,5 +13,6 @@ return [
     'delete_confirm_title' => 'Delete confirm.',
     'delete_confirm_text' => 'Are you really want to remove this user？',
     'btn_confirm' => 'Delete',
-    'btn_cancel' => 'Cancel'
+    'btn_cancel' => 'Cancel',
+    'title' => 'User managerment'
 ];
