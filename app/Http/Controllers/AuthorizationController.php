@@ -53,9 +53,9 @@ class AuthorizationController
      */
     public function __construct(AuthorizationServer $server, ResponseFactory $response, OauthClientRepository $oauthClientRepository, UserClientRelationRepository $userClientRelationRepository)
     {
-        $this->server = $server;
-        $this->response = $response;
-        $this->oauthClientRepository = $oauthClientRepository;
+        $this->server                       = $server;
+        $this->response                     = $response;
+        $this->oauthClientRepository        = $oauthClientRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
     }
 
@@ -84,9 +84,8 @@ class AuthorizationController
             $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
 
             $scopes = $this->parseScopes($authRequest);
-
-            $token = $tokens->findValidToken(
-                $user = $request->user(),
+            $token  = $tokens->findValidToken(
+                $user   = $request->user(),
                 $client = $clients->find($authRequest->getClient()->getIdentifier())
             );
 
