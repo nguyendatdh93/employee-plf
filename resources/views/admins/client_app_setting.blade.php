@@ -58,7 +58,7 @@
                                         <a href="{{ route('edit_client_app_form', ['client_app_id' => $oauth_client->id ]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
                                             <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
                                         </a>
-                                        <a href="{{ route('remove_client_app', ['client_app_id' => $oauth_client->id ]) }}"
+                                        <a style="margin-left: 10px" href="{{ route('remove_client_app', ['client_app_id' => $oauth_client->id ]) }}"
                                            data-client-name="{{ $oauth_client->name }}"
                                            data-client-id="{{ $oauth_client->id }}"
                                            data-client-secret="{{ $oauth_client->secret }}"
