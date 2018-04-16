@@ -8,12 +8,20 @@ $(function () {
             enableError('client-name', 'Please fill out this field');
 
             return false;
+        } else if(client_name.length > 255){
+            enableError('client-name', 'The lenght < 255 characters');
+
+            return false;
         } else {
             disableError('client-name')
         }
 
         if (url_redirect == '') {
             enableError('url-redirect', 'Please fill out this field');
+
+            return false;
+        } else if(url_redirect.length > 255){
+            enableError('url-redirect', 'The lenght < 255 characters');
 
             return false;
         } else {
