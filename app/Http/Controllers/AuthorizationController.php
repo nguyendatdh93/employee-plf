@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckFromThirdParty;
 use App\Http\Middleware\ValidateThirdParty;
 use App\Repositories\Eloquents\OauthClientRepository;
@@ -72,11 +73,15 @@ class AuthorizationController
                               TokenRepository $tokens)
     {
         if (!$this->checkIpThirdParty($request)) {
-            return redirect($request->get('redirect_uri').'?code=401');
+            return redirect($request->get('redirect_uri').'?code=403&state=error_ip');
         }
 
         if (!$this->checkPermissionUseApp($request)) {
-            return redirect($request->get('redirect_uri').'?code=403');
+            return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
+        }
+
+        if (!$this->checkAuth()) {
+            return redirect($request->get('redirect_uri').'?code=403&state=error_account');
         }
 
         return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
@@ -178,5 +183,16 @@ class AuthorizationController
         }
 
         return false;
+    }
+
+    private function checkAuth()
+    {
+        if (Auth::user()->active != \App\Models\User::ACTIVE || Auth::user()->del_flg == \App\Models\User::DELETE_FLG) {
+            Auth::logout();
+
+            return false;
+        }
+
+        return true;
     }
 }

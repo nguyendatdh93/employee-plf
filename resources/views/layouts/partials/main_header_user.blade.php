@@ -1,7 +1,7 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ route('user_managerment') }}" class="logo"><b>Employee</b> Platform</a>
+    <a href="{{ route('profile') }}" class="logo"><b>Employee</b> Platform</a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('user_logout') }}"><i class="fa fa-sign-out"></i></a>
+                    <a href="{{ route('user_logout') }}" data-toggle="tooltip" title="{{ __('main_header_user.btn_logout') }}"><i class="fa fa-sign-out"></i></a>
                 </li>
             </ul>
         </div>

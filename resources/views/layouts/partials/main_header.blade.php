@@ -20,8 +20,8 @@
                         <span class="hidden-xs"> {{ Auth::guard('admin')->user()->email }}</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('admin_logout') }}"><i class="fa fa-sign-out"></i></a>
+                <li data-toggle="tooltip" title="{{ __('main_header.btn_logout') }}">
+                    <a href="{{ route('admin_logout') }}" ><i class="fa fa-sign-out"></i></a>
                 </li>
             </ul>
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
+use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckIpRange;
 use App\Http\Middleware\CheckResetPassword;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -28,6 +29,7 @@ class UserController extends Controller
     ){
         $this->middleware(CheckIpRange::class);
         $this->middleware('auth');
+        $this->middleware(CheckAuth::class);
 
         $this->userRepository = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
@@ -59,11 +61,11 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|max:100',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error',  __('change_password.error_change_password'));
+            return back()->with('error',  __('change_password.error_change_password') . '<br/> -'. $validator->messages()->first());
         }
 
         //Change Password
@@ -93,11 +95,11 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|max:50',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error_change_password', __('change_password.error_change_password'));
+            return back()->with('error_change_password', __('change_password.error_change_password'). '<br/> -'. $validator->messages()->first());
         }
 
         //Change Password

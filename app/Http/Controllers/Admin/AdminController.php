@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
+use App\Models\OauthClient;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
@@ -230,12 +231,24 @@ class AdminController extends Controller
     {
         $inputs = $request->all();
 
-        if ($inputs['client_name'] == '') {
-            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_client_name'));
-        }
+        $data = [
+            'client_name'  => $inputs['client_name'],
+            'url_redirect' => $inputs['url_redirect'],
+        ];
 
-        if ($inputs['url_redirect'] == '') {
-            return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect'));
+        $rules = [
+            'client_name'  => strtr('required|string|max::name_max', [':name_max' => OauthClient::CLIENT_NAME_MAX_LIMIT]),
+            'url_redirect' => strtr('required|string|max::url_redirect_max', [':url_redirect_max' => OauthClient::URL_REDIRECT_MAX_LIMIT]),
+        ];
+
+        /** @var Validator $validator */
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return back()
+                ->with('errors', $errors)
+                ->withInput();
         }
 
         if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
@@ -245,7 +258,7 @@ class AdminController extends Controller
         if ($inputs['ip_secure'] != '') {
             $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
             if (!$is_ip) {
-                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'));
+                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'))->withInput();
             }
         }
 
@@ -285,12 +298,24 @@ class AdminController extends Controller
     public function editClientApp(Request $request)
     {
         $inputs = $request->all();
-        if ($inputs['client_name'] == '') {
-            return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_client_name'));
-        }
+        $data = [
+            'client_name'  => $inputs['client_name'],
+            'url_redirect' => $inputs['url_redirect'],
+        ];
 
-        if ($inputs['url_redirect'] == '') {
-            return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_url_redirect'));
+        $rules = [
+            'client_name'  => strtr('required|string|max::name_max', [':name_max' => OauthClient::CLIENT_NAME_MAX_LIMIT]),
+            'url_redirect' => strtr('required|string|max::url_redirect_max', [':url_redirect_max' => OauthClient::URL_REDIRECT_MAX_LIMIT]),
+        ];
+
+        /** @var Validator $validator */
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return back()
+                ->with('errors', $errors)
+                ->withInput();
         }
 
         if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
