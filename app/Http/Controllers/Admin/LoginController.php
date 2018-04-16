@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Validator;
@@ -40,6 +41,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware(CheckIpRange::class);
+        $this->middleware(AuthAdmin::class);
     }
 
     public function showLoginAdminForm()
