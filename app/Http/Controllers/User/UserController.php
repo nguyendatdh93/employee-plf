@@ -30,11 +30,11 @@ class UserController extends Controller
         $this->middleware(CheckIpRange::class);
         $this->middleware('auth');
 
-        $this->userRepository = $userRepository;
+        $this->userRepository               = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
     }
 
-    public function showChangePassword()
+    public function showFormChangePassword()
     {
         Session::put('menu', 'change_password');
         return view('users.change_password');
@@ -43,11 +43,6 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         $inputs = Input::get();
-
-        if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
-            // The passwords matches
-            return back()->with("error", __('change_password.error_current_password'));
-        }
 
         $validator = Validator::make($request->all(), [
             'current_password'     => 'required|string|min:8|max:50',
@@ -61,7 +56,6 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        //Change Password
         $user           = Auth::user();
         $user->password = bcrypt($inputs['new_password']);
         $user->save();
@@ -93,7 +87,6 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        //Change Password
         $user                     = Auth::user();
         $user->password           = bcrypt($inputs['new_password']);
         $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
@@ -104,19 +97,21 @@ class UserController extends Controller
 
     public function logOut()
     {
-        Auth::logout();
+        if (Auth::user()) {
+            Auth::logout();
+        }
 
         return redirect()->route('user_login');
     }
 
     public function profile() {
         Session::put('menu', 'user_profile');
-        $user = Auth::user();
-        $client_ids = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
+        $user        = Auth::user();
+        $client_ids  = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
         $client_apps = Client::whereIn('id', $client_ids)->get();
 
         return view('users.profile', [
-            'user' => $user,
+            'user'        => $user,
             'client_apps' => $client_apps
         ]);
     }

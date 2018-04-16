@@ -53,7 +53,7 @@ Route::prefix('user')->group(function () {
     Route::get('/forgot-password', 'UserController@forgotPasswordForm')->name('forgot-password-form');
     Route::post('/forgot-password', 'UserController@forgotPassword')->name('forgot-password');
 
-    Route::get('/change-password', 'User\UserController@showChangePassword')->name('change_password_form');
+    Route::get('/change-password', 'User\UserController@showFormChangePassword')->name('change_password_form');
     Route::post('/change-password', 'User\UserController@changePassword')->name('change_password');
     Route::get('/logout', 'User\UserController@logOut')->name('user_logout');
     Route::get('/reset-password', 'User\UserController@showFormResetPassword')->name('reset_password_form');

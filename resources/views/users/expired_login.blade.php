@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body bg-warning">
-                        You are expired!
+                        {{ __('expired_login.expired_message') }}
                     </div>
                 </div>
             </div>
