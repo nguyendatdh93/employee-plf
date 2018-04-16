@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <div class="col-md-6 offset-md-4">
                                 <div class="checkbox">
                                     <label>

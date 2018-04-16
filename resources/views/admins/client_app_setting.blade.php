@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('Logo') <b>Admin - Employee</b>@endsection
+@section('Logo') <b>{{ __('logo.admin_site') }}</b>@endsection
 @section('Datatable')
     <script>
         $(function () {
@@ -13,7 +13,7 @@
     @include('layouts.partials.modal')
     <!-- Main content -->
     <section class="content">
-        <div class="col-md-12 ">
+        <div class="col-md-12 " style="overflow: auto">
             @if (session('success'))
                 <div class="alert alert-info alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -34,6 +34,15 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="datatable" class="table table-bordered table-striped">
+                        <colgroup>
+                            <col width="50">
+                            <col width="100">
+                            <col width="250">
+                            <col width="100">
+                            <col width="200" style="width: 300px !important;">
+                            <col width="100">
+                            <col width="100">
+                        </colgroup>
                         <thead>
                         <tr>
                             <th>{{  __('client_app_setting.client_id') }}</th>
@@ -58,7 +67,7 @@
                                         <a href="{{ route('edit_client_app_form', ['client_app_id' => $oauth_client->id ]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
                                             <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
                                         </a>
-                                        <a href="{{ route('remove_client_app', ['client_app_id' => $oauth_client->id ]) }}"
+                                        <a style="margin-left: 10px" href="{{ route('remove_client_app', ['client_app_id' => $oauth_client->id ]) }}"
                                            data-client-name="{{ $oauth_client->name }}"
                                            data-client-id="{{ $oauth_client->id }}"
                                            data-client-secret="{{ $oauth_client->secret }}"
@@ -82,17 +91,13 @@
 
 @section('more_javascripts')
     <script>
-        $(document).ready( function () {
-
-        });
-
         $(document).on('click', '.btn-remove-client-app', function(e){
             e.preventDefault();
-            var url = $(this).attr('href'),
-                confirm_box = $('#confirm'),
-                client_id = $(this).data('client-id'),
-                client_name = $(this).data('client-name'),
-                client_secret = $(this).data('client-secret'),
+            var url             = $(this).attr('href'),
+                confirm_box     = $('#confirm'),
+                client_id       = $(this).data('client-id'),
+                client_name     = $(this).data('client-name'),
+                client_secret   = $(this).data('client-secret'),
                 confirm_message = '<p>{{ trans('client_app_setting.delete_confirm_text') }}</p>';
 
             confirm_message += '<br>{{ trans('client_app_setting.client_id') }}: ' + client_id;
