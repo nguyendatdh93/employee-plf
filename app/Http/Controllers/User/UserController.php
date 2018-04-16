@@ -61,11 +61,11 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|max:100',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error',  __('change_password.error_change_password'));
+            return back()->with('error',  __('change_password.error_change_password') . '<br/> -'. $validator->messages()->first());
         }
 
         //Change Password
@@ -95,11 +95,11 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|max:50',
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error_change_password', __('change_password.error_change_password'));
+            return back()->with('error_change_password', __('change_password.error_change_password'). '<br/> -'. $validator->messages()->first());
         }
 
         //Change Password
