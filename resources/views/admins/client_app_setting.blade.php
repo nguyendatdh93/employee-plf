@@ -84,11 +84,11 @@
     <script>
         $(document).on('click', '.btn-remove-client-app', function(e){
             e.preventDefault();
-            var url = $(this).attr('href'),
-                confirm_box = $('#confirm'),
-                client_id = $(this).data('client-id'),
-                client_name = $(this).data('client-name'),
-                client_secret = $(this).data('client-secret'),
+            var url             = $(this).attr('href'),
+                confirm_box     = $('#confirm'),
+                client_id       = $(this).data('client-id'),
+                client_name     = $(this).data('client-name'),
+                client_secret   = $(this).data('client-secret'),
                 confirm_message = '<p>{{ trans('client_app_setting.delete_confirm_text') }}</p>';
 
             confirm_message += '<br>{{ trans('client_app_setting.client_id') }}: ' + client_id;

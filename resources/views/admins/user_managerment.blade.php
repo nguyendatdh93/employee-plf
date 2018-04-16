@@ -25,7 +25,7 @@
             <div class="col-md-12 ">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title" style="margin-top: 19px;">User managerment</h3>
+                        <h3 class="box-title" style="margin-top: 19px;">{{ __('user_managerment.title') }}</h3>
                         <a href="{{ route('add_user_form') }}" class="btn bg-olive btn-flat margin pull-right"> <i class="fa fa-fw fa-user-plus"></i> {{ __('user_managerment.add_user') }}</a>
                     </div>
                     <!-- /.box-header -->
@@ -88,16 +88,12 @@
 
 @section('more_javascripts')
     <script>
-        $(document).ready( function () {
-
-        });
-
         $(document).on('click', '.jsRemove', function(e){
             e.preventDefault();
-            var url = $(this).attr('href'),
-                confirm_box = $('#confirm'),
-                user_name = $(this).data('user-name'),
-                user_email = $(this).data('user-email'),
+            var url             = $(this).attr('href'),
+                confirm_box     = $('#confirm'),
+                user_name       = $(this).data('user-name'),
+                user_email      = $(this).data('user-email'),
                 confirm_message = '<p>{{ trans('user_managerment.delete_confirm_text') }}</p>';
 
             confirm_message += '{{ trans('user_managerment.name') }}: ' + user_name;
