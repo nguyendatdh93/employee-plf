@@ -8,8 +8,9 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="card" style="margin-top: 20%">
+            <div class="col-md-8">
+                <h1 style="text-align: center;margin-top: 18%">{{ __('login_admin.title_logo') }}</h1>
+                <div class="card">
                     {{--<div class="card-header">{{ __('Login') }}</div>--}}
 
                     <div class="card-body">

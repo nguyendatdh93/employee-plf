@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title_logo'  => 'Admin Employee Platform',
     'title'       => 'Login admin',
     'email'       => 'Email address',
     'password'    => 'Password',

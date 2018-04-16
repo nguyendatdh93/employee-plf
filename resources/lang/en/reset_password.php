@@ -1,7 +1,8 @@
+
 <?php
 
 return [
-    'title_change_password' => 'Change your password',
+    'title_reset_password' => 'You must change your password on the frist time',
     'current_password' => 'Current password',
     'new_password' => 'New password',
     'confirm_new_password' => 'Confirm new password',
