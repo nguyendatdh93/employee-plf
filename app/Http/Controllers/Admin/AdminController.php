@@ -49,7 +49,7 @@ class AdminController extends Controller
         foreach ($list_users as $key => $user) {
             $list_users[$key]->client_apps = $this->userRepository->getClientAppsByUserId($user->id);
 
-            if ($user->reset_password_flg != User::RESETTED_PASSWORD_FLG && $user->updated_at <= $new_user_expired_datetime)
+            if ($user->reset_password_flg != User::RESET_PASSWORD_YES && $user->updated_at <= $new_user_expired_datetime)
             {
                 $list_users[$key]->is_expired = true;
             }

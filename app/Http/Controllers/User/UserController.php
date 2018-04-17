@@ -3,18 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\AuthAdmin;
-use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckIpRange;
-use App\Http\Middleware\CheckResetPassword;
-use App\Models\OauthClient;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Input;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 use Laravel\Passport\Client;
 use Validator;
@@ -35,22 +30,30 @@ class UserController extends Controller
         $this->userClientRelationRepository = $userClientRelationRepository;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showFormChangePassword()
     {
         Session::put('menu', 'change_password');
+
         return view('users.change_password');
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function changePassword(Request $request)
     {
         try {
-            $inputs = Input::get();
+            $inputs = $request->all();
 
             if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
                 return back()->with("error", __('change_password.error_current_password'));
             }
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($inputs, [
                 'current_password'     => 'required|string|min:8|max:50',
                 'new_password'         => 'required|string|min:8|max:50|different:current_password',
                 'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
@@ -80,13 +83,13 @@ class UserController extends Controller
     public function resetPassword(Request $request)
     {
         try {
-            $inputs = Input::get();
+            $inputs = $request->all();
             if (Hash::check($inputs['new_password'], Auth::user()->password)) {
                 // The passwords matches
                 return back()->with("error", __('reset_password.error_current_password'));
             }
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($inputs, [
                 'new_password'         => 'required|string|min:8|max:50',
                 'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
             ]);
@@ -97,9 +100,9 @@ class UserController extends Controller
                     ->withInput();
             }
 
-            $user                     = Auth::user();
+            $user = Auth::user();
             $user->password           = bcrypt($inputs['new_password']);
-            $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
+            $user->reset_password_flg = User::RESET_PASSWORD_YES;
             $user->save();
 
             return redirect()->route('profile')->with("success", __('reset_password.success'));

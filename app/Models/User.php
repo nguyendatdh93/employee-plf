@@ -39,8 +39,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    const RESETTED_PASSWORD_FLG = 1;
-
     /**
      * Send the password reset notification.
      *

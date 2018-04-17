@@ -15,7 +15,6 @@ class AddColumnActiveAndResetPasswordFlgTableUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('reset_password_flg')->default(0)->after('password');
-            $table->string('active')->default(1)->after('reset_password_flg');
         });
     }
 
@@ -28,7 +27,6 @@ class AddColumnActiveAndResetPasswordFlgTableUsers extends Migration
     {
         Schema::table('users', function ($table) {
             $table->dropColumn('reset_password_flg');
-            $table->dropColumn('active');
         });
     }
 }

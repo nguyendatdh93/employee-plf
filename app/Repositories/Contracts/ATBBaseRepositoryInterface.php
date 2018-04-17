@@ -24,6 +24,4 @@ interface ATBBaseRepositoryInterface
     public function findBy($filter, $columns = array('*'));
 
     public function finds($filter, $columns = array('*'));
-
-    public function fill($id);
 }
