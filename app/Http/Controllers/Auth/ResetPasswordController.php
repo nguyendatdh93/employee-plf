@@ -63,9 +63,9 @@ class ResetPasswordController extends Controller
                 $this->resetPassword($user, $password);
             }
         );
-        if (!empty(Auth::user()) && Auth::user()->reset_password_flg != User::RESETTED_PASSWORD_FLG) {
+        if (!empty(Auth::user()) && Auth::user()->reset_password_flg != User::RESET_PASSWORD_YES) {
             $user                     = Auth::user();
-            $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
+            $user->reset_password_flg = User::RESET_PASSWORD_YES;
             $user->save();
         }
 

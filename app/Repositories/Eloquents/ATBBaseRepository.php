@@ -145,8 +145,4 @@ abstract class ATBBaseRepository implements ATBBaseRepositoryInterface
 
         return $this->model = $model->newQuery()->where('del_flg', '=', 0);
     }
-
-    public function fill($id)
-    {
-    }
 }

@@ -152,6 +152,10 @@ class AuthorizationController
         );
     }
 
+    /**
+     * @param $request
+     * @return bool|mixed
+     */
     private function checkOauthClientApp($request)
     {
         $oauth_client = $this->oauthClientRepository->findBy(['id'  =>$request->get('client_id'), 'secret' => $request->get('client_secret')]);
@@ -162,6 +166,11 @@ class AuthorizationController
         return $oauth_client;
     }
 
+    /**
+     * @param $request
+     * @param $oauth_client
+     * @return bool
+     */
     private function checkIpThirdParty($request, $oauth_client)
     {
         if ($oauth_client->ip_secure == '') {
@@ -175,6 +184,11 @@ class AuthorizationController
         return false;
     }
 
+    /**
+     * @param $ip_secure
+     * @param $ip
+     * @return bool
+     */
     private function checkIpRange($ip_secure, $ip)
     {
         foreach ($ip_secure as $range) {
@@ -183,10 +197,10 @@ class AuthorizationController
             }
             // $range is in IP/CIDR format eg 127.0.0.1/24
             list($range, $netmask) = explode('/', $range, 2);
-            $ip_decimal = ip2long($ip);
-            $range_decimal = ip2long($range);
+            $ip_decimal       = ip2long($ip);
+            $range_decimal    = ip2long($range);
             $wildcard_decimal = pow(2, (32 - $netmask)) - 1;
-            $netmask_decimal = ~ $wildcard_decimal;
+            $netmask_decimal  = ~ $wildcard_decimal;
             if (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal)) {
                 return true;
             }
@@ -195,6 +209,10 @@ class AuthorizationController
         return false;
     }
 
+    /**
+     * @param $request
+     * @return bool
+     */
     private function checkPermissionUseApp($request)
     {
         $user_client_relation = $this->userClientRelationRepository->findBy(['client_id' => $request->get('client_id'), 'user_id' => Auth::id()]);
