@@ -75,11 +75,18 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showFormResetPassword()
     {
         return view('users.reset_password');
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function resetPassword(Request $request)
     {
         try {
@@ -112,6 +119,9 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logOut()
     {
         if (Auth::user()) {
@@ -121,6 +131,9 @@ class UserController extends Controller
         return redirect()->route('user_login');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function profile() {
         Session::put('menu', 'user_profile');
         $user        = Auth::user();

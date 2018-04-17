@@ -34,4 +34,11 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
             ->where('user_client_relations.del_flg', '=', 0)
             ->get();
     }
+
+    public function findAllByEmail($email)
+    {
+        return DB::table('users')
+            ->where('users.email', '=', $email)
+            ->get();
+    }
 }

@@ -12,17 +12,6 @@ use Redirect;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
@@ -35,6 +24,9 @@ class LoginController extends Controller
         $this->middleware(CheckIpRange::class);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function showLoginAdminForm()
     {
         if (Auth::guard('admin')->id()) {
@@ -44,6 +36,9 @@ class LoginController extends Controller
         return view('admins.login_admin');
     }
 
+    /**
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function loginAsAdmin()
     {
         $rules = array(
@@ -72,6 +67,9 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logOut()
     {
         if (Auth::guard('admin')->id()) {
