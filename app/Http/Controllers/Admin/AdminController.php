@@ -85,7 +85,7 @@ class AdminController extends Controller
             ];
             $rules = [
                 'name'  => strtr('required|string|max::name_max', [':name_max' => User::NAME_MAX_LIMIT]),
-                'email' => strtr('required|string|email|max::email_max|unique:users', [':email_max' => User::EMAIL_MAX_LIMIT]),
+                'email' => strtr('required|string|email|max::email_max', [':email_max' => User::EMAIL_MAX_LIMIT]),
             ];
 
             $validator = Validator::make($data, $rules);
@@ -95,6 +95,11 @@ class AdminController extends Controller
                 return back()
                     ->with('errors', $errors)
                     ->withInput();
+            }
+
+            $existed_user = $this->userRepository->findBy(['email' => $input['email']]);
+            if ($existed_user) {
+                return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();
             }
 
             $client_app_ids = [];
