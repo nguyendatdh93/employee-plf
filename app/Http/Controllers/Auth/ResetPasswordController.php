@@ -62,8 +62,8 @@ class ResetPasswordController extends Controller
 
         $response = $this->broker()->reset(
             $this->credentials($request), function ($user, $password) {
-            $this->resetPassword($user, $password);
-        }
+                $this->resetPassword($user, $password);
+            }
         );
         if (!empty(Auth::user()) && Auth::user()->reset_password_flg != User::RESETTED_PASSWORD_FLG) {
             $user                     = Auth::user();
