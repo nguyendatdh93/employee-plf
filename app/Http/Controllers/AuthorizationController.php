@@ -24,6 +24,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Laravel\Passport\Http\Controllers\HandlesOAuthErrors;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Laravel\Passport\Http\Controllers\RetrievesAuthRequestFromSession;
+use Response;
 
 class AuthorizationController
 {
@@ -80,7 +81,7 @@ class AuthorizationController
             return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
         }
 
-        return $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
+        $response = $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
             $authRequest = $this->server->validateAuthorizationRequest($psrRequest);
 
             $scopes = $this->parseScopes($authRequest);
@@ -101,6 +102,12 @@ class AuthorizationController
                 $authRequest, new Psr7Response
             );
         });
+
+        if ($response->getStatusCode() == 401) {
+            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+        }
+
+        return $response;
     }
 
     /**
