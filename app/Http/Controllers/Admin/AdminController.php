@@ -11,7 +11,6 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Services\MailService;
 use Illuminate\Http\Request;
-use Laravel\Passport\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
