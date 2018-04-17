@@ -12,4 +12,6 @@ return [
     'error_url_redirect' => 'URL Redirect is requirement',
     'error_url_redirect_not_url' => 'Must be URL',
     'error_ip_secure_is_ip' => 'Must be IP',
+    'fill_out' => 'Please fill out this field',
+    'lenght_255' => 'The lenght < 255 characters',
 ];

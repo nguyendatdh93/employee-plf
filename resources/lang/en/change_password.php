@@ -10,5 +10,9 @@ return [
     "error_new_password" => "New Password cannot be same as your current password.",
     "error_confirm_new_password" => "Confirm new password cannot be same as new password.",
     'error_change_password' => 'Password changed not success.',
-    "success" => "Password changed successfully !"
+    "success" => "Password changed successfully !",
+    'fill_out' => 'Please fill out this field',
+    'lenght_50' => 'The lenght must < 50 characters',
+    'lenght_8' => 'The lenght must >= 8 characters',
+    'not_matches_password' => 'Confirm password is not matching.'
 ];

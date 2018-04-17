@@ -9,6 +9,6 @@ return [
     'placeholder_name' => 'Fill user name',
     'placeholder_email' => 'Fill user email',
     'btn_create_user' => 'Create',
-    'message_hacking' => "Are you hacking? Don't have the client app you post!",
+    'message_hacking' => "Client apps are not exits on system",
     'duplicate_email' => "This user was actually deleted in the past!"
 ];
