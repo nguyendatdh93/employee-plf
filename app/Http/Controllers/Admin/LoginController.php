@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Validator;

@@ -34,9 +34,4 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
             ->where('user_client_relations.del_flg', '=', 0)
             ->get();
     }
-
-    public function removeUser($user_id)
-    {
-        return DB::table('users')->where('id', '=', $user_id)->update(['del_flg' => 1]);
-    }
 }

@@ -10,5 +10,4 @@ namespace App\Repositories\Contracts;
 interface UserRepositoryInterface extends ATBBaseRepositoryInterface
 {
     public function getClientAppsByUserId($user_id);
-    public function removeUser($user_id);
 }

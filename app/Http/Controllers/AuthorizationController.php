@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\CheckAuth;
-use App\Http\Middleware\CheckFromThirdParty;
-use App\Http\Middleware\ValidateThirdParty;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
-use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Passport;
@@ -15,12 +11,10 @@ use Laravel\Passport\Bridge\User;
 use Laravel\Passport\TokenRepository;
 use Laravel\Passport\ClientRepository;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Config\Repository;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use League\OAuth2\Server\Exception\OAuthServerException;
 use Laravel\Passport\Http\Controllers\HandlesOAuthErrors;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Laravel\Passport\Http\Controllers\RetrievesAuthRequestFromSession;
@@ -45,15 +39,22 @@ class AuthorizationController
     protected $response;
 
     protected $userClientRelationRepository;
+    protected $oauthClientRepository;
 
     /**
      * Create a new controller instance.
      *
      * @param  AuthorizationServer $server
      * @param  ResponseFactory $response
+     * @param OauthClientRepository $oauthClientRepository
+     * @param UserClientRelationRepository $userClientRelationRepository
      */
-    public function __construct(AuthorizationServer $server, ResponseFactory $response, OauthClientRepository $oauthClientRepository, UserClientRelationRepository $userClientRelationRepository)
-    {
+    public function __construct(
+        AuthorizationServer $server,
+        ResponseFactory $response,
+        OauthClientRepository $oauthClientRepository,
+        UserClientRelationRepository $userClientRelationRepository
+    ) {
         $this->server                       = $server;
         $this->response                     = $response;
         $this->oauthClientRepository        = $oauthClientRepository;
@@ -63,23 +64,25 @@ class AuthorizationController
     /**
      * Authorize a client to access the user's account.
      *
-     * @param  ServerRequestInterface  $psrRequest
-     * @param  Request  $request
-     * @param  ClientRepository  $clients
+     * @param  ServerRequestInterface $psrRequest
+     * @param  Request $request
+     * @param  ClientRepository $clients
+     * @param TokenRepository $tokens
      * @return Response
      */
-    public function authorize(ServerRequestInterface $psrRequest,
-                              Request $request,
-                              ClientRepository $clients,
-                              TokenRepository $tokens)
-    {
+    public function authorize(
+        ServerRequestInterface $psrRequest,
+        Request $request,
+        ClientRepository $clients,
+        TokenRepository $tokens
+    ) {
         if (!$this->checkOauthClientApp($request)) {
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
         }
 
         $oauth_client = $this->checkOauthClientApp($request);
 
-        if (!$this->checkIpThirdParty($oauth_client)) {
+        if (!$this->checkIpThirdParty($request, $oauth_client)) {
             return redirect($request->get('redirect_uri').'?code=403&state=error_ip');
         }
 
@@ -159,7 +162,7 @@ class AuthorizationController
         return $oauth_client;
     }
 
-    private function checkIpThirdParty($oauth_client)
+    private function checkIpThirdParty($request, $oauth_client)
     {
         if ($oauth_client->ip_secure == '') {
             return true;
