@@ -11,7 +11,6 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Services\MailService;
 use Illuminate\Http\Request;
-use Laravel\Passport\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
@@ -57,9 +56,17 @@ class AdminController extends Controller
 
     public function removeUser(Request $request, $user_id)
     {
-        $this->userRepository->removeUser($user_id);
+        if (empty($user_id)) {
+            return redirect()->route('404');
+        }
 
-        return redirect()->route('user_managerment')->withSuccess(strtr('User :user_id is removed successful!', [':user_id' => $user_id]));;
+        $result = $this->userRepository->removeUser($user_id);
+
+        if ($result == 0) {
+            return redirect()->route('user_managerment')->with('error' ,strtr(__('user_managerment.message_remove_user_not_success'), [':user_id' => $user_id]));;
+        }
+
+        return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_remove_user_success'), [':user_id' => $user_id]));;
     }
 
     public function addUserForm() {

@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
                             <label for="exampleInputPassword1">{{ __('create_client_app.client_call_back') }}</label>
-                            <input type="text" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="">
+                            <input type="text" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="ex: http://example.com/callback">
                             <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
                         </div>
                         <div class="form-group ip-secure @if ($errors->has('ip_secure')) has-error @endif" >

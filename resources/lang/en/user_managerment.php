@@ -14,5 +14,7 @@ return [
     'delete_confirm_text' => 'Are you really want to remove this user？',
     'btn_confirm' => 'Delete',
     'btn_cancel' => 'Cancel',
-    'title' => 'User managerment'
+    'title' => 'User managerment',
+    'message_remove_user_not_success' => 'User :user_id remove not success',
+    'message_remove_user_success' => 'User :user_id remove success',
 ];
