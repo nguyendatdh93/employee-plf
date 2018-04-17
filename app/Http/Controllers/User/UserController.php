@@ -42,29 +42,33 @@ class UserController extends Controller
 
     public function changePassword(Request $request)
     {
-        $inputs = Input::get();
+        try {
+            $inputs = Input::get();
 
-        if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
-            return back()->with("error", __('change_password.error_current_password'));
+            if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
+                return back()->with("error", __('change_password.error_current_password'));
+            }
+
+            $validator = Validator::make($request->all(), [
+                'current_password'     => 'required|string|min:8|max:50',
+                'new_password'         => 'required|string|min:8|max:50|different:current_password',
+                'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
+            ]);
+
+            if ($validator->fails()) {
+                return back()
+                    ->with('errors', $validator->messages())
+                    ->withInput();
+            }
+
+            $user           = Auth::user();
+            $user->password = bcrypt($inputs['new_password']);
+            $user->save();
+
+            return back()->with("success", __('change_password.success'));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        $validator = Validator::make($request->all(), [
-            'current_password'     => 'required|string|min:8|max:50',
-            'new_password'         => 'required|string|min:8|max:50|different:current_password',
-            'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->with('errors', $validator->messages())
-                ->withInput();
-        }
-
-        $user           = Auth::user();
-        $user->password = bcrypt($inputs['new_password']);
-        $user->save();
-
-        return back()->with("success", __('change_password.success'));
     }
 
     public function showFormResetPassword()
@@ -74,29 +78,34 @@ class UserController extends Controller
 
     public function resetPassword(Request $request)
     {
-        $inputs = Input::get();
-        if (Hash::check($inputs['new_password'], Auth::user()->password)) {
-            // The passwords matches
-            return back()->with("error", __('reset_password.error_current_password'));
+        try {
+            $inputs = Input::get();
+            if (Hash::check($inputs['new_password'], Auth::user()->password)) {
+                // The passwords matches
+                return back()->with("error", __('reset_password.error_current_password'));
+            }
+
+            $validator = Validator::make($request->all(), [
+                'new_password'         => 'required|string|min:8|max:50',
+                'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
+            ]);
+
+            if ($validator->fails()) {
+                return back()
+                    ->with('errors', $validator->messages())
+                    ->withInput();
+            }
+
+            $user                     = Auth::user();
+            $user->password           = bcrypt($inputs['new_password']);
+            $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
+            $user->save();
+
+            return redirect()->route('profile')->with("success", __('reset_password.success'));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
 
-        $validator = Validator::make($request->all(), [
-            'new_password'         => 'required|string|min:8|max:50',
-            'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->with('errors', $validator->messages())
-                ->withInput();
-        }
-
-        $user                     = Auth::user();
-        $user->password           = bcrypt($inputs['new_password']);
-        $user->reset_password_flg = User::RESETTED_PASSWORD_FLG;
-        $user->save();
-
-        return redirect()->route('profile')->with("success", __('reset_password.success'));
     }
 
     public function logOut()
