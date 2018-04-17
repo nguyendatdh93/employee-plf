@@ -35,8 +35,10 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
             ->get();
     }
 
-    public function removeUser($user_id)
+    public function findAllByEmail($email)
     {
-        return DB::table('users')->where('id', '=', $user_id)->update(['del_flg' => 1]);
+        return DB::table('users')
+            ->where('users.email', '=', $email)
+            ->get();
     }
 }

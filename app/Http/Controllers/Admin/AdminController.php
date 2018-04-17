@@ -22,11 +22,13 @@ class AdminController extends Controller
     protected $userRepository;
     protected $userClientRelationRepository;
     protected $oauthClientRepository;
+    protected $mailService;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         UserClientRelationRepositoryInterface $userClientRelationRepository,
-        OauthClientRepositoryInterface $oauthClientRepository
+        OauthClientRepositoryInterface $oauthClientRepository,
+        MailService $mailService
     ){
         $this->middleware(CheckIpRange::class);
         $this->middleware(AuthAdmin::class);
@@ -34,8 +36,13 @@ class AdminController extends Controller
         $this->userRepository               = $userRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
         $this->oauthClientRepository        = $oauthClientRepository;
+
+        $this->mailService = $mailService;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showUserManagerment()
     {
         Session::put('menu', 'user_managerment');
@@ -54,27 +61,39 @@ class AdminController extends Controller
         return view('admins.user_managerment', ['list_users' => $list_users]);
     }
 
+    /**
+     * @param Request $request
+     * @param $user_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function removeUser(Request $request, $user_id)
     {
         if (empty($user_id)) {
             return redirect()->route('404');
         }
 
-        $result = $this->userRepository->removeUser($user_id);
+        $result = $this->userRepository->delete($user_id);
 
-        if ($result == 0) {
-            return redirect()->route('user_managerment')->with('error' ,strtr(__('user_managerment.message_remove_user_not_success'), [':user_id' => $user_id]));;
+        if (empty($result)) {
+            return redirect()->route('user_managerment')->with('error' ,strtr(__('user_managerment.message_remove_user_not_success'), [':user_id' => $user_id]));
         }
 
-        return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_remove_user_success'), [':user_id' => $user_id]));;
+        return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_remove_user_success'), [':user_id' => $user_id]));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function addUserForm() {
         $client_apps = $this->oauthClientRepository->all();
 
         return view('admins.add_user', ['client_apps' => $client_apps]);
     }
 
+    /**
+     * @param Request $request
+     * @return $this
+     */
     public function addUser(Request $request) {
         $input = $request->all();
 
@@ -85,7 +104,7 @@ class AdminController extends Controller
             ];
             $rules = [
                 'name'  => strtr('required|string|max::name_max', [':name_max' => User::NAME_MAX_LIMIT]),
-                'email' => strtr('required|string|email|max::email_max|unique:users', [':email_max' => User::EMAIL_MAX_LIMIT]),
+                'email' => strtr('required|string|email|max::email_max', [':email_max' => User::EMAIL_MAX_LIMIT]),
             ];
 
             $validator = Validator::make($data, $rules);
@@ -95,6 +114,11 @@ class AdminController extends Controller
                 return back()
                     ->with('errors', $errors)
                     ->withInput();
+            }
+
+            $existed_user = $this->userRepository->findAllByEmail($input['email']);
+            if ($existed_user) {
+                return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();
             }
 
             $client_app_ids = [];
@@ -128,8 +152,7 @@ class AdminController extends Controller
                 }
             }
 
-            $mail_service = new MailService();
-            $mail_service->notifyNewAccount($user, $password);
+            $this->mailService->notifyNewAccount($user, $password);
 
             return redirect()->route('user_managerment')->withSuccess(strtr(':user_name is added successful!', [':user_name' => $user->name]));
         } catch (\Exception $e) {
@@ -137,6 +160,10 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @param null $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function editUserForm($id = null) {
         if (empty($id)) {
             return redirect()->route('add_user_form');
@@ -148,7 +175,7 @@ class AdminController extends Controller
         }
 
         $client_apps = $this->oauthClientRepository->all();
-        $client_ids = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
+        $client_ids  = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
 
         return view('admins.edit_user', [
             'client_apps' => $client_apps,
@@ -157,6 +184,10 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function editUser(Request $request) {
         $input = $request->all();
 
@@ -219,6 +250,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showClientAppSetting()
     {
         Session::put('menu', 'app_setting');
@@ -227,11 +261,18 @@ class AdminController extends Controller
         return view('admins.client_app_setting', ['oauth_clients' => $oauth_clients]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function createClientAppForm()
     {
         return view('admins.create_client_app');
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function createClientApp(Request $request)
     {
         try {
@@ -284,6 +325,11 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $client_app_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function removeClientApp(Request $request, $client_app_id)
     {
         try {
@@ -301,6 +347,11 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @param $client_app_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function editClientAppForm(Request $request, $client_app_id)
     {
         if (empty($client_app_id)) {
@@ -315,6 +366,10 @@ class AdminController extends Controller
         return view('admins.edit_client_app', ['oauth_client' => $oauth_client]);
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function editClientApp(Request $request)
     {
         try {
@@ -362,6 +417,10 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @param null $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function resetExpiredUser($id = null) {
         if (empty($id)) {
             return redirect()->route('404');
@@ -377,8 +436,7 @@ class AdminController extends Controller
                 'reset_password_flg' => User::RESET_PASSWORD_EXTEND
             ], $user->id);
 
-            $mail_service = new MailService();
-            $mail_service->notifyResetExpireTime($user);
+            $this->mailService->notifyResetExpireTime($user);
 
             return redirect()->route('user_managerment')->withSuccess(strtr(__('reset_expire_password.expire_time'), [':user_name' => $user->name]));
         } catch (\Exception $e) {

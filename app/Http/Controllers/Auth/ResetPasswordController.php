@@ -42,10 +42,8 @@ class ResetPasswordController extends Controller
     }
 
     /**
-     * Reset the given user's password.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return $this|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function reset(Request $request)
     {
@@ -62,8 +60,8 @@ class ResetPasswordController extends Controller
 
         $response = $this->broker()->reset(
             $this->credentials($request), function ($user, $password) {
-            $this->resetPassword($user, $password);
-        }
+                $this->resetPassword($user, $password);
+            }
         );
         if (!empty(Auth::user()) && Auth::user()->reset_password_flg != User::RESETTED_PASSWORD_FLG) {
             $user                     = Auth::user();
