@@ -7,6 +7,7 @@ use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckIpRange;
 use App\Http\Middleware\CheckResetPassword;
+use App\Models\OauthClient;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\UserClientRelationRepositoryInterface;
 use App\Models\User;
@@ -121,7 +122,7 @@ class UserController extends Controller
         Session::put('menu', 'user_profile');
         $user        = Auth::user();
         $client_ids  = array_column($this->userClientRelationRepository->finds(['user_id' => $user->id], ['client_id'])->toArray(), 'client_id');
-        $client_apps = Client::whereIn('id', $client_ids)->get();
+        $client_apps = Client::whereIn('id', $client_ids)->where('del_flg', '!=', 1)->get();
 
         return view('users.profile', [
             'user'        => $user,
