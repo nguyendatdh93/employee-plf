@@ -40,6 +40,9 @@ class AdminController extends Controller
         $this->mailService = $mailService;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showUserManagerment()
     {
         Session::put('menu', 'user_managerment');
@@ -58,6 +61,11 @@ class AdminController extends Controller
         return view('admins.user_managerment', ['list_users' => $list_users]);
     }
 
+    /**
+     * @param Request $request
+     * @param $user_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function removeUser(Request $request, $user_id)
     {
         if (empty($user_id)) {
@@ -73,12 +81,19 @@ class AdminController extends Controller
         return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_remove_user_success'), [':user_id' => $user_id]));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function addUserForm() {
         $client_apps = $this->oauthClientRepository->all();
 
         return view('admins.add_user', ['client_apps' => $client_apps]);
     }
 
+    /**
+     * @param Request $request
+     * @return $this
+     */
     public function addUser(Request $request) {
         $input = $request->all();
 
@@ -145,6 +160,10 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @param null $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function editUserForm($id = null) {
         if (empty($id)) {
             return redirect()->route('add_user_form');
@@ -165,6 +184,10 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function editUser(Request $request) {
         $input = $request->all();
 
@@ -227,6 +250,9 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showClientAppSetting()
     {
         Session::put('menu', 'app_setting');
@@ -235,11 +261,18 @@ class AdminController extends Controller
         return view('admins.client_app_setting', ['oauth_clients' => $oauth_clients]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function createClientAppForm()
     {
         return view('admins.create_client_app');
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function createClientApp(Request $request)
     {
         try {
@@ -292,6 +325,11 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $client_app_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function removeClientApp(Request $request, $client_app_id)
     {
         try {
@@ -309,6 +347,11 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @param $client_app_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function editClientAppForm(Request $request, $client_app_id)
     {
         if (empty($client_app_id)) {
@@ -323,6 +366,10 @@ class AdminController extends Controller
         return view('admins.edit_client_app', ['oauth_client' => $oauth_client]);
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function editClientApp(Request $request)
     {
         try {
@@ -370,6 +417,10 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @param null $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function resetExpiredUser($id = null) {
         if (empty($id)) {
             return redirect()->route('404');
