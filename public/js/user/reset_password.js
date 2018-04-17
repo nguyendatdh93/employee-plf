@@ -7,10 +7,6 @@ $(function () {
             enableError('new-password', 'Please fill out this field');
 
             return false;
-        }else if (new_password.length > 50) {
-            // enableError('new-password', 'The length <= 50 characters');
-            //
-            // return false;
         } else {
             disableError('new-password')
         }
@@ -49,32 +45,12 @@ $(function () {
 
     function validatePassword(classEl, password)
     {
-        // var lowerCaseLetters = /[a-z]/g;
-        // if(!password.match(lowerCaseLetters)) {
-        //     enableError(classEl, 'Password needs a lowercase letter');
-        //
-        //     return false;
-        // }
-        //
-        // // Validate capital letters
-        // var upperCaseLetters = /[A-Z]/g;
-        // if(!password.match(upperCaseLetters)) {
-        //     enableError(classEl, 'Password needs a uppercase letter');
-        //
-        //     return false;
-        // }
-        //
-        // // Validate numbers
-        // var numbers = /[0-9]/g;
-        // if(!password.match(numbers)) {
-        //     enableError(classEl, 'Password needs a number letter');
-        //
-        //     return false;
-        // }
-
-        // Validate length
         if(password.length < 8) {
             enableError(classEl, 'Password needs > 8 letters');
+
+            return false;
+        } else if (password.length > 50) {
+            enableError(classEl, 'The length <= 50 characters');
 
             return false;
         }

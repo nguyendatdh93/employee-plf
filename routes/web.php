@@ -58,9 +58,11 @@ Route::prefix('user')->group(function () {
     Route::get('/logout', 'User\UserController@logOut')->name('user_logout');
     Route::get('/reset-password', 'User\UserController@showFormResetPassword')->name('reset_password_form');
     Route::post('/reset-password', 'User\UserController@resetPassword')->name('reset_password');
-
+    Route::post('/password/reset', 'Auth\ResetPasswordController@reset')->name('reset_forgot_password');
     Route::get('/profile', 'User\UserController@profile')->name('profile');
 });
+
+
 
 Route::get('/404', function(){
     return view('errors.404');
