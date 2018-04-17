@@ -73,7 +73,13 @@ class AuthorizationController
                               ClientRepository $clients,
                               TokenRepository $tokens)
     {
-        if (!$this->checkIpThirdParty($request)) {
+        if (!$this->checkOauthClientApp($request)) {
+            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+        }
+
+        $oauth_client = $this->checkOauthClientApp($request);
+
+        if (!$this->checkIpThirdParty($oauth_client)) {
             return redirect($request->get('redirect_uri').'?code=403&state=error_ip');
         }
 
@@ -143,9 +149,18 @@ class AuthorizationController
         );
     }
 
-    private function checkIpThirdParty($request)
+    private function checkOauthClientApp($request)
     {
-        $oauth_client = $this->oauthClientRepository->find($request->get('client_id'));
+        $oauth_client = $this->oauthClientRepository->findBy(['id'  =>$request->get('client_id'), 'secret' => $request->get('client_secret')]);
+        if (empty($oauth_client)) {
+            return false;
+        }
+
+        return $oauth_client;
+    }
+
+    private function checkIpThirdParty($oauth_client)
+    {
         if ($oauth_client->ip_secure == '') {
             return true;
         }
