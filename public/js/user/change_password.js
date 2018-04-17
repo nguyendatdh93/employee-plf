@@ -16,6 +16,10 @@ $(function () {
             enableError('new-password', 'Please fill out this field');
 
             return false;
+        }else if (new_password.length < 8) {
+            enableError('new-password', 'The length >= 8 characters');
+
+            return false;
         }else if (new_password.length > 50) {
             enableError('new-password', 'The length <= 50 characters');
 

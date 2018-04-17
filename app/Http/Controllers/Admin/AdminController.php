@@ -287,7 +287,15 @@ class AdminController extends Controller
 
     public function editClientAppForm(Request $request, $client_app_id)
     {
+        if (empty($client_app_id)) {
+            return redirect()->route('404');
+        }
+
         $oauth_client = $this->oauthClientRepository->find(['id'=> $client_app_id]);
+
+        if (count($oauth_client) == 0) {
+            return redirect()->route('404');
+        }
 
         return view('admins.edit_client_app', ['oauth_client' => $oauth_client]);
     }

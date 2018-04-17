@@ -44,6 +44,10 @@ class UserController extends Controller
     {
         $inputs = Input::get();
 
+        if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
+            return back()->with("error", __('change_password.error_current_password'));
+        }
+
         $validator = Validator::make($request->all(), [
             'current_password'     => 'required|string|min:8|max:50',
             'new_password'         => 'required|string|min:8|max:50|different:current_password',
