@@ -10,5 +10,5 @@ return [
     'placeholder_email' => 'Fill user email',
     'btn_create_user' => 'Create',
     'message_hacking' => "Are you hacking? Don't have the client app you post!",
-    'duplicate_email' => "This email is already is user!"
+    'duplicate_email' => "This user was actually deleted in the past!"
 ];

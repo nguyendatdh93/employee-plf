@@ -116,7 +116,7 @@ class AdminController extends Controller
                     ->withInput();
             }
 
-            $existed_user = $this->userRepository->findBy(['email' => $input['email']]);
+            $existed_user = $this->userRepository->findAllByEmail($input['email']);
             if ($existed_user) {
                 return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();
             }
