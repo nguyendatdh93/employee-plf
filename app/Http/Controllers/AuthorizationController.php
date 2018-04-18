@@ -98,7 +98,7 @@ class AuthorizationController
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
         }
 
-        $oauth_client         = $this->checkOauthClientApp($request);
+        $oauth_client = $this->checkOauthClientApp($request);
         if (!$oauth_client) {
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
         }
@@ -138,7 +138,7 @@ class AuthorizationController
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
         }
 
-        $this->saveLog($user_client_relation->id, $request->get('ip'));
+        $this->saveLog($user_client_relation->id, $request->ip());
 
         return $response;
     }
@@ -201,7 +201,7 @@ class AuthorizationController
             return true;
         }
 
-        if ($this->checkIpRange(explode(',', $oauth_client->ip_secure), $request->get('ip'))) {
+        if ($this->checkIpRange(explode(',', $oauth_client->ip_secure), $request->ip())) {
             return true;
         }
 
