@@ -17,7 +17,7 @@ Route::get('/', function (){
 
 Route::get('/expired_login', function () {
     return view('users.expired_login');
-})->name('expired_login');
+})->middleware(\App\Http\Middleware\CheckIpRange::class)->name('expired_login');
 
 Route::prefix('admin')->group(function () {
     Route::get('', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
@@ -66,5 +66,5 @@ Route::get('/404', function(){
     return view('errors.404');
 })->name('404');
 
-Route::get('/lang', 'Controller@setupLanguage')->name('lang');
+Route::get('/lang', 'Controller@setupLanguage')->middleware(\App\Http\Middleware\CheckIpRange::class)->name('lang');
 
