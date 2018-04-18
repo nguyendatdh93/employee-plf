@@ -6,8 +6,12 @@ use App\Models\Log;
 use App\Repositories\Contracts\LogRepositoryInterface;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
+use App\Services\AuthService;
+use App\Services\ValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Validator;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Bridge\User;
@@ -50,6 +54,11 @@ class AuthorizationController
     protected $logRepository;
 
     /**
+     * @var AuthService
+     */
+    protected $authService;
+
+    /**
      * Create a new controller instance.
      *
      * @param  AuthorizationServer $server
@@ -57,19 +66,22 @@ class AuthorizationController
      * @param OauthClientRepository $oauthClientRepository
      * @param UserClientRelationRepository $userClientRelationRepository
      * @param LogRepositoryInterface $logRepository
+     * @param AuthService $authService
      */
     public function __construct(
         AuthorizationServer $server,
         ResponseFactory $response,
         OauthClientRepository $oauthClientRepository,
         UserClientRelationRepository $userClientRelationRepository,
-        LogRepositoryInterface $logRepository
+        LogRepositoryInterface $logRepository,
+        AuthService $authService
     ) {
         $this->server                       = $server;
         $this->response                     = $response;
         $this->oauthClientRepository        = $oauthClientRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
         $this->logRepository                = $logRepository;
+        $this->authService                  = $authService;
     }
 
     /**
@@ -110,6 +122,22 @@ class AuthorizationController
         $user_client_relation = $this->checkPermissionUseApp($request);
         if (!$user_client_relation) {
             return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
+        }
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $new_user_expired_hours = Config::get('base.new_user_expired_hours');
+        $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
+        if ($user->reset_password_flg != \App\Models\User::RESET_PASSWORD_YES)
+        {
+            if ($user->updated_at <= $new_user_expired_datetime) {
+                Auth::logout();
+                return redirect()->route('expired_login');
+            }
+
+            Session::put('third_party_login', $request->getRequestUri());
+
+            return redirect()->route('reset_password');
         }
 
         $response = $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {
@@ -215,19 +243,8 @@ class AuthorizationController
      */
     private function checkIpRange($ip_secure, $ip)
     {
-        foreach ($ip_secure as $range) {
-            if (strpos($range, '/') == false) {
-                $range .= '/32';
-            }
-            // $range is in IP/CIDR format eg 127.0.0.1/24
-            list($range, $netmask) = explode('/', $range, 2);
-            $ip_decimal       = ip2long($ip);
-            $range_decimal    = ip2long($range);
-            $wildcard_decimal = pow(2, (32 - $netmask)) - 1;
-            $netmask_decimal  = ~ $wildcard_decimal;
-            if (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal)) {
-                return true;
-            }
+        if ($this->authService->checkIpRange($ip_secure, $ip)) {
+            return true;
         }
 
         return false;
