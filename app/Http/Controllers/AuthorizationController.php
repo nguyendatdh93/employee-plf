@@ -10,6 +10,8 @@ use App\Services\AuthService;
 use App\Services\ValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Validator;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Bridge\User;
@@ -120,6 +122,22 @@ class AuthorizationController
         $user_client_relation = $this->checkPermissionUseApp($request);
         if (!$user_client_relation) {
             return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
+        }
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $new_user_expired_hours = Config::get('base.new_user_expired_hours');
+        $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
+        if ($user->reset_password_flg != \App\Models\User::RESET_PASSWORD_YES)
+        {
+            if ($user->updated_at <= $new_user_expired_datetime) {
+                Auth::logout();
+                return redirect()->route('expired_login');
+            }
+
+            Session::put('third_party_login', $request->getRequestUri());
+
+            return redirect()->route('reset_password');
         }
 
         $response = $this->withErrorHandling(function () use ($psrRequest, $request, $clients, $tokens) {

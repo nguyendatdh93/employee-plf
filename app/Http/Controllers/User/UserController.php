@@ -112,6 +112,13 @@ class UserController extends Controller
             $user->reset_password_flg = User::RESET_PASSWORD_YES;
             $user->save();
 
+            if (!empty(Session::get('third_party_login')) && Session::get('third_party_login')) {
+                $redirect_route = Session::get('third_party_login');
+                Session::put('third_party_login', '');
+
+                return redirect($redirect_route);
+            }
+
             return redirect()->route('profile')->with("success", __('reset_password.success'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
