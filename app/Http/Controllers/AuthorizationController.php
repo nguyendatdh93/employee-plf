@@ -247,6 +247,10 @@ class AuthorizationController
         return false;
     }
 
+    /**
+     * @param $user_client_id
+     * @param $ip
+     */
     private function saveLog($user_client_id, $ip)
     {
         $this->logRepository->create([
