@@ -64,7 +64,7 @@
                                     <td>{{ $oauth_client->redirect }}</td>
                                     <td>{{ $oauth_client->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('edit_client_app_form', ['client_app_id' => $oauth_client->id ]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_managerment.btn_edit') }}">
+                                        <a href="{{ route('edit_client_app_form', ['client_app_id' => $oauth_client->id ]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_management.btn_edit') }}">
                                             <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
                                         </a>
                                         <a style="margin-left: 10px" href="{{ route('remove_client_app', ['client_app_id' => $oauth_client->id ]) }}"
@@ -74,7 +74,7 @@
                                            class="col-md-3 col-sm-4 btn-remove-client-app"
                                            data-toggle="tooltip"
                                            data-placement="top"
-                                           title="{{  __('user_managerment.btn_remove') }}">
+                                           title="{{  __('user_management.btn_remove') }}">
                                             <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                         </a>
                                     </td>
