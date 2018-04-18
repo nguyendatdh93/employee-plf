@@ -66,7 +66,7 @@ class AdminController extends Controller
      * @param $user_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeUser(Request $request, $user_id)
+    public function removeUser(Request $request, $user_id = null)
     {
         if (empty($user_id)) {
             return redirect()->route('404');
@@ -330,7 +330,7 @@ class AdminController extends Controller
      * @param $client_app_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeClientApp(Request $request, $client_app_id)
+    public function removeClientApp(Request $request, $client_app_id = null)
     {
         try {
             if ($client_app_id)
@@ -352,7 +352,7 @@ class AdminController extends Controller
      * @param $client_app_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function editClientAppForm(Request $request, $client_app_id)
+    public function editClientAppForm(Request $request, $client_app_id = null)
     {
         if (empty($client_app_id)) {
             return redirect()->route('404');
