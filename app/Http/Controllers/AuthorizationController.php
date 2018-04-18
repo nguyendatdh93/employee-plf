@@ -92,7 +92,6 @@ class AuthorizationController
             'client_secret' => 'required',
             'redirect_uri'  => 'required',
             'response_type' => 'required',
-            'ip'            => 'required',
         ]);
 
         if ($validator->fails()) {
