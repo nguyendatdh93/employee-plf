@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
+use App\Repositories\Contracts\LogRepositoryInterface;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Bridge\User;
 use Laravel\Passport\TokenRepository;
@@ -42,23 +45,31 @@ class AuthorizationController
     protected $oauthClientRepository;
 
     /**
+     * @var LogRepositoryInterface
+     */
+    protected $logRepository;
+
+    /**
      * Create a new controller instance.
      *
      * @param  AuthorizationServer $server
      * @param  ResponseFactory $response
      * @param OauthClientRepository $oauthClientRepository
      * @param UserClientRelationRepository $userClientRelationRepository
+     * @param LogRepositoryInterface $logRepository
      */
     public function __construct(
         AuthorizationServer $server,
         ResponseFactory $response,
         OauthClientRepository $oauthClientRepository,
-        UserClientRelationRepository $userClientRelationRepository
+        UserClientRelationRepository $userClientRelationRepository,
+        LogRepositoryInterface $logRepository
     ) {
         $this->server                       = $server;
         $this->response                     = $response;
         $this->oauthClientRepository        = $oauthClientRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
+        $this->logRepository                = $logRepository;
     }
 
     /**
@@ -76,17 +87,29 @@ class AuthorizationController
         ClientRepository $clients,
         TokenRepository $tokens
     ) {
-        if (!$this->checkOauthClientApp($request)) {
+        $validator = Validator::make($request->all(),[
+            'client_id'     => 'required',
+            'client_secret' => 'required',
+            'redirect_uri'  => 'required',
+            'response_type' => 'required',
+            'ip'            => 'required',
+        ]);
+
+        if ($validator->fails()) {
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
         }
 
-        $oauth_client = $this->checkOauthClientApp($request);
+        $oauth_client         = $this->checkOauthClientApp($request);
+        if (!$oauth_client) {
+            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+        }
 
         if (!$this->checkIpThirdParty($request, $oauth_client)) {
             return redirect($request->get('redirect_uri').'?code=403&state=error_ip');
         }
 
-        if (!$this->checkPermissionUseApp($request)) {
+        $user_client_relation = $this->checkPermissionUseApp($request);
+        if (!$user_client_relation) {
             return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
         }
 
@@ -115,6 +138,8 @@ class AuthorizationController
         if ($response->getStatusCode() == 401) {
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
         }
+
+        $this->saveLog($user_client_relation->id, $request->get('ip'));
 
         return $response;
     }
@@ -217,9 +242,17 @@ class AuthorizationController
     {
         $user_client_relation = $this->userClientRelationRepository->findBy(['client_id' => $request->get('client_id'), 'user_id' => Auth::id()]);
         if ($user_client_relation) {
-            return true;
+            return $user_client_relation;
         }
 
         return false;
+    }
+
+    private function saveLog($user_client_id, $ip)
+    {
+        $this->logRepository->create([
+            'user_client_id' => $user_client_id,
+            'ip'             => $ip
+        ]);
     }
 }
