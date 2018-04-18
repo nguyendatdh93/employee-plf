@@ -30,7 +30,7 @@ class LoginController extends Controller
     public function showLoginAdminForm()
     {
         if (Auth::guard('admin')->id()) {
-            return redirect()->route('user_managerment');
+            return redirect()->route('user_management');
         }
 
         return view('admins.login_admin');
@@ -60,7 +60,7 @@ class LoginController extends Controller
             );
 
             if (Auth::guard('admin')->attempt($userdata)) {
-                return redirect()->route('user_managerment');
+                return redirect()->route('user_management');
             } else {
                 return Redirect::to('admin')->with('error', __('login_admin.login_error'));
             }

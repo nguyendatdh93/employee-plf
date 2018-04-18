@@ -45,7 +45,7 @@ class AdminController extends Controller
      */
     public function showUserManagerment()
     {
-        Session::put('menu', 'user_managerment');
+        Session::put('menu', 'user_management');
         $new_user_expired_hours    = Config::get('base.new_user_expired_hours');
         $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
         $list_users                = $this->userRepository->all();
@@ -58,7 +58,7 @@ class AdminController extends Controller
             }
         }
 
-        return view('admins.user_managerment', ['list_users' => $list_users]);
+        return view('admins.user_management', ['list_users' => $list_users]);
     }
 
     /**
@@ -75,10 +75,10 @@ class AdminController extends Controller
         $result = $this->userRepository->delete($user_id);
 
         if (empty($result)) {
-            return redirect()->route('user_managerment')->with('error' ,strtr(__('user_managerment.message_remove_user_not_success'), [':user_id' => $user_id]));
+            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_id' => $user_id]));
         }
 
-        return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_remove_user_success'), [':user_id' => $user_id]));
+        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_id' => $user_id]));
     }
 
     /**
@@ -154,7 +154,7 @@ class AdminController extends Controller
 
             $this->mailService->notifyNewAccount($user, $password);
 
-            return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_add_user_success'), [':user_name' => $user->name]));
+            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_add_user_success'), [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
@@ -244,7 +244,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user_managerment')->withSuccess(strtr(__('user_managerment.message_add_user_success'), [':user_name' => $user->name]));
+            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_add_user_success'), [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
@@ -438,7 +438,7 @@ class AdminController extends Controller
 
             $this->mailService->notifyResetExpireTime($user);
 
-            return redirect()->route('user_managerment')->withSuccess(strtr(__('reset_expire_password.expire_time'), [':user_name' => $user->name]));
+            return redirect()->route('user_management')->withSuccess(strtr(__('reset_expire_password.expire_time'), [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
