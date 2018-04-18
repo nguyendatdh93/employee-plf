@@ -39,6 +39,6 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
     {
         return DB::table('users')
             ->where('users.email', '=', $email)
-            ->get();
+            ->first();
     }
 }
