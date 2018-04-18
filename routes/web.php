@@ -25,7 +25,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/logout', 'Admin\LoginController@logOut')->name('admin_logout');
     Route::get('/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
 
-    Route::get('/user-managerment', 'Admin\AdminController@showUserManagerment')->name('user_managerment');
+    Route::get('/user-management', 'Admin\AdminController@showUserManagerment')->name('user_management');
 
     Route::get('/add-user', 'Admin\AdminController@addUserForm')->name('add_user_form');
     Route::post('/add-user', 'Admin\AdminController@addUser')->name('add_user');
