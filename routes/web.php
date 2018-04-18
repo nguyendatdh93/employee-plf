@@ -62,9 +62,9 @@ Route::prefix('user')->group(function () {
     Route::get('/profile', 'User\UserController@profile')->name('profile');
 });
 
-
-
 Route::get('/404', function(){
     return view('errors.404');
 })->name('404');
+
+Route::get('/lang', 'Controller@setupLanguage')->name('lang');
 

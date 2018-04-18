@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'expire_time' => ':user_name is reset expire time!',
+    'expire_time' => ':user_name reseted expire time!',
 ];
