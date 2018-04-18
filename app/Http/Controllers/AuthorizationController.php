@@ -6,6 +6,8 @@ use App\Models\Log;
 use App\Repositories\Contracts\LogRepositoryInterface;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
+use App\Services\AuthService;
+use App\Services\ValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -50,6 +52,11 @@ class AuthorizationController
     protected $logRepository;
 
     /**
+     * @var AuthService
+     */
+    protected $authService;
+
+    /**
      * Create a new controller instance.
      *
      * @param  AuthorizationServer $server
@@ -57,19 +64,22 @@ class AuthorizationController
      * @param OauthClientRepository $oauthClientRepository
      * @param UserClientRelationRepository $userClientRelationRepository
      * @param LogRepositoryInterface $logRepository
+     * @param AuthService $authService
      */
     public function __construct(
         AuthorizationServer $server,
         ResponseFactory $response,
         OauthClientRepository $oauthClientRepository,
         UserClientRelationRepository $userClientRelationRepository,
-        LogRepositoryInterface $logRepository
+        LogRepositoryInterface $logRepository,
+        AuthService $authService
     ) {
         $this->server                       = $server;
         $this->response                     = $response;
         $this->oauthClientRepository        = $oauthClientRepository;
         $this->userClientRelationRepository = $userClientRelationRepository;
         $this->logRepository                = $logRepository;
+        $this->authService                  = $authService;
     }
 
     /**
@@ -215,19 +225,8 @@ class AuthorizationController
      */
     private function checkIpRange($ip_secure, $ip)
     {
-        foreach ($ip_secure as $range) {
-            if (strpos($range, '/') == false) {
-                $range .= '/32';
-            }
-            // $range is in IP/CIDR format eg 127.0.0.1/24
-            list($range, $netmask) = explode('/', $range, 2);
-            $ip_decimal       = ip2long($ip);
-            $range_decimal    = ip2long($range);
-            $wildcard_decimal = pow(2, (32 - $netmask)) - 1;
-            $netmask_decimal  = ~ $wildcard_decimal;
-            if (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal)) {
-                return true;
-            }
+        if ($this->authService->checkIpRange($ip_secure, $ip)) {
+            return true;
         }
 
         return false;
