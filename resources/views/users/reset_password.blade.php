@@ -65,12 +65,12 @@
                     disableError('confirm-new-password')
                 }
 
-                if (!validatePassword('new-password', $('.new-password input').val())) {
+                if (!validatePassword('new-password', new_password)) {
 
                     return false;
                 }
 
-                if (!validatePassword('confirm-new-password',  $('.confirm-new-password input').val())) {
+                if (!validatePassword('confirm-new-password', confirm_new_password)) {
                     return false;
                 }
 
