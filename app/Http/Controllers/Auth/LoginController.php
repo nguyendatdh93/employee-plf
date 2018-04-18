@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckIpRange;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Validator;
 use Input;
@@ -38,6 +39,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $this->middleware(CheckIpRange::class);
         $this->middleware('guest')->except('logout');
     }
 }
