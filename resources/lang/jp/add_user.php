@@ -10,5 +10,5 @@ return [
     'placeholder_email' => '',
     'btn_create_user' => '登録する',
     'message_hacking' => "このアプリケーションを存在されません。",
-    'duplicate_email' => "This user was actually deleted in the past!"
+    'duplicate_email' => "The email has already been taken or user was actually deleted in the past!"
 ];

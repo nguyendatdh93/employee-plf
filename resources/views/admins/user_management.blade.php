@@ -4,7 +4,11 @@
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
-            $('#datatable').DataTable();
+            $('#datatable').DataTable({
+                "language": {
+                    "url" : "{{ route('lang') }}"
+                },
+            });
         })
     </script>
 @endsection
