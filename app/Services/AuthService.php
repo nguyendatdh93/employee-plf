@@ -2,8 +2,14 @@
 
 namespace App\Services;
 
-class AuthService {
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Config;
 
+class AuthService {
+    const CHANGED_PASSWORD   = 1;
+    const EXPIRED_PASSWORD   = 2;
+    const NO_CHANGE_PASSWORD = 3;
     /**
      * @param $ip_secure
      * @param $ip
@@ -27,5 +33,25 @@ class AuthService {
         }
 
         return false;
+    }
+
+    public function checkResetPassword()
+    {
+        $user = Auth::user();
+        $new_user_expired_hours = Config::get('base.new_user_expired_hours');
+        $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
+
+        if ($user->reset_password_flg != User::RESET_PASSWORD_YES)
+        {
+            if ($user->updated_at <= $new_user_expired_datetime) {
+                Auth::logout();
+
+                return self::EXPIRED_PASSWORD;
+            }
+
+            return self::NO_CHANGE_PASSWORD;
+        }
+
+        return self::CHANGED_PASSWORD;
     }
 }

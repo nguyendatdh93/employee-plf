@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
+use App\Services\AuthService;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -19,20 +20,14 @@ class CheckResetPassword
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
-        $new_user_expired_hours = Config::get('base.new_user_expired_hours');
-        $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
-
-        if ($user->reset_password_flg != User::RESET_PASSWORD_YES)
-        {
-            if ($user->updated_at <= $new_user_expired_datetime) {
-                Auth::logout();
-                return redirect()->route('expired_login');
-            }
-
+        $auth_service    = new AuthService();
+        $change_password = $auth_service->checkResetPassword();
+        if ($change_password == AuthService::NO_CHANGE_PASSWORD) {
             return redirect()->route('reset_password');
+        } elseif ($change_password == AuthService::EXPIRED_PASSWORD) {
+            return redirect()->route('expired_login');
+        } else {
+            return redirect()->route('profile');
         }
-
-        return redirect()->route('profile');
     }
 }
