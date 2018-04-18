@@ -1,22 +1,20 @@
 <?php
 
 return [
-    'title_client_app_setting' => 'Client App Setting',
-    'client_name' => 'Client Name',
-    'client_call_back' => 'Client Url Callback',
-    'ip_secure' => 'IP Secure',
-    'btn_create_new_client_app' => 'Create new app',
-    'client_id' => 'Client ID',
-    'client_name' => 'Client Name',
-    'client_secret' => 'Client secret',
-    'ip_secure' => 'IP secure',
-    'created_at' => 'Created at',
-    'redirect_url' => 'URL callback',
-    'control' => 'Controls',
-    'message_remove_success' => 'Client App removed success',
-    'message_remove_not_success' => 'Client App removed not success',
-    'delete_confirm_text' => 'Do you really want to remove client app?',
-    'delete_confirm_title' => 'Delete confirm.',
-    'btn_confirm' => 'Delete',
-    'btn_cancel' => 'Cancel'
+    'title_client_app_setting' => 'アプリケーション設定',
+    'client_name' => 'アプリケーション名',
+    'client_call_back' => 'Callback URL',
+    'ip_secure' => 'IPアドレス制限',
+    'btn_create_new_client_app' => '新規登録',
+    'client_id' => 'ID',
+    'client_secret' => 'アプリケーションSecret',
+    'created_at' => '作成日時',
+    'redirect_url' => 'Callback URL',
+    'control' => '管理',
+    'message_remove_success' => 'このアプリケーションを削除しました',
+    'message_remove_not_success' => 'このアプリケーションを削除できませんでした',
+    'delete_confirm_text' => 'このアプリケーションを削除しますか？',
+    'delete_confirm_title' => '確認',
+    'btn_confirm' => '削除する',
+    'btn_cancel' => 'キャンセル'
 ];

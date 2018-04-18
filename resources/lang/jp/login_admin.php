@@ -3,8 +3,8 @@
 return [
     'title_logo'  => 'Admin Employee Platform',
     'title'       => 'Login admin',
-    'email'       => 'Email address',
-    'password'    => 'Password',
-    'btn_login'   => 'Login',
-    'login_error' => 'Your username or password is not correct',
+    'email'       => 'メールアドレス',
+    'password'    => 'パスワード',
+    'btn_login'   => 'ログイン',
+    'login_error' => 'メールアドレスもしくはパスワードが正しくありません。',
 ];

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'box_title_edit_user' => 'Edit User',
-    'form_label_name' => 'Name',
-    'form_label_email' => 'Email',
-    'form_label_client_apps' => 'Client Apps',
-    'btn_update_user' => 'Update',
-    'message_success' => ':user_name is updated successful!',
+    'box_title_edit_user' => 'アカウント編集',
+    'form_label_name' => '名前',
+    'form_label_email' => 'メールアドレス',
+    'form_label_client_apps' => 'アプリケーション',
+    'btn_update_user' => '更新する',
+    'message_success' => ':user_name ユーザー情報を更新しました。',
 ];

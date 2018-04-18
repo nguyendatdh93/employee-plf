@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'user_managerment' => 'User management',
-    'app_setting' => 'App setting',
-    'user_profile' => 'Profile',
-    'change_password' => 'Change password'
+    'user_managerment' => 'アカウント一覧',
+    'app_setting' => 'アプリケーション設定',
+    'user_profile' => 'プロフィール',
+    'change_password' => 'パスワード変更'
 ];
