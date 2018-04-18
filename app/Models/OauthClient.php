@@ -8,7 +8,7 @@ use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 class OauthClient extends Model implements Authenticatable
 {
-    const CLIENT_NAME_MAX_LIMIT  = 100;
+    const CLIENT_NAME_MAX_LIMIT  = 255;
     const URL_REDIRECT_MAX_LIMIT = 255;
 
     use AuthenticableTrait;
