@@ -23,7 +23,7 @@ class CheckResetPassword
         $new_user_expired_hours = Config::get('base.new_user_expired_hours');
         $new_user_expired_datetime = date('Y-m-d H:i:s',  strtotime("-$new_user_expired_hours hours" ));
 
-        if ($user->reset_password_flg != User::RESETTED_PASSWORD_FLG)
+        if ($user->reset_password_flg != User::RESET_PASSWORD_YES)
         {
             if ($user->updated_at <= $new_user_expired_datetime) {
                 Auth::logout();

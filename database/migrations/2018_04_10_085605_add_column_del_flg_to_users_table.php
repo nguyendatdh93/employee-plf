@@ -14,7 +14,7 @@ class AddColumnDelFlgToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('del_flg')->default(0)->after('active');
+            $table->string('del_flg')->default(0)->after('reset_password_flg');
         });
     }
 
