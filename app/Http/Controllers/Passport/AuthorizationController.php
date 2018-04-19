@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Passport;
 
 use App\Models\Log;
 use App\Repositories\Contracts\LogRepositoryInterface;
@@ -98,7 +98,7 @@ class AuthorizationController
         Request $request,
         ClientRepository $clients,
         TokenRepository $tokens
-    ) {
+    ) {;
         $validator = Validator::make($request->all(),[
             'client_id'     => 'required',
             'client_secret' => 'required',
@@ -113,10 +113,6 @@ class AuthorizationController
         $oauth_client = $this->checkOauthClientApp($request);
         if (!$oauth_client) {
             return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
-        }
-
-        if (!$this->checkIpThirdParty($request, $oauth_client)) {
-            return redirect($request->get('redirect_uri').'?code=403&state=error_ip');
         }
 
         $user_client_relation = $this->checkPermissionUseApp($request);
@@ -209,38 +205,6 @@ class AuthorizationController
         }
 
         return $oauth_client;
-    }
-
-    /**
-     * @param $request
-     * @param $oauth_client
-     * @return bool
-     */
-    private function checkIpThirdParty($request, $oauth_client)
-    {
-        if ($oauth_client->ip_secure == '') {
-            return true;
-        }
-
-        if ($this->checkIpRange(explode(',', $oauth_client->ip_secure), $request->ip())) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $ip_secure
-     * @param $ip
-     * @return bool
-     */
-    private function checkIpRange($ip_secure, $ip)
-    {
-        if ($this->authService->checkIpRange($ip_secure, $ip)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
