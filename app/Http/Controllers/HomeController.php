@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckIpRange;
+use App\Http\Middleware\CheckResetPassword;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +15,9 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        $this->middleware(CheckIpRange::class);
         $this->middleware('auth');
+        $this->middleware(CheckResetPassword::class);
     }
 
     /**
