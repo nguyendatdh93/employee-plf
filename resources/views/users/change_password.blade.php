@@ -75,14 +75,6 @@
                     enableError('new-password', '{{ __('change_password.fill_out') }}');
 
                     return false;
-                }else if (new_password.length < 8) {
-                    enableError('new-password', '{{ __('change_password.lenght_8') }}');
-
-                    return false;
-                }else if (new_password.length > 50) {
-                    enableError('new-password', '{{ __('change_password.lenght_50') }}');
-
-                    return false;
                 } else {
                     disableError('new-password')
                 }
@@ -95,43 +87,19 @@
                     disableError('confirm-new-password')
                 }
 
-                if (!validatePassword('new-password', $('.new-password input').val())) {
+                if (!validatePassword('new-password', new_password)) {
 
                     return false;
                 }
 
-                if (!validatePassword('confirm-new-password',  $('.confirm-new-password input').val())) {
+                if (!validatePassword('confirm-new-password', confirm_new_password)) {
                     return false;
                 }
 
                 return true;
             })
-
-            function enableError(classEl, message)
-            {
-                $('.'+classEl).addClass('has-error');
-                $('.'+classEl + ' .help-block').text(message);
-            }
-
-            function disableError(classEl)
-            {
-                $('.'+classEl).removeClass('has-error');
-                $('.'+classEl + ' .help-block').text('');
-            }
-
-            function validatePassword(classEl, password)
-            {
-                // Validate length
-                if(password.length < 8) {
-                    enableError(classEl, '{{ __('change_password.lenght_8') }}');
-
-                    return false;
-                }
-
-                disableError(classEl);
-
-                return true;
-            }
         })
     </script>
+
+    @include('users.partials.validate_password')
 @endsection
