@@ -76,35 +76,8 @@
 
                 return true;
             })
-
-            function enableError(classEl, message)
-            {
-                $('.'+classEl).addClass('has-error');
-                $('.'+classEl + ' .help-block').text(message);
-            }
-
-            function disableError(classEl)
-            {
-                $('.'+classEl).removeClass('has-error');
-                $('.'+classEl + ' .help-block').text('');
-            }
-
-            function validatePassword(classEl, password)
-            {
-                if(password.length < 8) {
-                    enableError(classEl, '{{ __('reset_password.lenght_8') }}');
-
-                    return false;
-                } else if (password.length > 50) {
-                    enableError(classEl, '{{ __('reset_password.lenght_50') }}');
-
-                    return false;
-                }
-
-                disableError(classEl);
-
-                return true;
-            }
         })
     </script>
+
+    @include('users.partials.validate_password')
 @endsection

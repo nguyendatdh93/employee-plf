@@ -16,6 +16,9 @@ class User extends Authenticatable
     const RESET_PASSWORD_YES    = 1;
     const RESET_PASSWORD_EXTEND = 2;
 
+    const MIN_LIMIT_PASSWORD = 8;
+    const MAX_LIMIT_PASSWORD = 50;
+
     const ACTIVE     = 1;
     const DELETE_FLG = 1;
 
