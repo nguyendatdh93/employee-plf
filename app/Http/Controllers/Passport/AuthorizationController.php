@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Passport;
 
 use App\Models\Log;
+use App\Models\OauthClient;
 use App\Repositories\Contracts\LogRepositoryInterface;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
@@ -107,17 +108,17 @@ class AuthorizationController
         ]);
 
         if ($validator->fails()) {
-            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $oauth_client = $this->checkOauthClientApp($request);
         if (!$oauth_client) {
-            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $user_client_relation = $this->checkPermissionUseApp($request);
         if (!$user_client_relation) {
-            return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_FORBIDDEN.'&state='. OauthClient::ERROR_PERMISSION);
         }
 
         $change_password = $this->authService->checkResetPassword();
@@ -151,8 +152,8 @@ class AuthorizationController
             );
         });
 
-        if ($response->getStatusCode() == 401) {
-            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+        if ($response->getStatusCode() == OauthClient::HTTP_CODE_UNAUTHORIZED) {
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $this->saveLog($user_client_relation->id, $request->ip());

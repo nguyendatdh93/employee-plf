@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Passport;
 
+use App\Models\OauthClient;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
@@ -78,11 +79,11 @@ class AccessTokenController
     {
         $oauth_client = $this->checkOauthClientApp($httpRequest);
         if (!$oauth_client) {
-            return json_encode(['code' => 401, 'state' => 'error_unauthorized']);
+            return json_encode(['httpcode' => OauthClient::HTTP_CODE_UNAUTHORIZED, 'state' => OauthClient::ERROR_UNAUTHORIZED]);
         }
 
         if (!$this->checkIpThirdParty($httpRequest, $oauth_client)) {
-            return json_encode(['code' => 403, 'state' => 'error_ip']);
+            return json_encode(['httpcode' => OauthClient::HTTP_CODE_FORBIDDEN, 'state' => OauthClient::ERROR_IP]);
         }
 
         return $this->withErrorHandling(function () use ($request) {
