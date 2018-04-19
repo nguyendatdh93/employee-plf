@@ -10,4 +10,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @return string
+     */
+    public function setupLanguage()
+    {
+        $language = __('datatable');
+
+        return json_encode($language);
+    }
 }

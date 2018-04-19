@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Auth;
+use Password;
 
 class ResetPasswordController extends Controller
 {
@@ -35,5 +39,38 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function reset(Request $request)
+    {
+        $validator = validator($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8|max:50',
+        ], $this->validationErrorMessages());
+
+        if($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $response = $this->broker()->reset(
+            $this->credentials($request), function ($user, $password) {
+                $this->resetPassword($user, $password);
+            }
+        );
+        if (!empty(Auth::user()) && Auth::user()->reset_password_flg != User::RESET_PASSWORD_YES) {
+            $user                     = Auth::user();
+            $user->reset_password_flg = User::RESET_PASSWORD_YES;
+            $user->save();
+        }
+
+        return $response == Password::PASSWORD_RESET
+            ? $this->sendResetResponse($response)
+            : $this->sendResetFailedResponse($request, $response);
     }
 }

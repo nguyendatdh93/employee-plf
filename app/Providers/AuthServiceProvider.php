@@ -30,5 +30,8 @@ class AuthServiceProvider extends ServiceProvider
 
 //        Passport::enableImplicitGrant();
         //
+        \Route::get('oauth/authorize', [
+            'uses' => 'App\Http\Controllers\AuthorizationController@authorize',
+        ])->middleware(['web', 'auth']);
     }
 }
