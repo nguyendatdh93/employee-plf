@@ -64,7 +64,11 @@
                                     <td>{{ $oauth_client->id }}</td>
                                     <td>{{ $oauth_client->name }}</td>
                                     <td>{{ $oauth_client->secret }}</td>
-                                    <td>{{ $oauth_client->ip_secure }}</td>
+                                    <td>
+                                        @foreach($oauth_client->ip_secure as $ip)
+                                            <p>{{ $ip }}</p>
+                                        @endforeach
+                                    </td>
                                     <td>{{ $oauth_client->redirect }}</td>
                                     <td>{{ $oauth_client->created_at }}</td>
                                     <td>
