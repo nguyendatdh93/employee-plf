@@ -228,9 +228,12 @@ class AuthorizationController
      */
     private function saveLog($user_client_id, $ip)
     {
-        $this->logRepository->create([
-            'user_client_id' => $user_client_id,
-            'ip'             => $ip
-        ]);
+        if (!empty($user_client_id) && !empty($ip))
+        {
+            $this->logRepository->create([
+                'user_client_id' => $user_client_id,
+                'ip'             => $ip
+            ]);
+        }
     }
 }
