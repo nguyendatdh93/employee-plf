@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Passport;
 
 use App\Models\Log;
 use App\Models\OauthClient;
+use App\Models\Slack;
+use App\Notifications\SlackNotification;
 use App\Repositories\Contracts\LogRepositoryInterface;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
 use App\Services\AuthService;
 use App\Services\ValidationService;
 use Illuminate\Http\Request;
+use Notification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Validator;
 use Laravel\Passport\Passport;
@@ -108,16 +110,22 @@ class AuthorizationController
         ]);
 
         if ($validator->fails()) {
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : Client App validation error', $validator->messages()->first()));
             return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $oauth_client = $this->checkOauthClientApp($request);
         if (!$oauth_client) {
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : Client app is not exits!', 'Client id = ' . $request->get('client_id') . "\n Client secret = " . $request->get('client_secret')));
             return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $user_client_relation = $this->checkPermissionUseApp($request);
         if (!$user_client_relation) {
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_FORBIDDEN, 'Exception : User does not have permission to use app', 'User email = ' . Auth::user()->email . "\n Client app = " . $oauth_client->name));
             return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_FORBIDDEN.'&state='. OauthClient::ERROR_PERMISSION);
         }
 
@@ -153,6 +161,8 @@ class AuthorizationController
         });
 
         if ($response->getStatusCode() == OauthClient::HTTP_CODE_UNAUTHORIZED) {
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : User can not access to app', 'User email = ' . Auth::user()->email . "\n Client app = " . $oauth_client->name));
             return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
