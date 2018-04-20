@@ -116,6 +116,11 @@ class AdminController extends Controller
                     ->withInput();
             }
 
+            $domain_name = substr(strrchr($input['email'], "@"), 1);
+            if ($domain_name != Config::get('base.domain')) {
+                return back()->withErrors(['email' => strtr(__('add_user.domain_requirement'), [':domain' => Config::get('base.domain')])])->withInput();
+            }
+
             $existed_user = $this->userRepository->findAllByEmail($input['email']);
             if ($existed_user) {
                 return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();

@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Passport;
 
 use App\Models\Log;
+use App\Models\OauthClient;
+use App\Models\Slack;
+use App\Notifications\SlackNotification;
 use App\Repositories\Contracts\LogRepositoryInterface;
 use App\Repositories\Eloquents\OauthClientRepository;
 use App\Repositories\Eloquents\UserClientRelationRepository;
 use App\Services\AuthService;
 use App\Services\ValidationService;
 use Illuminate\Http\Request;
+use Notification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Validator;
 use Laravel\Passport\Passport;
@@ -98,7 +101,7 @@ class AuthorizationController
         Request $request,
         ClientRepository $clients,
         TokenRepository $tokens
-    ) {
+    ) {;
         $validator = Validator::make($request->all(),[
             'client_id'     => 'required',
             'client_secret' => 'required',
@@ -107,21 +110,23 @@ class AuthorizationController
         ]);
 
         if ($validator->fails()) {
-            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : Client App validation error', $validator->messages()->first()));
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $oauth_client = $this->checkOauthClientApp($request);
         if (!$oauth_client) {
-            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
-        }
-
-        if (!$this->checkIpThirdParty($request, $oauth_client)) {
-            return redirect($request->get('redirect_uri').'?code=403&state=error_ip');
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : Client app is not exits!', 'Client id = ' . $request->get('client_id') . "\n Client secret = " . $request->get('client_secret')));
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $user_client_relation = $this->checkPermissionUseApp($request);
         if (!$user_client_relation) {
-            return redirect($request->get('redirect_uri').'?code=403&state=error_permission');
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_FORBIDDEN, 'Exception : User does not have permission to use app', 'User email = ' . Auth::user()->email . "\n Client app = " . $oauth_client->name));
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_FORBIDDEN.'&state='. OauthClient::ERROR_PERMISSION);
         }
 
         $change_password = $this->authService->checkResetPassword();
@@ -155,8 +160,10 @@ class AuthorizationController
             );
         });
 
-        if ($response->getStatusCode() == 401) {
-            return redirect($request->get('redirect_uri').'?code=401&state=error_unauthorized');
+        if ($response->getStatusCode() == OauthClient::HTTP_CODE_UNAUTHORIZED) {
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : User can not access to app', 'User email = ' . Auth::user()->email . "\n Client app = " . $oauth_client->name));
+            return redirect($request->get('redirect_uri').'?httpcode='.OauthClient::HTTP_CODE_UNAUTHORIZED.'&state='. OauthClient::ERROR_UNAUTHORIZED);
         }
 
         $this->saveLog($user_client_relation->id, $request->ip());
@@ -213,38 +220,6 @@ class AuthorizationController
 
     /**
      * @param $request
-     * @param $oauth_client
-     * @return bool
-     */
-    private function checkIpThirdParty($request, $oauth_client)
-    {
-        if ($oauth_client->ip_secure == '') {
-            return true;
-        }
-
-        if ($this->checkIpRange(explode(',', $oauth_client->ip_secure), $request->ip())) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $ip_secure
-     * @param $ip
-     * @return bool
-     */
-    private function checkIpRange($ip_secure, $ip)
-    {
-        if ($this->authService->checkIpRange($ip_secure, $ip)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $request
      * @return bool
      */
     private function checkPermissionUseApp($request)
@@ -263,9 +238,12 @@ class AuthorizationController
      */
     private function saveLog($user_client_id, $ip)
     {
-        $this->logRepository->create([
-            'user_client_id' => $user_client_id,
-            'ip'             => $ip
-        ]);
+        if (!empty($user_client_id) && !empty($ip))
+        {
+            $this->logRepository->create([
+                'user_client_id' => $user_client_id,
+                'ip'             => $ip
+            ]);
+        }
     }
 }
