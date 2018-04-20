@@ -10,5 +10,6 @@ return [
     'placeholder_email' => 'Fill user email',
     'btn_create_user' => 'Create',
     'message_hacking' => "Client apps are not exits on system",
-    'duplicate_email' => "This user was actually deleted in the past!"
+    'duplicate_email' => "This user was actually deleted in the past!",
+    'domain_requirement' => ':domain format is requirement'
 ];
