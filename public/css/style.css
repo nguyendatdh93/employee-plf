@@ -24,3 +24,7 @@ table tr td {
     table-layout: fixed;
     word-break: break-all;
 }
+
+span.required {
+    color:red;
+}

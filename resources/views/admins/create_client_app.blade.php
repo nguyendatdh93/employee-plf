@@ -26,17 +26,17 @@
                     {{ csrf_field() }}
                     <div class="box-body">
                         <div class="form-group client-name @if ($errors->has('client_name')) has-error @endif">
-                            <label for="exampleInputEmail1">{{ __('create_client_app.client_name') }}</label>
+                            <label for="exampleInputEmail1">{{ __('create_client_app.client_name') }} <span class="required">*</span></label>
                             <input type="text" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="">
                             <span class="help-block"> @if ($errors->has('client_name')) {{ $errors->first('client_name') }} @endif</span>
                         </div>
                         <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
-                            <label for="exampleInputPassword1">{{ __('create_client_app.client_call_back') }}</label>
+                            <label for="exampleInputPassword1">{{ __('create_client_app.client_call_back') }} <span class="required">*</span></label>
                             <input type="text" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="ex: http://example.com/callback">
                             <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
                         </div>
                         <div class="form-group ip-secure @if ($errors->has('ip_secure')) has-error @endif" >
-                            <label for="exampleInputPassword1">{{ __('create_client_app.ip_secure') }}</label>
+                            <label for="exampleInputPassword1">{{ __('create_client_app.ip_secure') }} </label>
                             <input type="text" name="ip_secure" class="form-control" id="exampleInputPassword1" placeholder="">
                             <span class="help-block"> @if ($errors->has('ip_secure')) {{ $errors->first('ip_secure') }} @endif</span>
                         </div>

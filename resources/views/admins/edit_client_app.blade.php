@@ -27,12 +27,12 @@
                     <div class="box-body">
                         <input type="hidden" name="client_id" value="{{ $oauth_client[0]->id }}">
                         <div class="form-group client-name @if (Session::get('error_client_name')) has-error @endif">
-                            <label for="exampleInputEmail1">{{ __('edit_client_app.client_name') }}</label>
+                            <label for="exampleInputEmail1">{{ __('edit_client_app.client_name') }} <span class="required">*</span></label>
                             <input type="text" value="{{ $oauth_client[0]->name }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="">
                             <span class="help-block"> @if (Session::get('error_client_name')) {{ Session::get('error_client_name') }} @endif</span>
                         </div>
                         <div class="form-group url-redirect @if (Session::get('error_url_redirect')) has-error @endif">
-                            <label for="exampleInputPassword1">{{ __('edit_client_app.client_call_back') }}</label>
+                            <label for="exampleInputPassword1">{{ __('edit_client_app.client_call_back') }} <span class="required">*</span></label>
                             <input type="text" value="{{ $oauth_client[0]->redirect }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="">
                             <span class="help-block">@if (Session::get('error_url_redirect')) {{ Session::get('error_url_redirect') }} @endif</span>
                         </div>

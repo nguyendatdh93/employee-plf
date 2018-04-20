@@ -23,6 +23,9 @@
         body {
             font-family: "Arial", Times, serif;
         }
+        span.required {
+            color:red;
+        }
     </style>
 </head>
 <body>
