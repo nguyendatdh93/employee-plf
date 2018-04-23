@@ -307,7 +307,7 @@ class AdminController extends Controller
             }
 
             if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect_not_url'));
+                return back()->withErrors(['url_redirect' => __('create_client_app.error_url_redirect_not_url')])->withInput();
             }
 
             if ($inputs['ip_secure'] != '') {
@@ -406,7 +406,7 @@ class AdminController extends Controller
             }
 
             if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-                return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_url_redirect_not_url'));
+                return back()->withErrors(['url_redirect' => __('create_client_app.error_url_redirect_not_url')])->withInput();
             }
 
             if ($inputs['ip_secure'] != '') {

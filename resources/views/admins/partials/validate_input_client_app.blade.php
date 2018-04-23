@@ -6,10 +6,6 @@
                 var url_redirect = $('.url-redirect input').val();
                 var ip_secure    = $('.ip-secure input').val();
 
-                if (!validateClientUrlRedirect('url-redirect',  url_redirect)) {
-                    return false;
-                }
-
                 if (!validateIPaddress('ip-secure',  ip_secure)) {
                     return false;
                 }
