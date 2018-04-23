@@ -38,5 +38,7 @@ class AuthServiceProvider extends ServiceProvider
             'uses' => 'App\Http\Controllers\Passport\AccessTokenController@issueToken',
             'middleware' => 'throttle',
         ]);
+
+        \Route::get('password/reset/{token}/{email}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     }
 }

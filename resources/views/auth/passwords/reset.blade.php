@@ -13,7 +13,7 @@
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('reset_forgot_password.email') }} <span class="required">*</span></label>
 
                             <div class="col-md-6">
