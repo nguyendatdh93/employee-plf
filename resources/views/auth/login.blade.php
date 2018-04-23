@@ -21,7 +21,6 @@
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-                                <p style="margin-top: 5px;opacity: 0.9;font-size:13px;font-style:italic">{{ Config::get('base.domain') .  __('login_user.email_requirement')}}</p>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
