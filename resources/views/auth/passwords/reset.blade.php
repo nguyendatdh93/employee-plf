@@ -13,11 +13,11 @@
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group row" hidden>
+                        <div class="form-group row" disabled>
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('reset_forgot_password.email') }} <span class="required">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" required autofocus>
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" disabled name="email" value="{{ $email ?? old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback">

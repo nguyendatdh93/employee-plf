@@ -11,5 +11,5 @@ return [
     'btn_create_user' => '登録する',
     'message_hacking' => "このアプリケーションを存在されません。",
     'duplicate_email' => "The email has already been taken or user was actually deleted in the past!",
-    'domain_requirement' => ':domain メールアドレスのみ対応します。'
+    'domain_requirement' => ':domain メールアドレスを使ってください'
 ];

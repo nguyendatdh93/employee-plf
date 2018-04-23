@@ -69,7 +69,7 @@ class UserController extends Controller
             $user->password = bcrypt($inputs['new_password']);
             $user->save();
 
-            return back()->with("success", __('change_password.success'));
+            return redirect()->route('profile')->with("success", __('change_password.success'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

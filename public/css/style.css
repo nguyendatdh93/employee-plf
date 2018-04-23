@@ -28,3 +28,7 @@ table tr td {
 span.required {
     color:red;
 }
+
+.form-group.has-error label {
+    color: #333;
+}

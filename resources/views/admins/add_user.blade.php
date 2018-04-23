@@ -16,7 +16,7 @@
         @endif
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ trans('add_user.box_title_add_user') }}</h3>

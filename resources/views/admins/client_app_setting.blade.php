@@ -108,8 +108,8 @@
                 client_secret   = $(this).data('client-secret'),
                 confirm_message = '<p>{{ trans('client_app_setting.delete_confirm_text') }}</p>';
 
-            confirm_message += '<br>{{ trans('client_app_setting.client_id') }}: ' + client_id;
             confirm_message += '<br>{{ trans('client_app_setting.client_name') }}: ' + client_name;
+            confirm_message += '<br>{{ trans('client_app_setting.client_id') }}: ' + client_id;
             confirm_message += '<br>{{ trans('client_app_setting.client_secret') }}: ' + client_secret;
             confirm_box.find('.modal-title').html('{{ trans('client_app_setting.delete_confirm_title') }}');
             confirm_box.find('.modal-body').html(confirm_message);

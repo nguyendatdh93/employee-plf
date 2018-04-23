@@ -3,7 +3,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="col-md-12">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8">
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
