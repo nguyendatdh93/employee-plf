@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => 'Reset Password',
-    'email' => 'E-Mail Address',
-    'btn_send_mail' => 'Send Password Reset Link',
+    'title' => 'パスワード再設定',
+    'email' => 'メールアドレス',
+    'btn_send_mail' => '送信',
 ];
