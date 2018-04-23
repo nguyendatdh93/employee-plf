@@ -64,7 +64,11 @@
                                     <td>{{ $oauth_client->id }}</td>
                                     <td>{{ $oauth_client->name }}</td>
                                     <td>{{ $oauth_client->secret }}</td>
-                                    <td>{{ $oauth_client->ip_secure }}</td>
+                                    <td>
+                                        @foreach($oauth_client->ip_secure as $ip)
+                                            <p>{{ $ip }}</p>
+                                        @endforeach
+                                    </td>
                                     <td>{{ $oauth_client->redirect }}</td>
                                     <td>{{ $oauth_client->created_at }}</td>
                                     <td>
@@ -104,8 +108,8 @@
                 client_secret   = $(this).data('client-secret'),
                 confirm_message = '<p>{{ trans('client_app_setting.delete_confirm_text') }}</p>';
 
-            confirm_message += '<br>{{ trans('client_app_setting.client_id') }}: ' + client_id;
             confirm_message += '<br>{{ trans('client_app_setting.client_name') }}: ' + client_name;
+            confirm_message += '<br>{{ trans('client_app_setting.client_id') }}: ' + client_id;
             confirm_message += '<br>{{ trans('client_app_setting.client_secret') }}: ' + client_secret;
             confirm_box.find('.modal-title').html('{{ trans('client_app_setting.delete_confirm_title') }}');
             confirm_box.find('.modal-body').html(confirm_message);

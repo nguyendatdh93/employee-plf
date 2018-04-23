@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@section('Title') {{ config('app.name', 'Employee platform') }} @show</title>
+        <title>@section('Title') {{ __('title_page.user_site') }} @show</title>
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -22,6 +22,9 @@
     <style>
         body {
             font-family: "Arial", Times, serif;
+        }
+        span.required {
+            color:red;
         }
     </style>
 </head>

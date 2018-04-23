@@ -5,7 +5,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-    @include('layouts.partials.header')
+    @include('layouts.partials.header_user')
 </head>
 <body class="skin-blue">
 @section('Body')

@@ -60,7 +60,7 @@ class OverrideResetPassword extends Notification
             ->subject(trans('mail_forgot_password.subject'))
             ->greeting(trans('mail_forgot_password.greeting'))
             ->line(trans('mail_forgot_password.line1'))
-            ->action(trans('mail_forgot_password.btn_reset_text'), url(config('app.url').route('password.reset', $this->token, false)))
+            ->action(trans('mail_forgot_password.btn_reset_text'), url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email])))
             ->line(trans('mail_forgot_password.line2'));
     }
 

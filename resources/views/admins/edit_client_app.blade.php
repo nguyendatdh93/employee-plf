@@ -4,7 +4,7 @@
 @section('Content')
     <!-- Main content -->
     <section class="content">
-        <div class="col-md-6">
+        <div class="col-md-8">
             @if (session('error'))
                 <div class="row">
                     <div class="col-md-12">
@@ -22,29 +22,35 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form action="{{ route('edit_client_app') }}" method="post">
+                <form class="form-horizontal" action="{{ route('edit_client_app') }}" method="post">
                     {{ csrf_field() }}
                     <div class="box-body">
                         <input type="hidden" name="client_id" value="{{ $oauth_client[0]->id }}">
-                        <div class="form-group client-name @if (Session::get('error_client_name')) has-error @endif">
-                            <label for="exampleInputEmail1">{{ __('edit_client_app.client_name') }}</label>
-                            <input type="text" value="{{ $oauth_client[0]->name }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="">
-                            <span class="help-block"> @if (Session::get('error_client_name')) {{ Session::get('error_client_name') }} @endif</span>
+                        <div class="form-group client-name @if ($errors->has('client_name')) has-error @endif">
+                            <label for="exampleInputEmail1" class="col-sm-2 control-label">{{ __('edit_client_app.client_name') }} <span class="required">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" value="{{ $oauth_client[0]->name }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
+                                <span class="help-block"> @if ($errors->has('client_name')) {{ $errors->first('client_name') }} @endif</span>
+                            </div>
                         </div>
-                        <div class="form-group url-redirect @if (Session::get('error_url_redirect')) has-error @endif">
-                            <label for="exampleInputPassword1">{{ __('edit_client_app.client_call_back') }}</label>
-                            <input type="text" value="{{ $oauth_client[0]->redirect }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="">
-                            <span class="help-block">@if (Session::get('error_url_redirect')) {{ Session::get('error_url_redirect') }} @endif</span>
+                        <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
+                            <label for="exampleInputPassword1" class="col-sm-2 control-label">{{ __('edit_client_app.client_call_back') }} <span class="required">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" value="{{ $oauth_client[0]->redirect }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
+                                <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
+                            </div>
                         </div>
-                        <div class="form-group ip-secure @if (Session::get('error_ip_secure')) has-error @endif" >
-                            <label for="exampleInputPassword1">{{ __('edit_client_app.ip_secure') }}</label>
-                            <input type="text" value="{{ $oauth_client[0]->ip_secure }}" name="ip_secure" class="form-control" id="exampleInputPassword1" placeholder="">
-                            <span class="help-block"> @if (Session::get('error_ip_secure')) {{ Session::get('error_ip_secure') }} @endif</span>
+                        <div class="form-group ip-secure @if ($errors->has('ip_secure')) has-error @endif" >
+                            <label for="exampleInputPassword1" class="col-sm-2 control-label">{{ __('edit_client_app.ip_secure') }}</label>
+                            <div class="col-sm-6">
+                                <input type="text" value="{{ $oauth_client[0]->ip_secure }}" name="ip_secure" class="form-control" id="exampleInputPassword1" placeholder="">
+                                <span class="help-block"> @if ($errors->has('ip_secure')) {{ $errors->first('ip_secure') }} @endif</span>
+                            </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
 
-                    <div class="box-footer">
+                    <div class="box-footer" style="text-align: center">
                         <button type="submit" class="btn btn-primary btn-change-password">{{ __('edit_client_app.btn_edit_client_app') }}</button>
                     </div>
                 </form>

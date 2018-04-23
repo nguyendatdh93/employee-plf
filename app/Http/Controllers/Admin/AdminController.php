@@ -261,7 +261,11 @@ class AdminController extends Controller
     public function showClientAppSetting()
     {
         Session::put('menu', 'app_setting');
-        $oauth_clients = $this->oauthClientRepository->all();
+        $oauth_clients            = $this->oauthClientRepository->all();
+        foreach ($oauth_clients as $key => $oauth_client) {
+            $oauth_client->ip_secure = explode(',', $oauth_client->ip_secure);
+            $oauth_clients[$key]     = $oauth_client;
+        }
 
         return view('admins.client_app_setting', ['oauth_clients' => $oauth_clients]);
     }
@@ -303,13 +307,16 @@ class AdminController extends Controller
             }
 
             if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect_not_url'));
+                return back()->withErrors(['url_redirect' => __('create_client_app.error_url_redirect_not_url')])->withInput();
             }
 
             if ($inputs['ip_secure'] != '') {
-                $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
-                if (!$is_ip) {
-                    return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'))->withInput();
+                $ips = explode(',', $inputs['ip_secure']);
+                foreach ($ips as $ip) {
+                    $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $ip, $output_array);
+                    if (!$is_ip) {
+                        return back()->withErrors(['ip_secure' => __('create_client_app.error_ip_secure_is_ip')])->withInput();
+                    }
                 }
             }
 
@@ -399,13 +406,16 @@ class AdminController extends Controller
             }
 
             if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-                return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_url_redirect_not_url'));
+                return back()->withErrors(['url_redirect' => __('create_client_app.error_url_redirect_not_url')])->withInput();
             }
 
             if ($inputs['ip_secure'] != '') {
-                $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
-                if (!$is_ip) {
-                    return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_ip_secure_is_ip'));
+                $ips = explode(',', $inputs['ip_secure']);
+                foreach ($ips as $ip) {
+                    $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $ip, $output_array);
+                    if (!$is_ip) {
+                        return back()->withErrors(['ip_secure' => __('create_client_app.error_ip_secure_is_ip')])->withInput();
+                    }
                 }
             }
 

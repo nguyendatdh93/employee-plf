@@ -50,7 +50,7 @@ class UserController extends Controller
             $inputs = $request->all();
 
             if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
-                return back()->with("error", __('change_password.error_current_password'));
+                return back()->withErrors(["current_password", __('change_password.error_current_password')])->withInput();
             }
 
             $validator = Validator::make($inputs, [
@@ -69,7 +69,7 @@ class UserController extends Controller
             $user->password = bcrypt($inputs['new_password']);
             $user->save();
 
-            return back()->with("success", __('change_password.success'));
+            return redirect()->route('profile')->with("success", __('change_password.success'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -93,7 +93,7 @@ class UserController extends Controller
             $inputs = $request->all();
             if (Hash::check($inputs['new_password'], Auth::user()->password)) {
                 // The passwords matches
-                return back()->with("error", __('reset_password.error_current_password'));
+                return back()->withErrors(["new_password" => __('reset_password.error_current_password')])->withInput();
             }
 
             $validator = Validator::make($inputs, [

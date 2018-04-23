@@ -16,6 +16,14 @@
 
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
+                        <div class="form-group row">
+                            <div class="col-md-2"></div>
+                            <label for="email" class="col-md-8 col-form-label text-md-left" style="font-size: 12px">
+                                ご登録されたメールアドレスを入力してください。<br/>
+                                仮パスワードをメールにてご連絡します。<br/>
+                                ※注意：パスワード再設定は自分のPCに行ってください。
+                            </label>
+                        </div>
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('form_send_mail_reset_password.email') }}</label>
