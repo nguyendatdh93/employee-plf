@@ -62,7 +62,7 @@ class LoginController extends Controller
             if (Auth::guard('admin')->attempt($userdata)) {
                 return redirect()->route('user_management');
             } else {
-                return Redirect::to('admin')->with('error', __('login_admin.login_error'));
+                return back()->withErrors(['email' => __('login_admin.login_error')])->withInput();
             }
         }
     }

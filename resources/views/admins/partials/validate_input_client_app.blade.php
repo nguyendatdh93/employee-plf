@@ -6,30 +6,6 @@
                 var url_redirect = $('.url-redirect input').val();
                 var ip_secure    = $('.ip-secure input').val();
 
-                if (client_name == '') {
-                    enableError('client-name', '{{ __('create_client_app.fill_out') }}');
-
-                    return false;
-                } else if(client_name.length > 255){
-                    enableError('client-name', '{{ __('create_client_app.lenght_255') }}');
-
-                    return false;
-                } else {
-                    disableError('client-name')
-                }
-
-                if (url_redirect == '') {
-                    enableError('url-redirect', '{{ __('create_client_app.fill_out') }}');
-
-                    return false;
-                } else if(url_redirect.length > 255){
-                    enableError('url-redirect', '{{ __('create_client_app.lenght_255') }}');
-
-                    return false;
-                } else {
-                    disableError('new-password')
-                }
-
                 if (!validateClientUrlRedirect('url-redirect',  url_redirect)) {
                     return false;
                 }

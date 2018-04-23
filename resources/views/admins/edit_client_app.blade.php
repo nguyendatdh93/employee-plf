@@ -26,20 +26,20 @@
                     {{ csrf_field() }}
                     <div class="box-body">
                         <input type="hidden" name="client_id" value="{{ $oauth_client[0]->id }}">
-                        <div class="form-group client-name @if (Session::get('error_client_name')) has-error @endif">
+                        <div class="form-group client-name @if ($errors->has('client_name')) has-error @endif">
                             <label for="exampleInputEmail1">{{ __('edit_client_app.client_name') }} <span class="required">*</span></label>
-                            <input type="text" value="{{ $oauth_client[0]->name }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="">
-                            <span class="help-block"> @if (Session::get('error_client_name')) {{ Session::get('error_client_name') }} @endif</span>
+                            <input type="text" value="{{ $oauth_client[0]->name }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
+                            <span class="help-block"> @if ($errors->has('client_name')) {{ $errors->first('client_name') }} @endif</span>
                         </div>
-                        <div class="form-group url-redirect @if (Session::get('error_url_redirect')) has-error @endif">
+                        <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
                             <label for="exampleInputPassword1">{{ __('edit_client_app.client_call_back') }} <span class="required">*</span></label>
-                            <input type="text" value="{{ $oauth_client[0]->redirect }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="">
-                            <span class="help-block">@if (Session::get('error_url_redirect')) {{ Session::get('error_url_redirect') }} @endif</span>
+                            <input type="text" value="{{ $oauth_client[0]->redirect }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
+                            <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
                         </div>
-                        <div class="form-group ip-secure @if (Session::get('error_ip_secure')) has-error @endif" >
+                        <div class="form-group ip-secure @if ($errors->has('ip_secure')) has-error @endif" >
                             <label for="exampleInputPassword1">{{ __('edit_client_app.ip_secure') }}</label>
                             <input type="text" value="{{ $oauth_client[0]->ip_secure }}" name="ip_secure" class="form-control" id="exampleInputPassword1" placeholder="">
-                            <span class="help-block"> @if (Session::get('error_ip_secure')) {{ Session::get('error_ip_secure') }} @endif</span>
+                            <span class="help-block"> @if ($errors->has('ip_secure')) {{ $errors->first('ip_secure') }} @endif</span>
                         </div>
                     </div>
                     <!-- /.box-body -->

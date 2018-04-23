@@ -27,12 +27,12 @@
                     <div class="box-body">
                         <div class="form-group client-name @if ($errors->has('client_name')) has-error @endif">
                             <label for="exampleInputEmail1">{{ __('create_client_app.client_name') }} <span class="required">*</span></label>
-                            <input type="text" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="">
+                            <input type="text" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
                             <span class="help-block"> @if ($errors->has('client_name')) {{ $errors->first('client_name') }} @endif</span>
                         </div>
                         <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
                             <label for="exampleInputPassword1">{{ __('create_client_app.client_call_back') }} <span class="required">*</span></label>
-                            <input type="text" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="ex: http://example.com/callback">
+                            <input type="text" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="ex: http://example.com/callback" required autofocus>
                             <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
                         </div>
                         <div class="form-group ip-secure @if ($errors->has('ip_secure')) has-error @endif" >
