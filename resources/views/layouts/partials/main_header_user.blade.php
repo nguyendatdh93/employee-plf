@@ -1,7 +1,7 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ route('profile') }}" class="logo"><b>Employee</b> Platform</a>
+    <a href="{{ route('profile') }}" class="logo">{{ __('logo.user_site') }}</a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
