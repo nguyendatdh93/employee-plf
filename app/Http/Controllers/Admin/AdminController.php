@@ -66,19 +66,23 @@ class AdminController extends Controller
      * @param $user_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeUser(Request $request, $user_id = null)
+    public function removeUser(Request $request, $user_id = null, $user_email = null)
     {
         if (empty($user_id)) {
+            return redirect()->route('404');
+        }
+
+        if (empty($user_email)) {
             return redirect()->route('404');
         }
 
         $result = $this->userRepository->delete($user_id);
 
         if (empty($result)) {
-            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_id' => $user_id]));
+            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_email' => $user_email]));
         }
 
-        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_id' => $user_id]));
+        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_email' => $user_email]));
     }
 
     /**
@@ -122,8 +126,10 @@ class AdminController extends Controller
             }
 
             $existed_user = $this->userRepository->findAllByEmail($input['email']);
+
             if ($existed_user) {
-                return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();
+                $this->userRepository->enableUser($existed_user->id);
+                $this->userClientRelationRepository->removeByUserId($existed_user->id);
             }
 
             $client_app_ids = [];
