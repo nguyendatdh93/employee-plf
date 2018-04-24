@@ -9,7 +9,7 @@ return [
     'btn_edit' => '編集',
     'btn_remove' => '削除',
     'btn_reset_expired' => 'アカウントを再発行する',
-    'add_user' => '新規追加',
+    'add_user' => '新規登録',
     'delete_confirm_title' => '確認',
     'delete_confirm_text' => 'このアカウントを削除しますか？',
     'btn_confirm' => '削除する',
@@ -17,6 +17,6 @@ return [
     'title' => 'アカウント一覧',
     'message_remove_user_not_success' => ':user_email のアカウントを削除できませんでした。',
     'message_remove_user_success' => ':user_email のアカウントを削除しました。',
-    'message_add_user_success' => ':user_nameアカウントのアプリケーション連携を更新しました。',
-    'message_update_user_success' => ':user_name のアカウントを更新しました。',
+    'message_add_user_success' => ':user_nameのアカウントを登録しました。',
+    'message_update_user_success' => ':user_nameアカウントのアプリケーション連携を更新しました',
 ];

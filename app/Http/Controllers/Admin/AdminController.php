@@ -124,12 +124,15 @@ class AdminController extends Controller
             if ($domain_name != Config::get('base.domain')) {
                 return back()->withErrors(['email' => strtr(__('add_user.domain_requirement'), [':domain' => Config::get('base.domain')])])->withInput();
             }
-
+            $password     = Config::get('base.default_password');
             $existed_user = $this->userRepository->findAllByEmail($input['email']);
 
-            if ($existed_user) {
+            if ($existed_user && $existed_user->del_flg == User::DELETE_FLG) {
                 $this->userRepository->enableUser($existed_user->id);
                 $this->userClientRelationRepository->removeByUserId($existed_user->id);
+                $user = $existed_user;
+            } elseif ($existed_user) {
+                return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();
             }
 
             $client_app_ids = [];
@@ -146,13 +149,14 @@ class AdminController extends Controller
                 }
             }
 
-            $password = Config::get('base.default_password');
-            $user     = $this->userRepository->create([
-                'name'               => $input['name'],
-                'email'              => $input['email'],
-                'reset_password_flg' => User::RESET_PASSWORD_NO,
-                'password'           => Hash::make($password)
-            ]);
+            if (!$existed_user) {
+                $user     = $this->userRepository->create([
+                    'name'               => $input['name'],
+                    'email'              => $input['email'],
+                    'reset_password_flg' => User::RESET_PASSWORD_NO,
+                    'password'           => Hash::make($password)
+                ]);
+            }
 
             if (!empty($input['client_apps'])) {
                 foreach ($input['client_apps'] as $client_app) {
@@ -255,7 +259,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_add_user_success'), [':user_name' => $user->name]));
+            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_update_user_success'), [':user_name' => $user->email]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
