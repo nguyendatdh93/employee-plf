@@ -30,7 +30,7 @@ use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Laravel\Passport\Http\Controllers\RetrievesAuthRequestFromSession;
 use Response;
 
-class AuthorizationController
+class AuthorizationController extends \Laravel\Passport\Http\Controllers\AuthorizationController
 {
     use HandlesOAuthErrors, RetrievesAuthRequestFromSession;
 
@@ -169,39 +169,6 @@ class AuthorizationController
         $this->saveLog($user_client_relation->id, $request->ip());
 
         return $response;
-    }
-
-    /**
-     * Transform the authorization requests's scopes into Scope instances.
-     *
-     * @param  AuthRequest  $request
-     * @return array
-     */
-    protected function parseScopes($authRequest)
-    {
-        return Passport::scopesFor(
-            collect($authRequest->getScopes())->map(function ($scope) {
-                return $scope->getIdentifier();
-            })->all()
-        );
-    }
-
-    /**
-     * Approve the authorization request.
-     *
-     * @param  AuthorizationRequest  $authRequest
-     * @param  Model  $user
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    private function approveRequest($authRequest, $user)
-    {
-        $authRequest->setUser(new User($user->getKey()));
-
-        $authRequest->setAuthorizationApproved(true);
-
-        return $this->server->completeAuthorizationRequest(
-            $authRequest, new Psr7Response
-        );
     }
 
     /**
