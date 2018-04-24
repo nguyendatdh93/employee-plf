@@ -27,6 +27,9 @@
             color:red;
         }
     </style>
+
+    @section('Script')
+    @show
 </head>
 <body>
     <div id="app">
