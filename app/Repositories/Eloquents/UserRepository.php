@@ -41,4 +41,11 @@ class UserRepository extends ATBBaseRepository implements UserRepositoryInterfac
             ->where('users.email', '=', $email)
             ->first();
     }
+
+    public function enableUser($id)
+    {
+        return DB::table('users')
+            ->where('users.id', '=', $id)
+            ->update(['del_flg' => 0]);
+    }
 }

@@ -66,7 +66,7 @@
                                             <a href="{{ route('edit_user_form',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_management.btn_edit') }}">
                                                 <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
                                             </a>
-                                            <a href="{{ route('remove-user',['user_id' => $user->id]) }}"
+                                            <a href="{{ route('remove-user',['user_id' => $user->id, 'user_email' => $user->email]) }}"
                                                class="col-md-3 col-sm-4 btn-remove jsRemove"
                                                data-toggle="tooltip"
                                                data-placement="top"
