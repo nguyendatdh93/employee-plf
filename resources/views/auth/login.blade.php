@@ -59,7 +59,7 @@
                                     {{ __('login_user.btn_login') }}
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                <a class="btn btn-link" href="{{ route('password.request') }}" onclick="showFormForgotPassword()">
                                     {{ __('login_user.forgot_password') }}
                                 </a>
                             </div>
@@ -81,4 +81,12 @@
         </div>
     @endif
 </div>
+@endsection
+
+@section('Script')
+    <script>
+        function showFormForgotPassword() {
+            @php session()->forget('send_mail_forgot_password') @endphp
+        }
+    </script>
 @endsection

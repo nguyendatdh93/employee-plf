@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Session;
 
 class OverrideResetPassword extends Notification
 {
@@ -55,6 +56,8 @@ class OverrideResetPassword extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
 
+        session()->put('send_mail_forgot_password', 'abc');
+
         return (new MailMessage)
 //            ->view('mail.forgot_password')
             ->subject(trans('mail_forgot_password.subject'))
@@ -62,6 +65,7 @@ class OverrideResetPassword extends Notification
             ->line(trans('mail_forgot_password.line1'))
             ->action(trans('mail_forgot_password.btn_reset_text'), url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email])))
             ->line(trans('mail_forgot_password.line2'));
+
     }
 
     /**
