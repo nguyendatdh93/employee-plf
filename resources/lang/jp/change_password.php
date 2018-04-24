@@ -8,7 +8,7 @@ return [
     'btn_change_password' => '保存する',
     "error_current_password" => "パスワードを正しく入力してください",
     'error_change_password' => 'パスワードを変更しました',
-    "success" => "パスワートを変更できませんでした",
+    "success" => "パスワードを変更しました。",
     'fill_out' => '必ず入力してください',
     'lenght_50' => '50文字以内入力してください',
     'lenght_8' => '8文字以上入力してください',

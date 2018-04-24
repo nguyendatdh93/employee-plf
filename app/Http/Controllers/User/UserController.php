@@ -50,7 +50,7 @@ class UserController extends Controller
             $inputs = $request->all();
 
             if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
-                return back()->withErrors(["current_password", __('change_password.error_current_password')])->withInput();
+                return back()->withErrors(["current_password" => __('change_password.error_current_password')])->withInput();
             }
 
             $validator = Validator::make($inputs, [

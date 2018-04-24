@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'title_client_app_setting' => 'アプリケーション設定',
+    'title_client_app_setting' => 'アプリケーション一覧',
     'client_name' => 'アプリケーション名',
     'client_call_back' => 'Callback URL',
-    'ip_secure' => 'IPアドレス制限',
+    'ip_secure' => 'IPアドレス',
     'btn_create_new_client_app' => '新規登録',
     'client_id' => 'ID',
     'client_secret' => 'アプリケーションSecret',
