@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
+use App\Models\Admin;
 use App\Models\OauthClient;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Session;
+use DB;
 
 class AdminController extends Controller
 {
@@ -112,6 +114,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'name'  => __('add_user.form_label_name'),
+                'email' => __('add_user.form_label_email')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -308,6 +316,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'client_name'  => __('create_client_app.client_name'),
+                'url_redirect' => __('create_client_app.client_call_back')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -407,6 +421,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'client_name'  => __('edit_client_app.client_name'),
+                'url_redirect' => __('edit_client_app.client_call_back')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -467,5 +487,12 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function showGetSqlAddAdminForm(Request $request)
+    {
+        $sql = "INSERT INTO employee.admins (name, email, password, del_flg) VALUES ('".$request->get('name')."', '".$request->get('email')."', '".Hash::make($request->get('password'))."', '0')";
+
+        return view('admins.add_admin', ['sql' => $sql]);
     }
 }

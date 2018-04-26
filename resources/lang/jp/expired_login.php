@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'expired_message' => 'You are expired!',
+    'expired_message' => '仮パスワードの期限を消えたので、システム管理者に再発行してもらうように連絡してください。',
 ];

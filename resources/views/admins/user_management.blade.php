@@ -18,83 +18,86 @@
 
     <!-- Main content -->
     <section class="content">
-        <div class="col-md-12 " style="overflow: auto">
-            @if (session('success'))
-                <div class="alert alert-info alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{ session('error') }}
-                </div>
-            @endif
+        <div class="row">
+            <div class="col-md-12 " style="overflow: auto">
+                @if (session('success'))
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-            <div class="row">
-                <div class="col-md-12 " style="overflow: auto">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title" style="margin-top: 19px;">{{ __('user_management.title') }}</h3>
-                            <a href="{{ route('add_user_form') }}" class="btn bg-olive btn-flat margin pull-right"> <i class="fa fa-fw fa-user-plus"></i> {{ __('user_management.add_user') }}</a>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <table id="datatable" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    {{--<th>{{  __('user_management.id') }}</th>--}}
-                                    <th>{{  __('user_management.name') }}</th>
-                                    <th>{{  __('user_management.email') }}</th>
-                                    <th>{{  __('user_management.client_app') }}</th>
-                                    <th style="width: 10%">{{  __('user_management.control') }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($list_users as $user)
+                <div class="row">
+                    <div class="col-md-12 " style="overflow: auto">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title" style="margin-top: 19px;">{{ __('user_management.title') }}</h3>
+                                <a href="{{ route('add_user_form') }}" class="btn bg-olive btn-flat margin pull-right"> <i class="fa fa-fw fa-user-plus"></i> {{ __('user_management.add_user') }}</a>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="datatable" class="table table-bordered table-striped">
+                                    <thead>
                                     <tr>
-                                        {{--<td>{{ $user->id }}</td>--}}
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>
-                                            @foreach($user->client_apps as $client_app)
-                                                <p>- {{ $client_app->name }}</p>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('edit_user_form',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_management.btn_edit') }}">
-                                                <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
-                                            </a>
-                                            <a href="{{ route('remove-user',['user_id' => $user->id, 'user_email' => $user->email]) }}"
-                                               class="col-md-3 col-sm-4 btn-remove jsRemove"
-                                               data-toggle="tooltip"
-                                               data-placement="top"
-                                               data-user-name="{{ $user->name }}"
-                                               data-user-email="{{ $user->email }}"
-                                               title="{{  __('user_management.btn_remove') }}" style="margin-left: 10px">
-                                                <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
-                                            </a>
-                                            @if($user->is_expired)
-                                                <a href="{{ route('reset_expired_user', ['id' => $user->id]) }}"
-                                                   class="col-md-3 col-sm-4 btn-edit"
+                                        {{--<th>{{  __('user_management.id') }}</th>--}}
+                                        <th>{{  __('user_management.name') }}</th>
+                                        <th>{{  __('user_management.email') }}</th>
+                                        <th>{{  __('user_management.client_app') }}</th>
+                                        <th style="width: 10%">{{  __('user_management.control') }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($list_users as $user)
+                                        <tr>
+                                            {{--<td>{{ $user->id }}</td>--}}
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>
+                                                @foreach($user->client_apps as $client_app)
+                                                    <p>- {{ $client_app->name }}</p>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('edit_user_form',['user_id' => $user->id]) }}" class="col-md-3 col-sm-4 btn-edit" data-toggle="tooltip" data-placement="top" title="{{  __('user_management.btn_edit') }}">
+                                                    <i class="fa fa-fw fa-edit" style="font-size: 20px"></i>
+                                                </a>
+                                                <a href="{{ route('remove-user',['user_id' => $user->id, 'user_email' => $user->email]) }}"
+                                                   class="col-md-3 col-sm-4 btn-remove jsRemove"
                                                    data-toggle="tooltip"
                                                    data-placement="top"
-                                                   title="{{  __('user_management.btn_reset_expired') }}">
-                                                    <i class="fa fa-fw fa-refresh" style="font-size: 20px; color: yellowgreen;"></i>
+                                                   data-user-name="{{ $user->name }}"
+                                                   data-user-email="{{ $user->email }}"
+                                                   title="{{  __('user_management.btn_remove') }}" style="margin-left: 10px">
+                                                    <i class="fa fa-trash-o" style="font-size: 20px; color: darkred;"></i>
                                                 </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                                                @if($user->is_expired)
+                                                    <a href="{{ route('reset_expired_user', ['id' => $user->id]) }}"
+                                                       class="col-md-3 col-sm-4 btn-edit"
+                                                       data-toggle="tooltip"
+                                                       data-placement="top"
+                                                       title="{{  __('user_management.btn_reset_expired') }}">
+                                                        <i class="fa fa-fw fa-refresh" style="font-size: 20px; color: yellowgreen;"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box-body -->
                     </div>
                 </div>
             </div>
         </div>
+
     </section><!-- /.content -->
 @endsection
 
