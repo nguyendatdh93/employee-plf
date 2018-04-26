@@ -473,7 +473,7 @@ class AdminController extends Controller
 
     public function showGetSqlAddAdminForm(Request $request)
     {
-        $sql = "INSERT INTO employee.admins (id, name, email, password, del_flg) VALUES ('3', '".$request->get('name')."', '".$request->get('email')."', '".Hash::make($request->get('password'))."', '0')";
+        $sql = "INSERT INTO employee.admins (name, email, password, del_flg) VALUES ('".$request->get('name')."', '".$request->get('email')."', '".Hash::make($request->get('password'))."', '0')";
 
         return view('admins.add_admin', ['sql' => $sql]);
     }
