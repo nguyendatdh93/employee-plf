@@ -13,7 +13,7 @@ return [
     "lengthMenu" =>    "表示 _MENU_",
     "loadingRecords" =>"Loading...",
     "processing" =>    "Processing...",
-    "search" =>        "検索:",
+    "search" =>        "検索: ",
     "zeroRecords" =>   "アンケートが見つかりません。",
     "paginate" =>array(
         "first" =>     "最初へ",
