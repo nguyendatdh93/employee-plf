@@ -20,7 +20,7 @@
                             $parse_url = parse_url(empty($url['redirect_uri']) ? '' : $url['redirect_uri']);
                         @endphp
                         @if (!empty($parse_url['host']))
-                            <p style="text-align: center">You are logging into the system <strong> {{ $parse_url['host'] }} </strong></p>
+                            <p style="text-align: center"><strong> {{ $parse_url['host'] }} </strong> {{ __('login_user.logging_from') }} </p>
                         @endif
                     @endif
                     <form method="POST" action="{{ route('login') }}">
