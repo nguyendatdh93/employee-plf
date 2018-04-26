@@ -66,7 +66,7 @@ return [
     'numeric' => ':attributeには、数字を指定してください。',
     'present' => ':attributeは、必ず存在しなくてはいけません。',
     'regex' => ':attributeには、有効な正規表現を指定してください。',
-    'required' => ':attributeは、必ず指定してください。',
+    'required' => '必ず入力してください。',
     'required_if' => ':otherが:valueの場合、:attributeを指定してください。',
     'required_unless' => ':otherが:value以外の場合、:attributeを指定してください。',
     'required_with' => ':valuesが指定されている場合、:attributeも指定してください。',
