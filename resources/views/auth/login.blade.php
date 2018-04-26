@@ -14,14 +14,8 @@
                         </div>
                     @endif
 
-                    @if(session()->get('url.intended'))
-                        @php
-                            parse_str(session()->get('url.intended'), $url);
-                            $parse_url = parse_url(empty($url['redirect_uri']) ? '' : $url['redirect_uri']);
-                        @endphp
-                        @if (!empty($parse_url['host']))
-                            <p style="text-align: center">You are logging into the system <strong> {{ $parse_url['host'] }} </strong></p>
-                        @endif
+                    @if(!empty($oauth_client) && !empty($oauth_client['name']))
+                        <p style="text-align: center"><strong> {{ $oauth_client['name'] }}</strong>{{ __('login_user.logging_from') }} </p>
                     @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
