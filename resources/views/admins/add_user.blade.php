@@ -29,7 +29,7 @@
                             <label for="name" class="col-sm-2 control-label">{{ trans('add_user.form_label_name') }} <span class="required">*</span></label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="{{ trans('add_user.placeholder_name') }}" required autofocus>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="{{ trans('add_user.placeholder_name') }}" autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -43,7 +43,7 @@
                             <label for="email" class="col-sm-2 control-label">{{ trans('add_user.form_label_email') }} <span class="required">*</span></label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="{{ trans('add_user.placeholder_email') }}" required>
+                                <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="{{ trans('add_user.placeholder_email') }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">

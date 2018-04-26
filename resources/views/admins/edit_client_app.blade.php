@@ -29,14 +29,14 @@
                         <div class="form-group client-name @if ($errors->has('client_name')) has-error @endif">
                             <label for="exampleInputEmail1" class="col-sm-2 control-label">{{ __('edit_client_app.client_name') }} <span class="required">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" value="{{ old('client_name', $oauth_client[0]->name) }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
+                                <input type="text" value="{{ old('client_name', $oauth_client[0]->name) }}" name="client_name" class="form-control" id="exampleInputPassword1" placeholder="" autofocus>
                                 <span class="help-block"> @if ($errors->has('client_name')) {{ $errors->first('client_name') }} @endif</span>
                             </div>
                         </div>
                         <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
                             <label for="exampleInputPassword1" class="col-sm-2 control-label">{{ __('edit_client_app.client_call_back') }} <span class="required">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" value="{{ old('url_redirect', $oauth_client[0]->redirect) }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="" required autofocus>
+                                <input type="text" value="{{ old('url_redirect', $oauth_client[0]->redirect) }}" name="url_redirect" class="form-control" id="exampleInputPassword1" placeholder="" autofocus>
                                 <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title_logo'  => '管理者ログイン',
+    'title_logo'  => '社員認証システム - 管理者ログイン',
     'title'       => ' 社員認証システム - 管理者',
     'email'       => 'メールアドレス',
     'password'    => 'パスワード',
