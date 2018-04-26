@@ -114,6 +114,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'name'  => __('add_user.form_label_name'),
+                'email' => __('add_user.form_label_email')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -310,6 +316,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'client_name'  => __('create_client_app.client_name'),
+                'url_redirect' => __('create_client_app.client_call_back')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -409,6 +421,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'client_name'  => __('edit_client_app.client_name'),
+                'url_redirect' => __('edit_client_app.client_call_back')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 

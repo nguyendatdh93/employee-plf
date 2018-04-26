@@ -53,6 +53,12 @@ class ResetPasswordController extends Controller
             'password' => 'required|confirmed|min:8|max:50',
         ], $this->validationErrorMessages());
 
+        $validator->setAttributeNames([
+            'email'                 => __('reset_forgot_password.email'),
+            'password'              => __('reset_forgot_password.password'),
+            'password_confirmation' => __('reset_password.confirm_password')
+        ]);
+
         if($validator->fails())
         {
             return redirect()->back()->withErrors($validator);

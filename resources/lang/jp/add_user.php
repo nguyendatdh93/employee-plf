@@ -10,6 +10,6 @@ return [
     'placeholder_email' => '',
     'btn_create_user' => '登録する',
     'message_hacking' => "このアプリケーションを存在されません。",
-    'duplicate_email' => "指定のemailは既に使用されています。",
+    'duplicate_email' => "指定のメールアドレスは既に使用されています。",
     'domain_requirement' => '@:domainメールアドレスを使ってください'
 ];
