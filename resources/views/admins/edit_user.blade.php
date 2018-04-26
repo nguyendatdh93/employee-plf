@@ -27,25 +27,25 @@
 
                     <div class="box-body">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ trans('edit_user.form_label_name') }}</label>
+                            <label class="col-sm-3 control-label">{{ trans('edit_user.form_label_name') }}</label>
 
-                            <div class="col-sm-10" style="padding-top: 6px">
+                            <div class="col-sm-9" style="padding-top: 6px">
                                 <span>{{ $user->name }}</span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ trans('edit_user.form_label_email') }}</label>
+                            <label class="col-sm-3 control-label">{{ trans('edit_user.form_label_email') }}</label>
 
-                            <div class="col-sm-10" style="padding-top: 6px">
+                            <div class="col-sm-9" style="padding-top: 6px">
                                 <span>{{ $user->email }}</span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="client_apps" class="col-sm-2 control-label">{{ trans('edit_user.form_label_client_apps') }}</label>
+                            <label for="client_apps" class="col-sm-3 control-label">{{ trans('edit_user.form_label_client_apps') }}</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 @foreach($client_apps as $client_app)
                                     <div class="checkbox">
                                         <label>

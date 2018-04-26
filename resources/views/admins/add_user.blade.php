@@ -26,9 +26,9 @@
 
                     <div class="box-body">
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-sm-2 control-label">{{ trans('add_user.form_label_name') }} <span class="required">*</span></label>
+                            <label for="name" class="col-sm-3 control-label">{{ trans('add_user.form_label_name') }} <span class="required">*</span></label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="{{ trans('add_user.placeholder_name') }}" autofocus>
 
                                 @if ($errors->has('name'))
@@ -40,9 +40,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-sm-2 control-label">{{ trans('add_user.form_label_email') }} <span class="required">*</span></label>
+                            <label for="email" class="col-sm-3 control-label">{{ trans('add_user.form_label_email') }} <span class="required">*</span></label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="{{ trans('add_user.placeholder_email') }}">
 
                                 @if ($errors->has('email'))
@@ -54,17 +54,17 @@
                         </div>
 
                         <div class="form-group" hidden>
-                            <label for="password" class="col-sm-2 control-label">{{ trans('add_user.form_label_password') }}</label>
+                            <label for="password" class="col-sm-3 control-label">{{ trans('add_user.form_label_password') }}</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <input type="text" disabled="disabled" class="form-control" id="password" name="password" value="{{ Config::get('base.default_password') }}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="client_apps" class="col-sm-2 control-label">{{ trans('add_user.form_label_client_apps') }}</label>
+                            <label for="client_apps" class="col-sm-3 control-label">{{ trans('add_user.form_label_client_apps') }}</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 @foreach($client_apps as $client_app)
                                     <div class="checkbox">
                                         <label>

@@ -26,22 +26,22 @@
                     {{ csrf_field() }}
                     <div class="box-body">
                         <div class="form-group client-name @if ($errors->has('client_name')) has-error @endif">
-                            <label for="exampleInputEmail1" class="col-sm-2 control-label">{{ __('create_client_app.client_name') }} <span class="required">*</span></label>
-                            <div class="col-sm-10">
+                            <label for="exampleInputEmail1" class="col-sm-3 control-label">{{ __('create_client_app.client_name') }} <span class="required">*</span></label>
+                            <div class="col-sm-9">
                                 <input type="text" name="client_name" class="form-control" value="{{old('client_name')}}" id="exampleInputPassword1" placeholder="" autofocus>
                                 <span class="help-block"> @if ($errors->has('client_name')) {{ $errors->first('client_name') }} @endif</span>
                             </div>
                         </div>
                         <div class="form-group url-redirect @if ($errors->has('url_redirect')) has-error @endif">
-                            <label for="exampleInputPassword1" class="col-sm-2 control-label">{{ __('create_client_app.client_call_back') }} <span class="required">*</span></label>
-                            <div class="col-sm-10">
+                            <label for="exampleInputPassword1" class="col-sm-3 control-label">{{ __('create_client_app.client_call_back') }} <span class="required">*</span></label>
+                            <div class="col-sm-9">
                                 <input type="text" name="url_redirect" class="form-control" value="{{old('url_redirect')}}" id="exampleInputPassword1" placeholder="ex: http://example.com/callback" autofocus>
                                 <span class="help-block">@if ($errors->has('url_redirect')) {{ $errors->first('url_redirect') }} @endif</span>
                             </div>
                         </div>
                         <div class="form-group ip-secure @if ($errors->has('ip_secure')) has-error @endif" >
-                            <label for="exampleInputPassword1" class="col-sm-2 control-label">{{ __('create_client_app.ip_secure') }} </label>
-                            <div class="col-sm-10">
+                            <label for="exampleInputPassword1" class="col-sm-3 control-label">{{ __('create_client_app.ip_secure') }} </label>
+                            <div class="col-sm-9">
                                 <input type="text" name="ip_secure" class="form-control" value="{{old('ip_secure')}}" id="exampleInputPassword1" placeholder="">
                                 <span class="help-block"> @if ($errors->has('ip_secure')) {{ $errors->first('ip_secure') }} @endif</span>
                             </div>
