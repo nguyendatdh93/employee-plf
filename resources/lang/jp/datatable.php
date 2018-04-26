@@ -4,7 +4,7 @@ return [
     'controls' => '管理',
     'detail' => 'Detail',
     "decimal" =>       "",
-    "emptyTable" =>    "アンケートが存在しません。",
+    "emptyTable" =>    "レコードが存在しません",
     "info" =>          "_TOTAL_ 件中 _START_ 件〜 _END_ 件表示しています",
     "infoEmpty" =>     " 0 件中 0 件〜 0 件表示しています",
     "infoFiltered" =>  "(filtered from _MAX_ total entries)",
@@ -14,7 +14,7 @@ return [
     "loadingRecords" =>"Loading...",
     "processing" =>    "Processing...",
     "search" =>        "検索 ",
-    "zeroRecords" =>   "アンケートが見つかりません。",
+    "zeroRecords" =>   "レコードが見つかりません。",
     "paginate" =>array(
         "first" =>     "最初へ",
         "last" =>      "最後へ",
