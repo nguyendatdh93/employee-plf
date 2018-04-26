@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
+use App\Models\Admin;
 use App\Models\OauthClient;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Session;
+use DB;
 
 class AdminController extends Controller
 {
@@ -467,5 +469,12 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function showGetSqlAddAdminForm(Request $request)
+    {
+        $sql = "INSERT INTO employee.admins (id, name, email, password, del_flg) VALUES ('3', '".$request->get('name')."', '".$request->get('email')."', '".Hash::make($request->get('password'))."', '0')";
+
+        return view('admins.add_admin', ['sql' => $sql]);
     }
 }

@@ -41,6 +41,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/edit-client-app', 'Admin\AdminController@editClientApp')->name('edit_client_app');
 
     Route::get('/reset-expired-user/{id?}', 'Admin\AdminController@resetExpiredUser')->name('reset_expired_user');
+    Route::get('/add-admin', 'Admin\AdminController@showGetSqlAddAdminForm')->name('get_sql_add_admin_form');
 });
 
 Auth::routes();
