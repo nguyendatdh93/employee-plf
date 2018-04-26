@@ -13,6 +13,16 @@
                             {{ session('error') }}
                         </div>
                     @endif
+
+                    @if(session()->get('url.intended'))
+                        @php
+                            parse_str(session()->get('url.intended'), $url);
+                            $parse_url = parse_url(empty($url['redirect_uri']) ? '' : $url['redirect_uri']);
+                        @endphp
+                        @if (!empty($parse_url['host']))
+                            <p style="text-align: center">You are logging into the system <strong> {{ $parse_url['host'] }} </strong></p>
+                        @endif
+                    @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
