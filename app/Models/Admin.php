@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
-class User extends Authenticatable
+class Admin extends Model implements Authenticatable
 {
-    use Notifiable;
-    use HasApiTokens, Notifiable;
+    use AuthenticableTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +24,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password'
     ];
+
+    public $remember_token=false;
 }

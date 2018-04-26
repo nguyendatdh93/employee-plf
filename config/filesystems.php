@@ -45,12 +45,12 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => env('STORAGE_PATH_LOCAL'),
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => env('STORAGE_PATH_PUBLIC'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],

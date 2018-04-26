@@ -1,0 +1,38 @@
+#datatable_filter {
+    float: right;
+}
+
+div#datatable_paginate {
+    float: right;
+}
+
+.pagination {
+    margin: 0px !important;
+}
+
+table tr td {
+    vertical-align: inherit !important;
+}
+
+.box-change-password input {
+    width: 60% !important;
+}
+
+#datatable {
+     clear: both;
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: break-all;
+}
+
+span.required {
+    color:red;
+}
+
+.form-group label {
+    text-align: left !important;
+}
+
+.form-group.has-error label {
+    color: #333;
+}

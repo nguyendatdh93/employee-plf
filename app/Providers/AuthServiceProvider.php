@@ -30,5 +30,15 @@ class AuthServiceProvider extends ServiceProvider
 
 //        Passport::enableImplicitGrant();
         //
+        \Route::get('oauth/authorize', [
+            'uses' => 'App\Http\Controllers\Passport\AuthorizationController@authorize',
+        ])->middleware(['web', 'auth']);
+
+        \Route::post('oauth/token', [
+            'uses' => 'App\Http\Controllers\Passport\AccessTokenController@issueToken',
+            'middleware' => 'throttle',
+        ]);
+
+        \Route::get('password/reset/{token}/{email}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     }
 }
