@@ -42,8 +42,8 @@ class LoginController extends Controller
     public function loginAsAdmin()
     {
         $rules = array(
-            'email'    => 'required|email',
-            'password' => 'required|min:8'
+            'email'    => 'required|email|string',
+            'password' => 'required|string'
         );
 
         $validator = Validator::make(Input::all(), $rules);
