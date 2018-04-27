@@ -16,7 +16,7 @@ class CreateAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::connection('migration')->create('admins', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email');
@@ -25,7 +25,7 @@ class CreateAdminsTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('admins')->insert([
+        DB::connection('migration')->table('admins')->insert([
             [
                 'name'       => Config::get('base.manager_name'),
                 'email'      => Config::get('base.manager_email'),
@@ -41,6 +41,6 @@ class CreateAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admins');
+        Schema::connection('migration')->dropIfExists('admins');
     }
 }

@@ -13,7 +13,7 @@ class CreateUserClientRelationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_client_relations', function (Blueprint $table) {
+        Schema::connection('migration')->create('user_client_relations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('client_id');
@@ -28,6 +28,6 @@ class CreateUserClientRelationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_client_relations');
+        Schema::connection('migration')->dropIfExists('user_client_relations');
     }
 }
