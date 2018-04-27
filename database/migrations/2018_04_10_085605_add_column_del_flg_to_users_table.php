@@ -13,7 +13,7 @@ class AddColumnDelFlgToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::connection('migration')->table('users', function (Blueprint $table) {
             $table->integer('del_flg')->default(0)->after('reset_password_flg');
         });
     }
@@ -25,7 +25,7 @@ class AddColumnDelFlgToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function ($table) {
+        Schema::connection('migration')->table('users', function ($table) {
             $table->dropColumn('del_flg');
         });
     }

@@ -13,7 +13,7 @@ class AddColumnDelFlgToOauthClientsTable extends Migration
      */
     public function up()
     {
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::connection('migration')->table('oauth_clients', function (Blueprint $table) {
             $table->string('del_flg')->default(0)->after('revoked');
         });
     }
@@ -25,7 +25,7 @@ class AddColumnDelFlgToOauthClientsTable extends Migration
      */
     public function down()
     {
-        Schema::table('oauth_clients', function ($table) {
+        Schema::connection('migration')->table('oauth_clients', function ($table) {
             $table->dropColumn('del_flg');
         });
     }
