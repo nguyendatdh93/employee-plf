@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Mail;
+use Config;
 
 class MailService {
 
@@ -33,13 +34,14 @@ class MailService {
             'user' => $user,
             'password' => $password
         ];
-        $this->sendMail('new acc', $user->email, 'notify_new_account', $data);
+        $this->sendMail('【社員認証システム】アカウントが登録されました', $user->email, 'notify_new_account', $data);
     }
 
     public function notifyResetExpireTime($user) {
         $data = [
-            'user' => $user
+            'user' => $user,
+            'password' => Config::get('base.default_password')
         ];
-        $this->sendMail('reset expire', $user->email, 'notify_reset_expire_time', $data);
+        $this->sendMail('【社員認証システム】パスワードがリセットされました', $user->email, 'notify_reset_expire_time', $data);
     }
 }

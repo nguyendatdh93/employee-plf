@@ -1,9 +1,11 @@
 <?php
 
 return [
-    'subject' => 'Reset your password',
-    'greeting' => 'Hi!',
-    'line1' => 'You are receiving this email because we received a password reset request for your account.',
-    'line2' => 'If you did not request a password reset, no further action is required.',
-    'btn_reset_text' => 'Reset Password',
+    'subject' => '【社員認証システム】パスワードリマインダーが使用されました',
+    'greeting' => 'さん',
+    'line1' => '社員認証システムのパスワードリマインダーが使用されました。',
+    'line2' => '[パスワードのリセット]ボタンをクリックできない場合は、次のURLをブラウザで開いてください。',
+    'line3' => 'また、身に覚えが無い場合は、下記よりお問い合わせください。',
+    'line4' => 'ヘルプデスク',
+    'btn_reset_text' => 'パスワード リセット ボタン',
 ];

@@ -1,11 +1,9 @@
-Hi {{ $user->name }},<br><br>
+{{ $user->name }}さん<br><br>
 
-This is your new account:<br><br>
-Email: {{ $user->email }}<br>
-Password: {{ $password }}<br><br>
+社員認証システムのパスワードリマインダーが使用されました。<br>
 
-Please login & change password.<br>
-Account will expired in {{ config('base.new_user_expired_hours') }} hours!<br><br>
 
-Thanks,<br>
+アカウントの有効期限は{{ config('base.new_user_expired_hours') }}時間です。<br><br>
+
+ヘルプデスク<br>
 {{ config('app.name') }}
