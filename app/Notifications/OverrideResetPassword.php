@@ -6,6 +6,7 @@ use App\Services\MailService;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Session;
+use Config;
 
 class OverrideResetPassword extends Notification
 {
@@ -67,7 +68,10 @@ class OverrideResetPassword extends Notification
             ->line(trans('mail_forgot_password.line2'))
             ->line(url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email])))
             ->line(trans('mail_forgot_password.line3'))
-            ->salutation(trans('mail_forgot_password.line4'));
+            ->line(trans('mail_forgot_password.line4'))
+            ->line( Config::get('base.helpdesk_mail'))
+            ->salutation(' ');
+
     }
 
     /**

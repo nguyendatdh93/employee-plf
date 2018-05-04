@@ -6,4 +6,4 @@
 アカウントの有効期限は{{ config('base.new_user_expired_hours') }}時間です。<br><br>
 
 ヘルプデスク<br>
-{{ config('app.name') }}
+{{ config('base.helpdesk_mail') }}

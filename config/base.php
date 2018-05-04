@@ -10,4 +10,5 @@ return [
     'manager_password' => env('MANAGER_PASSWORD', '123456789'),
     'new_user_expired_hours' => env('NEW_USER_EXPIRED_HOURS', 8),
     'slack_webhook_url' => env('SLACK_WEBHOOK_URL'),
+    'helpdesk_mail'     => 'http://192.168.255.216/helpdesk/',
 ];
