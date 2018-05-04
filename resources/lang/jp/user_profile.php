@@ -5,5 +5,5 @@ return [
 
     'form_label_name' => '名前',
     'form_label_email' => 'メールアドレス',
-    'form_label_client_apps' => 'アプリケーション連携 ',
+    'form_label_client_apps' => '利用可能なサービス',
 ];

@@ -1,8 +1,11 @@
-Hi {{ $user->name }},<br><br>
+{{ $user->name }}さん<br><br>
 
-We have reset expire time for your account.<br>
-Please login & change password.<br>
-Account will expired in {{ config('base.new_user_expired_hours') }} hours!<br><br>
+管理者により社員認証システムのパスワードがリセットされました。<br>
+ログインしてパスワードを変更してください。<br><br>
 
-Thanks,<br>
-{{ config('app.name') }}
+メールアドレス: {{ $user->email }}<br>
+パスワード: {{ $password }}<br><br>
+アカウントの有効期限は{{ config('base.new_user_expired_hours') }}時間です。<br><br>
+
+ヘルプデスク<br>
+{{ config('base.helpdesk_mail') }}

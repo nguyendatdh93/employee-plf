@@ -18,5 +18,5 @@ return [
     'message_remove_user_not_success' => ':user_emailのユーザを削除できませんでした。',
     'message_remove_user_success' => ':user_emailのユーザを削除しました。',
     'message_add_user_success' => ':user_nameのユーザを登録しました。',
-    'message_update_user_success' => ':user_nameユーザのアプリケーション連携を更新しました',
+    'message_update_user_success' => ':user_nameユーザの利用可能なサービスを更新しました',
 ];
