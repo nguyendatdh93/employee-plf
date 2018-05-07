@@ -7,7 +7,7 @@ return [
     'forgot_password' => 'パスワードを忘れた方はこちら',
     'btn_login' => 'ログイン',
     'remember_me' => 'Remember me',
-    'error_can_not_login' => 'Your account is not exits',
+    'error_can_not_login' => 'このアカウントが存在しません。',
     'email_requirement' => ' must allows to access system',
     'logging_from' => 'からログインしています。'
 ];
