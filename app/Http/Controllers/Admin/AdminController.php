@@ -78,13 +78,14 @@ class AdminController extends Controller
             return redirect()->route('404');
         }
 
+        $user   = $this->userRepository->find($user_id);
         $result = $this->userRepository->delete($user_id);
 
         if (empty($result)) {
-            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_email' => $user_email]));
+            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_email' => $user->name]));
         }
 
-        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_email' => $user_email]));
+        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_email' => $user->name]));
     }
 
     /**
@@ -267,7 +268,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_update_user_success'), [':user_name' => $user->email]));
+            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_update_user_success'), [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
