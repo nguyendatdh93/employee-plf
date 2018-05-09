@@ -4,7 +4,7 @@ return [
     'id' => 'ID',
     'name' => '名前',
     'email' => 'メールアドレス',
-    'client_app' => 'アプリケーション',
+    'client_app' => '利用可能なサービス',
     'control' => '管理',
     'btn_edit' => '編集',
     'btn_remove' => '削除',
