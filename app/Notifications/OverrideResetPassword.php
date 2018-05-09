@@ -60,21 +60,9 @@ class OverrideResetPassword extends Notification
 
         session()->put('send_mail_forgot_password', $this->token);
         return (new MailMessage)
-            ->subject('tesst')
-            ->markdown('mail.forgot_password', ['notifiable' => $notifiable, 'url' => url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email]))])
+            ->subject(view('mail.forgot_password_subject'))
+            ->view('mail.forgot_password_body', ['notifiable' => $notifiable, 'url' => url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email]))])
             ->salutation(' ');
-//        return (new MailMessage)
-////            ->view('mail.forgot_password')
-//            ->subject(trans('mail_forgot_password.subject'))
-//            ->greeting(trans('mail_forgot_password.greeting'). $notifiable->name)
-//            ->line(trans('mail_forgot_password.line1'))
-//            ->action(trans('mail_forgot_password.btn_reset_text'), url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email])))
-//            ->line(trans('mail_forgot_password.line2'))
-//            ->line(url(route('password.reset',['token' => $this->token, 'email' => $notifiable->email])))
-//            ->line(trans('mail_forgot_password.line3'))
-//            ->line(trans('mail_forgot_password.line4'))
-//            ->line( Config::get('base.helpdesk_mail'))
-//            ->salutation(' ');
 
     }
 

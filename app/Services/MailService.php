@@ -34,7 +34,7 @@ class MailService {
             'user' => $user,
             'password' => $password
         ];
-        $this->sendMail('【社員認証システム】アカウントが登録されました', $user->email, 'notify_new_account', $data);
+        $this->sendMail(view('mail.notify_new_account_subject'), $user->email, 'notify_new_account_body', $data);
     }
 
     public function notifyResetExpireTime($user) {
@@ -42,6 +42,6 @@ class MailService {
             'user' => $user,
             'password' => Config::get('base.default_password')
         ];
-        $this->sendMail('【社員認証システム】パスワードがリセットされました', $user->email, 'notify_reset_expire_time', $data);
+        $this->sendMail(view('mail.notify_reset_expire_time_subject'), $user->email, 'notify_reset_expire_time_body', $data);
     }
 }
