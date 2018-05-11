@@ -1,6 +1,6 @@
 @extends('layouts.user')
 @section('Body')
-    <div class="box box-primary register-box">
+    <div class="box box-primary register-box" style="width: 410px">
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

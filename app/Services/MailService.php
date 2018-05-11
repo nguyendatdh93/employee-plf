@@ -30,7 +30,9 @@ class MailService {
     }
 
     public function notifyNewAccount($user, $password) {
+        $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
         $data = [
+            'url' => env('APP_URL') ? env('APP_URL') : $protocol.'://'.$_SERVER['SERVER_NAME'],
             'user' => $user,
             'password' => $password
         ];
@@ -38,7 +40,9 @@ class MailService {
     }
 
     public function notifyResetExpireTime($user) {
+        $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
         $data = [
+            'url' => env('APP_URL') ? env('APP_URL') : $protocol.'://'.$_SERVER['SERVER_NAME'],
             'user' => $user,
             'password' => Config::get('base.default_password')
         ];

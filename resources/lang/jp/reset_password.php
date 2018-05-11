@@ -2,7 +2,7 @@
 <?php
 
 return [
-    'title_reset_password' => 'パスワード初期設定ください。',
+    'title_reset_password' => 'パスワードを再設定してください。',
     'new_password' => '新しいパスワード',
     'confirm_new_password' => 'パスワードの再入力',
     'btn_change_password' => '保存する',
