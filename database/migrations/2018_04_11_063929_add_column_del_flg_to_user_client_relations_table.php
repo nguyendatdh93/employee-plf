@@ -13,7 +13,7 @@ class AddColumnDelFlgToUserClientRelationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('user_client_relations', function (Blueprint $table) {
+        Schema::connection('migration')->table('user_client_relations', function (Blueprint $table) {
             $table->string('del_flg')->default(0)->after('client_id');
         });
     }
@@ -25,7 +25,7 @@ class AddColumnDelFlgToUserClientRelationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_client_relations', function ($table) {
+        Schema::connection('migration')->table('user_client_relations', function ($table) {
             $table->dropColumn('del_flg');
         });
     }

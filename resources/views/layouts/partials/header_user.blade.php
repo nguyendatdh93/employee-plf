@@ -1,5 +1,5 @@
 <meta charset="UTF-8">
-<title>@section('HeaderTitle') {{ __('title_page.admin_site') }} @show</title>
+<title>@section('HeaderTitle') {{ __('title_page.user_site') }} @show</title>
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 <!-- Bootstrap 3.3.2 -->
 <link href="{{ asset("/plugins/bootstrap/dist/css/bootstrap.css") }}" rel="stylesheet" type="text/css" />

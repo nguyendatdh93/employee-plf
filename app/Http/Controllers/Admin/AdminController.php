@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CheckIpRange;
+use App\Models\Admin;
 use App\Models\OauthClient;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Session;
+use DB;
 
 class AdminController extends Controller
 {
@@ -66,19 +68,24 @@ class AdminController extends Controller
      * @param $user_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeUser(Request $request, $user_id = null)
+    public function removeUser(Request $request, $user_id = null, $user_email = null)
     {
         if (empty($user_id)) {
             return redirect()->route('404');
         }
 
+        if (empty($user_email)) {
+            return redirect()->route('404');
+        }
+
+        $user   = $this->userRepository->find($user_id);
         $result = $this->userRepository->delete($user_id);
 
         if (empty($result)) {
-            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_id' => $user_id]));
+            return redirect()->route('user_management')->with('error' ,strtr(__('user_management.message_remove_user_not_success'), [':user_email' => $user->name]));
         }
 
-        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_id' => $user_id]));
+        return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_remove_user_success'), [':user_email' => $user->name]));
     }
 
     /**
@@ -108,6 +115,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'name'  => __('add_user.form_label_name'),
+                'email' => __('add_user.form_label_email')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -116,8 +129,18 @@ class AdminController extends Controller
                     ->withInput();
             }
 
+            $domain_name = substr(strrchr($input['email'], "@"), 1);
+            if ($domain_name != Config::get('base.domain')) {
+                return back()->withErrors(['email' => strtr(__('add_user.domain_requirement'), [':domain' => Config::get('base.domain')])])->withInput();
+            }
+            $password     = Config::get('base.default_password');
             $existed_user = $this->userRepository->findAllByEmail($input['email']);
-            if ($existed_user) {
+
+            if ($existed_user && $existed_user->del_flg == User::DELETE_FLG) {
+                $this->userRepository->enableUser($existed_user->id);
+                $this->userClientRelationRepository->removeByUserId($existed_user->id);
+                $user = $existed_user;
+            } elseif ($existed_user) {
                 return back()->withErrors(['email' => __('add_user.duplicate_email')])->withInput();
             }
 
@@ -135,13 +158,14 @@ class AdminController extends Controller
                 }
             }
 
-            $password = Config::get('base.default_password');
-            $user     = $this->userRepository->create([
-                'name'               => $input['name'],
-                'email'              => $input['email'],
-                'reset_password_flg' => User::RESET_PASSWORD_NO,
-                'password'           => Hash::make($password)
-            ]);
+            if (!$existed_user) {
+                $user     = $this->userRepository->create([
+                    'name'               => $input['name'],
+                    'email'              => $input['email'],
+                    'reset_password_flg' => User::RESET_PASSWORD_NO,
+                    'password'           => Hash::make($password)
+                ]);
+            }
 
             if (!empty($input['client_apps'])) {
                 foreach ($input['client_apps'] as $client_app) {
@@ -244,7 +268,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_add_user_success'), [':user_name' => $user->name]));
+            return redirect()->route('user_management')->withSuccess(strtr(__('user_management.message_update_user_success'), [':user_name' => $user->name]));
         } catch (\Exception $e) {
             return back()->withErrors(['messages' => 'ERROR: ' . $e->getMessage()])->withInput();
         }
@@ -256,7 +280,11 @@ class AdminController extends Controller
     public function showClientAppSetting()
     {
         Session::put('menu', 'app_setting');
-        $oauth_clients = $this->oauthClientRepository->all();
+        $oauth_clients            = $this->oauthClientRepository->all();
+        foreach ($oauth_clients as $key => $oauth_client) {
+            $oauth_client->ip_secure = explode(',', $oauth_client->ip_secure);
+            $oauth_clients[$key]     = $oauth_client;
+        }
 
         return view('admins.client_app_setting', ['oauth_clients' => $oauth_clients]);
     }
@@ -289,6 +317,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'client_name'  => __('create_client_app.client_name'),
+                'url_redirect' => __('create_client_app.client_call_back')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -298,13 +332,16 @@ class AdminController extends Controller
             }
 
             if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-                return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_url_redirect_not_url'));
+                return back()->withErrors(['url_redirect' => __('create_client_app.error_url_redirect_not_url')])->withInput();
             }
 
             if ($inputs['ip_secure'] != '') {
-                $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
-                if (!$is_ip) {
-                    return redirect()->route('create_client_app_form')->with('error', __('create_client_app.error_ip_secure_is_ip'))->withInput();
+                $ips = explode(',', $inputs['ip_secure']);
+                foreach ($ips as $ip) {
+                    $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $ip, $output_array);
+                    if (!$is_ip) {
+                        return back()->withErrors(['ip_secure' => __('create_client_app.error_ip_secure_is_ip')])->withInput();
+                    }
                 }
             }
 
@@ -385,6 +422,12 @@ class AdminController extends Controller
             ];
 
             $validator = Validator::make($data, $rules);
+
+            $validator->setAttributeNames([
+                'client_name'  => __('edit_client_app.client_name'),
+                'url_redirect' => __('edit_client_app.client_call_back')
+            ]);
+
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -394,13 +437,16 @@ class AdminController extends Controller
             }
 
             if (filter_var($inputs['url_redirect'], FILTER_VALIDATE_URL) === FALSE) {
-                return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_url_redirect_not_url'));
+                return back()->withErrors(['url_redirect' => __('create_client_app.error_url_redirect_not_url')])->withInput();
             }
 
             if ($inputs['ip_secure'] != '') {
-                $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $inputs['ip_secure'], $output_array);
-                if (!$is_ip) {
-                    return redirect()->route('edit_client_app_form', ['client_app_id' => $request->get('client_id')])->with('error', __('create_client_app.error_ip_secure_is_ip'));
+                $ips = explode(',', $inputs['ip_secure']);
+                foreach ($ips as $ip) {
+                    $is_ip = preg_match("/^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$|^[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\/[\d]{1,2}$/", $ip, $output_array);
+                    if (!$is_ip) {
+                        return back()->withErrors(['ip_secure' => __('create_client_app.error_ip_secure_is_ip')])->withInput();
+                    }
                 }
             }
 
@@ -442,5 +488,12 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function showGetSqlAddAdminForm(Request $request)
+    {
+        $sql = "INSERT INTO employee.admins (name, email, password, del_flg) VALUES ('".$request->get('name')."', '".$request->get('email')."', '".Hash::make($request->get('password'))."', '0')";
+
+        return view('admins.add_admin', ['sql' => $sql]);
     }
 }

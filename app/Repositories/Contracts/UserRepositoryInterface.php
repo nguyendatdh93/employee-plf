@@ -12,4 +12,6 @@ interface UserRepositoryInterface extends ATBBaseRepositoryInterface
     public function getClientAppsByUserId($user_id);
 
     public function findAllByEmail($email);
+
+    public function enableUser($id);
 }

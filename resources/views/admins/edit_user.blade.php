@@ -3,20 +3,19 @@
 @section('Content')
     <!-- Main content -->
     <section class="content">
-        @if ($errors->has('messages'))
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="panel panel-warning">
-                        <div class="panel-body bg-warning">
-                            {!! $errors->first('messages') !!}
+        <div class="row">
+            @if ($errors->has('messages'))
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-warning">
+                            <div class="panel-body bg-warning">
+                                {!! $errors->first('messages') !!}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
-
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            @endif
+            <div class="col-md-8">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ trans('edit_user.box_title_edit_user') }}</h3>

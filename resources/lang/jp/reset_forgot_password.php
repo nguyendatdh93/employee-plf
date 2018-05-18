@@ -2,9 +2,9 @@
 
 return [
 
-    'title' => 'Reset password',
-    'email' => 'Email Address',
-    'password' => 'Password',
-    'confirm_password' => 'Confirm password',
-    'btn_reset_password' => 'Reset password'
+    'title' => 'パスワード再設定',
+    'email' => 'メールアドレス',
+    'password' => 'パスワード',
+    'confirm_password' => 'パスワード再入力',
+    'btn_reset_password' => '保存する'
 ];

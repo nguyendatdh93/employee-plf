@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Passport;
 
+use App\Models\OauthClient;
+use App\Models\Slack;
+use App\Notifications\SlackNotification;
 use App\Repositories\Contracts\OauthClientRepositoryInterface;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
+use Notification;
 use Laravel\Passport\Http\Controllers\HandlesOAuthErrors;
 use Laravel\Passport\TokenRepository;
 use Lcobucci\JWT\Parser as JwtParser;
@@ -78,11 +82,15 @@ class AccessTokenController
     {
         $oauth_client = $this->checkOauthClientApp($httpRequest);
         if (!$oauth_client) {
-            return json_encode(['code' => 401, 'state' => 'error_unauthorized']);
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_UNAUTHORIZED, 'Exception : Client app is not exits!', 'Client id = ' . $request->get('client_id') . "\n Client secret = " . $request->get('client_secret')));
+            return json_encode(['httpcode' => OauthClient::HTTP_CODE_UNAUTHORIZED, 'state' => OauthClient::ERROR_UNAUTHORIZED]);
         }
 
         if (!$this->checkIpThirdParty($httpRequest, $oauth_client)) {
-            return json_encode(['code' => 403, 'state' => 'error_ip']);
+            Notification::send(new Slack(), new SlackNotification(
+                'Error ' . OauthClient::HTTP_CODE_FORBIDDEN, 'Exception : IP permission!', 'IP = ' . $httpRequest->ip() . "\n Client app = " . $oauth_client->name));
+            return json_encode(['httpcode' => OauthClient::HTTP_CODE_FORBIDDEN, 'state' => OauthClient::ERROR_IP]);
         }
 
         return $this->withErrorHandling(function () use ($request) {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Mail;
+use Config;
 
 class MailService {
 
@@ -29,17 +30,22 @@ class MailService {
     }
 
     public function notifyNewAccount($user, $password) {
+        $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
         $data = [
+            'url' => env('APP_URL') ? env('APP_URL') : $protocol.'://'.$_SERVER['SERVER_NAME'],
             'user' => $user,
             'password' => $password
         ];
-        $this->sendMail('new acc', $user->email, 'notify_new_account', $data);
+        $this->sendMail(view('mail.notify_new_account_subject'), $user->email, 'notify_new_account_body', $data);
     }
 
     public function notifyResetExpireTime($user) {
+        $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
         $data = [
-            'user' => $user
+            'url' => env('APP_URL') ? env('APP_URL') : $protocol.'://'.$_SERVER['SERVER_NAME'],
+            'user' => $user,
+            'password' => Config::get('base.default_password')
         ];
-        $this->sendMail('reset expire', $user->email, 'notify_reset_expire_time', $data);
+        $this->sendMail(view('mail.notify_reset_expire_time_subject'), $user->email, 'notify_reset_expire_time_body', $data);
     }
 }

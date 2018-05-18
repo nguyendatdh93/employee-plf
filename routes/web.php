@@ -23,7 +23,7 @@ Route::prefix('admin')->group(function () {
     Route::get('', 'Admin\LoginController@showLoginAdminForm')->name('admin_login');
     Route::post('/login', 'Admin\LoginController@loginAsAdmin')->name('login_as_admin');
     Route::get('/logout', 'Admin\LoginController@logOut')->name('admin_logout');
-    Route::get('/remove/{user_id?}', 'Admin\AdminController@removeUser')->name('remove-user');
+    Route::get('/remove/{user_id?}/{user_email?}', 'Admin\AdminController@removeUser')->name('remove-user');
 
     Route::get('/user-management', 'Admin\AdminController@showUserManagerment')->name('user_management');
 
@@ -41,6 +41,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/edit-client-app', 'Admin\AdminController@editClientApp')->name('edit_client_app');
 
     Route::get('/reset-expired-user/{id?}', 'Admin\AdminController@resetExpiredUser')->name('reset_expired_user');
+    Route::get('/add-admin', 'Admin\AdminController@showGetSqlAddAdminForm')->name('get_sql_add_admin_form');
 });
 
 Auth::routes();

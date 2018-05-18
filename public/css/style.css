@@ -24,3 +24,15 @@ table tr td {
     table-layout: fixed;
     word-break: break-all;
 }
+
+span.required {
+    color:red;
+}
+
+.form-group label {
+    text-align: left !important;
+}
+
+.form-group.has-error label {
+    color: #333;
+}

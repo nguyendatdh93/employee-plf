@@ -25,7 +25,7 @@ class DeletedUsers
         if ($user->del_flg) {
             Auth::logout();
 
-            return redirect('/login')->withErrors(['email' => 'Your account is removed!'])->withInput(['email' => $user->email]);
+            return redirect('/login')->withErrors(['email' => __('login_user.error_can_not_login')])->withInput(['email' => $user->email]);
         }
 
         return $next($request);

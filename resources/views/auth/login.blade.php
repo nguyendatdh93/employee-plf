@@ -13,6 +13,10 @@
                             {{ session('error') }}
                         </div>
                     @endif
+
+                    @if(!empty($oauth_client) && !empty($oauth_client['name']))
+                        <p style="text-align: center"><strong> {{ $oauth_client['name'] }}</strong>{{ __('login_user.logging_from') }} </p>
+                    @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -20,8 +24,7 @@
                             <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('login_user.email') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -34,7 +37,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('login_user.password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
 
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback">
@@ -60,7 +63,7 @@
                                     {{ __('login_user.btn_login') }}
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                <a class="btn btn-link" href="{{ route('password.request') }}" onclick="showFormForgotPassword()">
                                     {{ __('login_user.forgot_password') }}
                                 </a>
                             </div>
@@ -82,4 +85,12 @@
         </div>
     @endif
 </div>
+@endsection
+
+@section('Script')
+    <script>
+        function showFormForgotPassword() {
+            @php session()->forget('send_mail_forgot_password') @endphp
+        }
+    </script>
 @endsection

@@ -13,11 +13,11 @@ class UpdateColumnIpSercureToTableOauthClient extends Migration
      */
     public function up()
     {
-        Schema::table('oauth_clients', function ($table) {
+        Schema::connection('migration')->table('oauth_clients', function ($table) {
             $table->dropColumn('ip_secure');
         });
 
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::connection('migration')->table('oauth_clients', function (Blueprint $table) {
             $table->string('ip_secure')->nullable()->after('redirect');
         });
     }

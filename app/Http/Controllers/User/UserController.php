@@ -50,13 +50,19 @@ class UserController extends Controller
             $inputs = $request->all();
 
             if (!(Hash::check($inputs['current_password'], Auth::user()->password))) {
-                return back()->with("error", __('change_password.error_current_password'));
+                return back()->withErrors(["current_password" => __('change_password.error_current_password')])->withInput();
             }
 
             $validator = Validator::make($inputs, [
                 'current_password'     => 'required|string|min:8|max:50',
                 'new_password'         => 'required|string|min:8|max:50|different:current_password',
                 'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
+            ]);
+
+            $validator->setAttributeNames([
+                'current_password'     => __('change_password.current_password'),
+                'new_password'         => __('change_password.new_password'),
+                'confirm_new_password' => __('change_password.confirm_new_password')
             ]);
 
             if ($validator->fails()) {
@@ -69,7 +75,7 @@ class UserController extends Controller
             $user->password = bcrypt($inputs['new_password']);
             $user->save();
 
-            return back()->with("success", __('change_password.success'));
+            return redirect()->route('profile')->with("success", __('change_password.success'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -93,12 +99,17 @@ class UserController extends Controller
             $inputs = $request->all();
             if (Hash::check($inputs['new_password'], Auth::user()->password)) {
                 // The passwords matches
-                return back()->with("error", __('reset_password.error_current_password'));
+                return back()->withErrors(["new_password" => __('reset_password.error_current_password')])->withInput();
             }
 
             $validator = Validator::make($inputs, [
                 'new_password'         => 'required|string|min:8|max:50',
                 'confirm_new_password' => 'required_with:new_password|same:new_password|string|min:8|max:50',
+            ]);
+
+            $validator->setAttributeNames([
+                'new_password'         => __('reset_password.new_password'),
+                'confirm_new_password' => __('reset_password.confirm_new_password')
             ]);
 
             if ($validator->fails()) {
